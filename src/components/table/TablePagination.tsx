@@ -83,6 +83,7 @@ export function TablePagination(props: PaginationFeature) {
 								<Button
 									key={i}
 									onClick={prev}
+									aria-label="previous page"
 									variant="outline"
 									tw="h-8 w-8 p-0"
 									disabled={item.disabled}
@@ -96,6 +97,7 @@ export function TablePagination(props: PaginationFeature) {
 								<Button
 									key={i}
 									onClick={next}
+									aria-label="next page"
 									variant="outline"
 									tw="h-8 w-8 p-0"
 									disabled={item.disabled}
