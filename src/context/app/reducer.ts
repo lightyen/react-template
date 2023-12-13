@@ -5,17 +5,22 @@ import * as ac from "./action"
 export interface AppStore {
 	mobile: boolean
 	toasts: Record<string, ac.InnerToasterToast>
+	eyeDropperResult: Record<string, string>
 }
 
 const init: AppStore = {
 	mobile: isMobile(),
 	toasts: {},
+	eyeDropperResult: {},
 }
 
 export const app = createReducer(init, builder =>
 	builder
 		.addCase(ac.ismobile, (state, { payload }) => {
 			state.mobile = payload
+		})
+		.addCase(ac.eyeDropperResult, (state, { payload: { id, result } }) => {
+			state.eyeDropperResult[id] = result.sRGBHex
 		})
 		.addCase(ac.removeAllToast, state => {
 			state.toasts = {}

@@ -6,6 +6,18 @@ import { useDrag } from "@use-gesture/react"
 import { HTMLAttributes, useState } from "react"
 import { TodoList } from "./Todolist"
 
+import { Color } from "@components/lib/colors"
+
+function t() {
+	const c = new Color(1, 0, 0, 0.95)
+	console.log(c.css())
+	console.log(c.hex())
+	console.log(c.rgb())
+	console.log(c.hsl())
+}
+
+t()
+
 function DragExample() {
 	const [springs, springApi] = useSprings(1, () => ({
 		x: 0,
@@ -66,7 +78,21 @@ export function Test() {
 			<div tw="max-w-lg">
 				<TodoList />
 			</div>
+			<WebColor />
 		</article>
+	)
+}
+
+function WebColor() {
+	return (
+		<div>
+			{/* <div tw="h-24 bg-gradient-to-r from-[color(srgb 0 0 0)] via-[color(srgb 1 1 1)] to-[color(srgb 0 0 0)]"></div>
+			<div tw="h-24 bg-gradient-to-r from-[color(display-p3 0 0 0)] via-[color(display-p3 1 1 1)] to-[color(display-p3 0 0 0)]"></div>
+			<div tw="h-24 bg-gradient-to-r from-[color(rec2020 0 0 0)] via-[color(rec2020 1 1 1)] to-[color(rec2020 0 0 0)]"></div> */}
+			<div tw="h-24 bg-gradient-to-r from-[color(srgb 1 1 1)] via-[color(srgb 0 0 0)] to-[color(srgb 1 1 1)]"></div>
+			<div tw="h-24 bg-gradient-to-r from-[color(display-p3 1 1 1)] via-[color(display-p3 0 0 0)] to-[color(display-p3 1 1 1)]"></div>
+			<div tw="h-24 bg-gradient-to-r from-[color(rec2020 1 1 1)] via-[color(rec2020 0 0 0)] to-[color(rec2020 1 1 1)]"></div>
+		</div>
 	)
 }
 

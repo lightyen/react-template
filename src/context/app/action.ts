@@ -5,6 +5,11 @@ import { genToastId } from "./toast"
 
 export const ismobile = createAction("ismobile", (payload: boolean) => ({ payload }))
 
+export const openEyeDropper = createAction("openEyeDropper", (id: string) => ({ payload: { id } }))
+export const eyeDropperResult = createAction("eyeDropperResult", (id: string, result: ColorSelectionResult) => ({
+	payload: { id, result },
+}))
+
 export type ToastVariant = "destructive" | "primary"
 
 export interface ToasterToast {
@@ -50,6 +55,7 @@ export const cancelDismissToast = createAction("cancel_dismiss_toast", (id: stri
 export const removeAllToast = createAction("remove_all_toast")
 
 export default {
+	openEyeDropper,
 	toast,
 	updateToast,
 	dismissToast,

@@ -47,6 +47,11 @@ const navs: NavItemType[] = [
 		pathname: "login",
 		label: "Login",
 	},
+	{
+		kind: NavItemKind.Link,
+		pathname: "color-picker",
+		label: "Color Picker",
+	},
 ]
 
 function NavItemLink({ label, pathname }: NavItemLinkType) {

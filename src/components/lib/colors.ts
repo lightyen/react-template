@@ -1,3 +1,81 @@
+export const eyeDropper: EyeDropper | undefined = window.EyeDropper ? new window.EyeDropper() : undefined
+
+// https://developer.chrome.com/docs/css-ui/high-definition-css-color-guide
+
+// https://developer.mozilla.org/en-US/docs/Web/CSS/color_value
+
+// https://www.w3.org/TR/css-color-4/#color-conversion-code
+
+type PredefinedRGB = "srgb" | "srgb-linear" | "display-p3" | "a98-rgb" | "prophoto-rgb" | "rec2020"
+
+type XYZSpace = "xyz" | "xyz-d50" | "xyz-d65"
+
+type ColorSpace = PredefinedRGB | XYZSpace
+
+export class Color {
+	constructor(
+		/** range [0-1] */
+		readonly r: number,
+		/** range [0-1] */
+		readonly g: number,
+		/** range [0-1] */
+		readonly b: number,
+		/** range [0-1] */
+		readonly a = 1,
+	) {
+		this.r = Math.min(1, Math.max(r, 0))
+		this.g = Math.min(1, Math.max(g, 0))
+		this.b = Math.min(1, Math.max(b, 0))
+		this.a = Math.min(1, Math.max(a, 0))
+	}
+
+	/** https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color */
+	css(space: ColorSpace = "srgb"): string {
+		if (this.a < 1) {
+			return `color(${space} ${this.r} ${this.g} ${this.b} / ${this.a})`
+		}
+		return `color(${space} ${this.r} ${this.g} ${this.b})`
+	}
+
+	rgb(): string {
+		if (this.a < 1) {
+			return `rgb(${this.r * 255} ${this.g * 255} ${this.b * 255} / ${this.a})`
+		}
+		return `rgb(${this.r * 255} ${this.g * 255} ${this.b * 255})`
+	}
+
+	hex(): string {
+		const s =
+			"#" +
+			((round(this.r * 255) << 16) | (round(this.g * 255) << 8) | round(this.b * 255))
+				.toString(16)
+				.padStart(6, "0")
+		if (this.a < 1) {
+			return (
+				s +
+				round(this.a * 255)
+					.toString(16)
+					.padStart(2, "0")
+			)
+		}
+		return s
+	}
+
+	hsl(): string {
+		const c = rgb2hsl(this.r * 255, this.g * 255, this.b * 255)
+		c[1] = Math.min(c[1], 1)
+		c[2] = Math.min(c[2], 1)
+		if (this.a < 1) {
+			return `hsl(${c[0]} ${c[1] * 100}% ${c[2] * 100}% / ${this.a})`
+		}
+		return `hsl(${c[0]} ${c[1] * 100}% ${c[2] * 100}%)`
+	}
+}
+
+export function from(value: string): Color {
+	return new Color(0, 0, 0, 0)
+}
+
 function relativeLuminance(p: number) {
 	if (p <= 0.03928) {
 		return p / 12.92

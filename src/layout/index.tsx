@@ -16,7 +16,7 @@ function Root() {
 			<HeaderMenu />
 			<main tw="md:(grid grid-cols-[256px minmax(0, 1fr)]) lg:gap-10">
 				<LeftNavigationMenu />
-				<section tw="px-4 sm:container pt-7">
+				<section tw="px-4 sm:container py-7">
 					<Outlet />
 				</section>
 			</main>

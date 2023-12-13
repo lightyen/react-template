@@ -6,6 +6,11 @@
     "build": "vite build --mode production",
     "shadcn": "pnpm dlx shadcn-ui@latest add"
   },
+  "pnpm": {
+    "overrides": {
+      "twobj": "file:../projects/twobj/packages/twobj"
+    }
+  },
   "dependencies": {
     "@babel/core": "7.23.5",
     "@emotion/babel-plugin": "11.11.0",

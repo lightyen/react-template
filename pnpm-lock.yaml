@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  twobj: file:../projects/twobj/packages/twobj
+
 dependencies:
   '@babel/core':
     specifier: 7.23.5
@@ -52,7 +55,7 @@ dependencies:
     version: 1.6.2
   babel-plugin-twobj:
     specifier: 2.4.0
-    version: 2.4.0(twobj@2.5.6)
+    version: 2.4.0(twobj@2.5.5)
   clsx:
     specifier: 2.0.0
     version: 2.0.0
@@ -87,8 +90,8 @@ dependencies:
     specifier: 1.2.3
     version: 1.2.3
   twobj:
-    specifier: 2.5.6
-    version: 2.5.6
+    specifier: file:/home/lightyen/projects/twobj/packages/twobj
+    version: file:../projects/twobj/packages/twobj
   zod:
     specifier: 3.22.4
     version: 3.22.4
@@ -1948,12 +1951,12 @@ packages:
       resolve: 1.22.8
     dev: false
 
-  /babel-plugin-twobj@2.4.0(twobj@2.5.6):
+  /babel-plugin-twobj@2.4.0(twobj@2.5.5):
     resolution: {integrity: sha512-M1H5u4tt1n4xBGaJJwpENSTNvAHCakei0AhDTiAu/BiTRdtaholb+RQwk0DRtdYgmB3dCfKIhdr6rvc/Q7EgHQ==}
     peerDependencies:
-      twobj: '>= 2.5.6 < 3'
+      twobj: file:/home/lightyen/projects/twobj/packages/twobj
     dependencies:
-      twobj: 2.5.6
+      twobj: file:../projects/twobj/packages/twobj
     dev: false
 
   /balanced-match@1.0.2:
@@ -3876,10 +3879,6 @@ packages:
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
-  /twobj@2.5.6:
-    resolution: {integrity: sha512-u+hamSUCArfSC0m0BYYEYHBmLlBjqaXypKWN+hE/nFmNGU/lNNTTS/vHC1jFCzvlQbeb0KJID8OHF1WmEe7vBA==}
-    dev: false
-
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -4213,4 +4212,9 @@ packages:
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
+
+  file:../projects/twobj/packages/twobj:
+    resolution: {directory: ../projects/twobj/packages/twobj, type: directory}
+    name: twobj
     dev: false

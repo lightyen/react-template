@@ -2,6 +2,7 @@ import { setScroll } from "@components/lib/scrollbar"
 import { useEffect } from "react"
 import { Outlet, Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
 import { Layout } from "./layout"
+import { ColorPickerPage } from "./pages/ColorPickerPage"
 import { ComponentPage, ComponentRoutes } from "./pages/CompoentPage"
 import { Home } from "./pages/Home"
 import { Login } from "./pages/Login"
@@ -31,6 +32,7 @@ export const router = createBrowserRouter(
 				<Route path="table" Component={Table} />
 				<Route path="test" Component={Test} />
 				{ComponentRoutes}
+				<Route path="color-picker" Component={ColorPickerPage} />
 			</Route>
 		</Route>,
 	),
