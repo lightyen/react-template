@@ -21,7 +21,7 @@ export function createStore() {
 			data,
 			intl,
 		},
-		middleware: [sagaMiddleware],
+		middleware: () => [sagaMiddleware],
 		devTools: import.meta.env.MODE === "development" ? { name: import.meta.env.VITE_APP_NAME } : false,
 	})
 
