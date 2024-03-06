@@ -10,6 +10,8 @@ export type IntlStore = Readonly<IntlStoreType>
 
 const [locale] = getLocale()
 
+window.__locale__ = locale
+
 const init: IntlStore = {
 	locale: locale,
 }

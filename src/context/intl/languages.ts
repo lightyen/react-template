@@ -58,6 +58,7 @@ export function getLocale(): [LocaleType, Record<string, string>] {
 export function storeLocale(locale: string) {
 	if (Object.keys(supports).some(loc => loc === locale)) {
 		localStorage.setItem("locale", locale)
+		window.__locale__ = locale
 		setDayjs(locale)
 		const [primary] = locale.toLocaleLowerCase().split(/-/)
 		switch (primary) {

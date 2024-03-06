@@ -1,3 +1,5 @@
 export declare global {
-	interface Window {}
+	interface Window {
+		__locale__: string
+	}
 }

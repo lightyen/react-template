@@ -40,6 +40,24 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { Outlet, Route, useNavigate } from "react-router-dom"
 import * as z from "zod"
 
+import { type DurationInput } from "@formatjs/intl-durationformat/src/types"
+import { formatDuration } from "../duration"
+
+export function durationInput(unix: number): DurationInput {
+	unix = Math.floor(unix)
+	const r: DurationInput = { years: 0, days: 0, hours: 0, minutes: 0, seconds: 0 }
+	r.years = Math.floor(unix / 31536000)
+	unix %= 31536000
+	r.days = Math.floor(unix / 86400)
+	unix %= 86400
+	r.hours = Math.floor(unix / 3600)
+	unix %= 3600
+	r.minutes = Math.floor(unix / 60)
+	unix %= 60
+	r.seconds = unix
+	return r
+}
+
 export const ComponentRoutes = (
 	<Route path="components" Component={ComponentPage}>
 		<Route index Component={Preview} />
@@ -49,6 +67,9 @@ export const ComponentRoutes = (
 )
 
 export function ComponentPage() {
+	console.log(formatDuration(1705890343))
+	console.log(dayjs().format("LL HH:mm:ss"))
+	console.log(dayjs().format("ll HH:mm:ss"))
 	return (
 		<article>
 			<div tw="whitespace-pre">{dayjs().format("LLLL")}</div>
