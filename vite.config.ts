@@ -22,15 +22,46 @@ function gitcommit(): PluginOption {
 			if (err != null) {
 				return
 			}
+
+			let tracked = false
 			try {
-				const result = await promisify(exec)("git rev-parse --verify HEAD")
+				await promisify(exec)("git diff-index --quiet HEAD")
+				tracked = true
+			} catch {}
+
+			let matchLatestTag = false
+			if (tracked) {
+				try {
+					const latestCommit = (await promisify(exec)("git rev-parse HEAD")).stdout.trim()
+					const latestTag = (
+						await promisify(exec)("git rev-list --max-count=1 $(git describe --abbrev=0)")
+					).stdout.trim()
+					matchLatestTag = latestCommit === latestTag
+				} catch {}
+			}
+
+			try {
+				let version = "unknown"
+
+				if (!tracked) {
+					version = "untracked." + (await promisify(exec)("git rev-parse --verify HEAD")).stdout.trim()
+				} else if (matchLatestTag) {
+					version = (await promisify(exec)("git describe --abbrev")).stdout.trim()
+				} else {
+					const branch = (await promisify(exec)("git rev-parse --abbrev-ref HEAD")).stdout.trim()
+					const hash = (await promisify(exec)("git rev-parse --verify HEAD")).stdout.trim()
+					version = `${branch}.${hash}`
+				}
+
 				this.emitFile({
 					type: "asset",
 					name: "version",
 					fileName: "version",
-					source: result.stdout.trim(),
+					source: version + "\n",
 				})
-			} catch {}
+			} catch (err) {
+				console.error(err)
+			}
 		},
 	}
 }
