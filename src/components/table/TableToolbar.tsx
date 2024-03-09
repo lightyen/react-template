@@ -150,38 +150,40 @@ function FilterButton<T extends {}>({ children, column, value, options }: PropsW
 							autoFocus
 							placeholder={typeof column.label === "string" ? column.label : undefined}
 						/>
-						<CommandGroup>
-							{/* <CommandItem value="-" tw="hidden" /> */}
-							{column.filter.map((opt, i) => {
-								const selected = new Set(options).has(opt)
-								return (
-									<CommandItem
-										key={i}
-										tw="flex gap-2 [& svg]:invisible [&[data-state=selected] svg]:visible"
-										data-state={selected ? "selected" : ""}
-										onSelect={() => column.toggleFilterOption(opt)}
-									>
-										<Checkbox
-											checked={selected}
-											readOnly
-											onClick={() => column.toggleFilterOption(opt)}
-										/>
-										<span tw="pointer-events-none capitalize">{opt.label}</span>
-									</CommandItem>
-								)
-							})}
-						</CommandGroup>
-						{(options.length > 0 || value) && (
-							<>
-								<CommandSeparator />
-								<CommandGroup>
-									<CommandItem tw="gap-2" onSelect={column.clearFilter}>
-										<ResetIcon />
-										Clear
-									</CommandItem>
-								</CommandGroup>
-							</>
-						)}
+						<CommandList>
+							<CommandGroup>
+								{/* <CommandItem value="-" tw="hidden" /> */}
+								{column.filter.map((opt, i) => {
+									const selected = new Set(options).has(opt)
+									return (
+										<CommandItem
+											key={i}
+											tw="flex gap-2 [& svg]:invisible [&[data-state=selected] svg]:visible"
+											data-state={selected ? "selected" : ""}
+											onSelect={() => column.toggleFilterOption(opt)}
+										>
+											<Checkbox
+												checked={selected}
+												readOnly
+												onClick={() => column.toggleFilterOption(opt)}
+											/>
+											<span tw="pointer-events-none capitalize">{opt.label}</span>
+										</CommandItem>
+									)
+								})}
+							</CommandGroup>
+							{(options.length > 0 || value) && (
+								<>
+									<CommandSeparator />
+									<CommandGroup>
+										<CommandItem tw="gap-2" onSelect={column.clearFilter}>
+											<ResetIcon />
+											Clear
+										</CommandItem>
+									</CommandGroup>
+								</>
+							)}
+						</CommandList>
 					</Command>
 				</PopoverContent>
 			</Popover>
@@ -211,8 +213,8 @@ function TableToolbarColumnView<T extends {}>({ columns }: { columns: TableColum
 		<PopoverContent>
 			{({ close }) => (
 				<Command tw="min-w-[140px]">
-					<CommandGroup heading="Toggle columns">
-						<CommandList>
+					<CommandList>
+						<CommandGroup heading="Toggle columns">
 							<CommandItem value="-" tw="hidden" />
 							{columns
 								.filter(v => v.canSelected)
@@ -230,8 +232,8 @@ function TableToolbarColumnView<T extends {}>({ columns }: { columns: TableColum
 										<span tw="pointer-events-none capitalize">{commandLabel(label)}</span>
 									</CommandItem>
 								))}
-						</CommandList>
-					</CommandGroup>
+						</CommandGroup>
+					</CommandList>
 				</Command>
 			)}
 		</PopoverContent>
