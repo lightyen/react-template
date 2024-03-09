@@ -2,7 +2,7 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons"
 import { Command as CommandPrimitive } from "cmdk"
 import { PropsWithChildren, forwardRef, type ComponentPropsWithoutRef, type ElementRef } from "react"
 import { Dialog, DialogContent, type DialogProps } from "./dialog"
-
+// [cmdk-item=""]:not([aria-disabled="true"])
 export const Command = forwardRef<
 	ElementRef<typeof CommandPrimitive>,
 	ComponentPropsWithoutRef<typeof CommandPrimitive>
@@ -90,7 +90,7 @@ export const CommandItem = forwardRef<
 		ref={ref}
 		tw="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none
 	aria-selected:(bg-primary/10 text-primary/80)
-	data-[disabled]:(pointer-events-none opacity-50)"
+	data-[disabled='true']:(pointer-events-none opacity-50)"
 		{...props}
 	/>
 ))

@@ -214,8 +214,9 @@ function TableToolbarColumnView<T extends {}>({ columns }: { columns: TableColum
 					<CommandGroup heading="Toggle columns">
 						<CommandList>
 							<CommandItem value="-" tw="hidden" />
-							{columns.map(({ id, label, selected, canSelected, toggleColumn }) =>
-								canSelected ? (
+							{columns
+								.filter(v => v.canSelected)
+								.map(({ id, label, selected, toggleColumn }) => (
 									<CommandItem
 										key={id}
 										tw="flex gap-2 [& svg]:invisible [&[data-state=selected] svg]:visible"
@@ -228,8 +229,7 @@ function TableToolbarColumnView<T extends {}>({ columns }: { columns: TableColum
 										<CheckIcon />
 										<span tw="pointer-events-none capitalize">{commandLabel(label)}</span>
 									</CommandItem>
-								) : null,
-							)}
+								))}
 						</CommandList>
 					</CommandGroup>
 				</Command>
