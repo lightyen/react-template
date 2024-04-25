@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Outlet, Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
 import { Layout } from "./layout"
 import { ComponentPage, ComponentRoutes } from "./pages/CompoentPage"
+import { ContextTest } from "./pages/ContextTest"
 import { Home } from "./pages/Home"
 import { Login } from "./pages/Login"
 import { NotFound } from "./pages/NotFound"
@@ -30,6 +31,7 @@ export const router = createBrowserRouter(
 				<Route path="components" Component={ComponentPage} />
 				<Route path="table" Component={Table} />
 				<Route path="test" Component={Test} />
+				<Route path="context" Component={ContextTest} />
 				{ComponentRoutes}
 			</Route>
 		</Route>,
