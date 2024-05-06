@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useReducer, useRef, type Reducer } from "react"
+import { useCallback, useDeferredValue, useMemo, useReducer, useRef, type Reducer } from "react"
 import type { CheckboxAction, TableAction } from "./action"
 import { defaultSearchFunction } from "./defaultSearch"
 import type { PaginationItem } from "./feature"
@@ -94,12 +94,17 @@ function useTableColumn<TData extends {}>({
 	return { context }
 }
 
-function useDataFilters<TData extends {}>(source: TData[], context: TableContext<TData>) {
+function useDataFilters<TData extends {}>(data: TData[], context: TableContext<TData>) {
 	const checkList = useRef<boolean[]>([])
+
+	const source = useDeferredValue(data)
+	const globalSearch = useDeferredValue(context.globalSearch)
+	const deferredFilters = useDeferredValue(context.filters)
+
 	const { filteredSource } = useMemo(() => {
 		const oneOf: FilterState<TData>[] = []
 
-		let filters = Object.values(context.filters).filter(f => {
+		let filters = Object.values(deferredFilters).filter(f => {
 			if (f.column.filter == null) {
 				return false
 			}
@@ -120,8 +125,8 @@ function useDataFilters<TData extends {}>(source: TData[], context: TableContext
 		checkList.current = new Array(source.length).fill(true)
 		let filteredSource = source.map<WithIndex<TData>>((src, i) => ({ ...src, _Index: i }))
 
-		if (context.globalSearch && context.globalSearch.value) {
-			const match = defaultSearchFunction(context.globalSearch.value)
+		if (globalSearch && globalSearch.value) {
+			const match = defaultSearchFunction(globalSearch.value)
 			filteredSource = filteredSource.filter((record, rowIndex) => {
 				for (const value of Object.values(record)) {
 					if (match(String(value))) {
@@ -184,7 +189,7 @@ function useDataFilters<TData extends {}>(source: TData[], context: TableContext
 			})
 		}
 		return { filteredSource }
-	}, [source, context.globalSearch, context.filters])
+	}, [source, globalSearch, deferredFilters])
 
 	const [checkbox, dispatch] = useReducer<Reducer<CheckboxContext, CheckboxAction>, TData[]>(
 		checkboxReducer,
