@@ -3,7 +3,7 @@ import { Command, CommandInput, CommandItem, CommandList } from "@components/com
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@components/popover"
 import { animated, easings, useSprings } from "@react-spring/web"
 import { useDrag } from "@use-gesture/react"
-import { HTMLAttributes, useState } from "react"
+import { HTMLAttributes, createContext, useContext, useRef, useState } from "react"
 import { TodoList } from "./Todolist"
 
 function DragExample() {
@@ -66,8 +66,63 @@ export function Test() {
 			<div tw="max-w-lg">
 				<TodoList />
 			</div>
+
+			<Demo />
 		</article>
 	)
+}
+
+interface BearState {
+	bears: number
+	increase: (by: number) => void
+}
+
+import { create } from "zustand"
+import { immer } from "zustand/middleware/immer"
+
+type Store = ReturnType<typeof createStore>
+
+function createStore() {
+	return create<BearState>()(
+		immer(set => ({
+			bears: 0,
+			increase(by) {
+				set(state => {
+					state.bears += by
+				})
+			},
+		})),
+	)
+}
+
+const StoreContext = createContext<Store>(null as unknown as Store)
+
+function StoreProvider({ children }) {
+	const storeRef = useRef<Store>()
+	if (!storeRef.current) {
+		storeRef.current = createStore()
+	}
+	return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>
+}
+
+function Demo() {
+	return (
+		<>
+			<StoreProvider>
+				<DemoBox></DemoBox>
+			</StoreProvider>
+			<StoreProvider>
+				<DemoBox></DemoBox>
+			</StoreProvider>
+		</>
+	)
+}
+
+function DemoBox() {
+	const useStore = useContext(StoreContext)
+	const bears = useStore(state => state.bears)
+	const increase = useStore(state => state.increase)
+	return <div onClick={() => increase(1)}>{bears}</div>
 }
 
 function SelectList() {

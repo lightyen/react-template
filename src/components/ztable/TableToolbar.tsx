@@ -1,4 +1,4 @@
-import { CheckIcon, Cross2Icon, MixerHorizontalIcon, PlusCircledIcon, ResetIcon } from "@radix-ui/react-icons"
+import { CheckIcon, Cross2Icon, MixerHorizontalIcon, ResetIcon } from "@radix-ui/react-icons"
 import { type PropsWithChildren, type SVGProps } from "react"
 import { Badge } from "../badage"
 import { Button } from "../button"
@@ -7,7 +7,7 @@ import { Command, CommandGroup, CommandInput, CommandItem, CommandList, CommandS
 import { Input } from "../input"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover"
 import type { FilterState, Label } from "./context/model"
-import { useAction, useSelect } from "./context/store"
+import { useTableStore } from "./context/store"
 
 function CommandLabel({ Label }: { Label: Label }) {
 	if (typeof Label === "string") {
@@ -31,9 +31,10 @@ function MdiFilterPlusOutlineIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 function TableToolbarAddFilters() {
+	const useSelect = useTableStore()
 	const columns = useSelect(state => state.columns)
 	const filters = useSelect(state => state.filters)
-	const { toggleFilter } = useAction()
+	const toggleFilter = useSelect(state => state.toggleFilter)
 	return (
 		<PopoverClose>
 			<CommandList>
@@ -59,7 +60,11 @@ function TableToolbarAddFilters() {
 }
 
 function FilterButton<T extends {}>({ children, columnIndex, value, options }: PropsWithChildren<FilterState<T>>) {
-	const { setFilter, clearFilter, toggleFilter, toggleFilterOption } = useAction()
+	const useSelect = useTableStore()
+	const setFilter = useSelect(state => state.setFilter)
+	const clearFilter = useSelect(state => state.clearFilter)
+	const toggleFilter = useSelect(state => state.toggleFilter)
+	const toggleFilterOption = useSelect(state => state.toggleFilterOption)
 
 	const column = useSelect(state => state.columns[columnIndex])
 
@@ -75,7 +80,7 @@ function FilterButton<T extends {}>({ children, columnIndex, value, options }: P
 						<Button
 							variant="outline"
 							size="sm"
-							tw="border-dashed z-10 h-8 rounded-r-none flex gap-2 items-center hover:(border-solid bg-background text-foreground)"
+							tw="border-dashed z-10 h-8 rounded-r-none flex gap-1 items-center hover:(border-solid bg-background text-foreground)"
 						>
 							{children}
 							{value && (
@@ -202,6 +207,7 @@ function FilterButton<T extends {}>({ children, columnIndex, value, options }: P
 }
 
 function TableToolbarFilters() {
+	const useSelect = useTableStore()
 	const filters = useSelect(state => state.filters)
 	const columns = useSelect(state => state.columns)
 	return Object.entries(filters).map(([id, filterState]) => {
@@ -211,7 +217,6 @@ function TableToolbarFilters() {
 		}
 		return (
 			<FilterButton key={id} {...filterState}>
-				<PlusCircledIcon />
 				<CommandLabel Label={column.label} />
 			</FilterButton>
 		)
@@ -219,8 +224,9 @@ function TableToolbarFilters() {
 }
 
 function TableToolbarColumnView() {
+	const useSelect = useTableStore()
 	const columns = useSelect(state => state.columns)
-	const { toggleColumn } = useAction()
+	const toggleColumn = useSelect(state => state.toggleColumn)
 	return (
 		<PopoverContent>
 			{({ close }) => (
@@ -228,14 +234,16 @@ function TableToolbarColumnView() {
 					<CommandList>
 						<CommandGroup heading="Toggle columns">
 							<CommandItem value="-" tw="hidden" />
-							{columns
-								.filter(v => v.canSelected)
-								.map(({ id, label, selected }) => (
+							{columns.map(({ label, selected, canSelected }, columnIndex) => {
+								if (!canSelected) {
+									return null
+								}
+								return (
 									<CommandItem
-										key={id}
+										key={columnIndex}
 										tw="flex gap-2 [& svg]:invisible [&[data-state=selected] svg]:visible"
 										onSelect={() => {
-											toggleColumn(id)
+											toggleColumn(columnIndex)
 											close()
 										}}
 										data-state={selected ? "selected" : ""}
@@ -245,7 +253,8 @@ function TableToolbarColumnView() {
 											<CommandLabel Label={label} />
 										</span>
 									</CommandItem>
-								))}
+								)
+							})}
 						</CommandGroup>
 					</CommandList>
 				</Command>
@@ -255,7 +264,8 @@ function TableToolbarColumnView() {
 }
 
 export function TableToolbar() {
-	const { setGlobalSearch } = useAction()
+	const useSelect = useTableStore()
+	const setGlobalSearch = useSelect(state => state.setGlobalSearch)
 	const value = useSelect(state => state.global.value)
 	return (
 		<div aria-label="table-toolbar" tw="z-10 flex flex-wrap gap-2">

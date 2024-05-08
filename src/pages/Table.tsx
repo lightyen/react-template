@@ -1,9 +1,17 @@
 import { Checkbox } from "@components/checkbox"
-import { TablePagination, TableToolbar, TableView, useTableData } from "@components/table"
-import { data } from "./data"
+import { Provider, TablePagination, TableToolbar, TableView, useTable } from "@components/ztable"
+import { useEffect, useState } from "react"
+import { MockRecord, data } from "./data"
 
-export function Table() {
-	const { toolbarContext, viewContext, paginationContext } = useTableData(data, {
+export function TablePage() {
+	// API like
+	const [source, setSource] = useState<MockRecord[]>([])
+	useEffect(() => {
+		setSource(data)
+	}, [source])
+
+	const store = useTable({
+		source,
 		columns: [
 			{
 				id: "checkbox",
@@ -61,11 +69,20 @@ export function Table() {
 			},
 		],
 	})
+
+	const reset = store(state => state.reset)
+
+	useEffect(() => {
+		reset(source)
+	}, [reset, source])
+
 	return (
 		<div tw="grid gap-4">
-			<TableToolbar {...toolbarContext} />
-			<TableView {...viewContext} />
-			<TablePagination {...paginationContext} />
+			<Provider store={store}>
+				<TableToolbar />
+				<TableView />
+				<TablePagination />
+			</Provider>
 		</div>
 	)
 }

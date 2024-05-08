@@ -6,7 +6,7 @@ import { ComponentPage, ComponentRoutes } from "./pages/CompoentPage"
 import { Home } from "./pages/Home"
 import { Login } from "./pages/Login"
 import { NotFound } from "./pages/NotFound"
-import { Table } from "./pages/Table"
+import { TablePage } from "./pages/Table"
 import { Test } from "./pages/Test"
 
 const root = "/"
@@ -28,7 +28,7 @@ export const router = createBrowserRouter(
 				<Route index Component={Home} />
 				<Route path="*" Component={NotFound} />
 				<Route path="components" Component={ComponentPage} />
-				<Route path="table" Component={Table} />
+				<Route path="table" Component={TablePage} />
 				<Route path="test" Component={Test} />
 				{ComponentRoutes}
 			</Route>

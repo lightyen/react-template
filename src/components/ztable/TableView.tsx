@@ -4,7 +4,7 @@ import { Button } from "../button"
 import { Command, CommandItem, CommandList } from "../command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover"
 import type { Label, SortType, TableColumnItem, WithIndex } from "./context/model"
-import { useAction, useSelect } from "./context/store"
+import { useTableStore } from "./context/store"
 
 function SortButton({
 	sortType,
@@ -67,9 +67,10 @@ const TableWrapper = memo(
 )
 
 function ThLabel({ Label }: { Label: Label }) {
+	const useSelect = useTableStore()
 	const checked = useSelect(state => state.global.checked)
 	const intermediate = useSelect(state => state.global.intermediate)
-	const { globalCheckbox } = useAction()
+	const globalCheckbox = useSelect(state => state.globalCheckbox)
 	if (typeof Label === "string") {
 		return Label
 	}
@@ -80,14 +81,18 @@ function ThLabel({ Label }: { Label: Label }) {
 }
 
 function Row({ row, columns }: { row: WithIndex<{}>; columns: TableColumnItem[] }) {
+	const useSelect = useTableStore()
 	const checked = useSelect(state => state.items[row.rowIndex].checked)
-	const { checkbox } = useAction()
+	const checkbox = useSelect(state => state.checkbox)
 	return (
 		<tr
 			tw="border-b transition-colors duration-100 hover:bg-muted/50 data-[state=selected]:bg-muted"
 			data-state={checked ? "selected" : undefined}
 		>
-			{columns.map(({ Component, id }, colIndex) => {
+			{columns.map(({ Component, id, selected }, colIndex) => {
+				if (!selected) {
+					return null
+				}
 				return (
 					<td tw="p-2 first-of-type:pl-4 align-middle [&:has([role=checkbox])]:pr-2" key={colIndex}>
 						{Component ? (
@@ -107,34 +112,40 @@ function Row({ row, columns }: { row: WithIndex<{}>; columns: TableColumnItem[] 
 }
 
 export function TableView({ children, ...props }: PropsWithChildren<TableHTMLAttributes<HTMLTableElement>>) {
+	const useSelect = useTableStore()
 	const limit = useSelect(state => state.pagination.limit)
-	const columns = useSelect(state => state.columns).filter(c => c.selected)
+	const columns = useSelect(state => state.columns)
 	const result = useSelect(state => state.view)
 	const hasHeader = columns.some(c => c.label)
-	const { sortColumn } = useAction()
+	const sortColumn = useSelect(state => state.sortColumn)
 	return (
 		<TableWrapper {...props}>
 			{hasHeader && (
 				<thead tw="[& tr]:border-b">
 					<tr tw="border-b transition-colors duration-100 hover:bg-muted/50 data-[state=selected]:bg-muted">
-						{columns.map(({ id, label, compare, sortType, className, style: _style }, i) => {
-							return (
-								<th
-									tw="h-10 px-2 first-of-type:pl-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-2"
-									css={_style}
-									className={className}
-									key={i}
-								>
-									{compare ? (
-										<SortButton sortType={sortType} onSort={t => sortColumn(id, t)}>
+						{columns.map(
+							({ selected, label, compare, sortType, className, style: _style }, columnIndex) => {
+								if (!selected) {
+									return null
+								}
+								return (
+									<th
+										key={columnIndex}
+										tw="h-10 px-2 first-of-type:pl-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-2"
+										css={_style}
+										className={className}
+									>
+										{compare ? (
+											<SortButton sortType={sortType} onSort={t => sortColumn(columnIndex, t)}>
+												<ThLabel Label={label} />
+											</SortButton>
+										) : (
 											<ThLabel Label={label} />
-										</SortButton>
-									) : (
-										<ThLabel Label={label} />
-									)}
-								</th>
-							)
-						})}
+										)}
+									</th>
+								)
+							},
+						)}
 					</tr>
 				</thead>
 			)}
