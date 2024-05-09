@@ -167,8 +167,11 @@ export function TableView({ children, ...props }: PropsWithChildren<TableHTMLAtt
 						</tr>
 					)
 				})}
-				{limit &&
-					Array.from(Array((limit - (result.length % limit)) % limit)).map((_, i) => (
+				{(() => {
+					if (limit === 0) {
+						return null
+					}
+					return Array.from(Array(limit - result.length)).map((_, i) => (
 						<tr
 							tw="border-b transition-colors duration-100 hover:bg-muted/50 data-[state=selected]:bg-muted"
 							key={i}
@@ -180,7 +183,8 @@ export function TableView({ children, ...props }: PropsWithChildren<TableHTMLAtt
 								&nbsp;
 							</td>
 						</tr>
-					))}
+					))
+				})()}
 			</tbody>
 		</TableWrapper>
 	)

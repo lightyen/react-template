@@ -5,10 +5,16 @@ import { MockRecord, data } from "./data"
 
 export function TablePage() {
 	// API like
-	const [source, setSource] = useState<MockRecord[]>([])
-	useEffect(() => {
-		setSource(data)
-	}, [source])
+	const [source, setSource] = useState<MockRecord[]>(data)
+	// useEffect(() => {
+	// 	setSource(data)
+	// }, [source])
+
+	// useEffect(() => {
+	// 	setTimeout(() => {
+	// 		setSource([])
+	// 	}, 5000)
+	// }, [])
 
 	const store = useTable({
 		source,
