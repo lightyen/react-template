@@ -1,4 +1,4 @@
-import { useRef, type PropsWithChildren } from "react"
+import { useContext, useRef, type PropsWithChildren } from "react"
 import { TablePagination } from "./TablePagination"
 import { TableToolbar } from "./TableToolbar"
 import { TableView } from "./TableView"
@@ -22,6 +22,10 @@ export function Provider<T extends {}>({
 	store,
 }: PropsWithChildren<{ store: ReturnType<typeof useTable<T>> }>) {
 	return <TableContext.Provider value={store}>{children}</TableContext.Provider>
+}
+
+export function useTableStore() {
+	return useContext(TableContext)
 }
 
 export function ZTable<T extends {}>({ children, ...options }: PropsWithChildren<TableOptions<T>>) {

@@ -1,5 +1,6 @@
 import { CheckIcon, Cross2Icon, MixerHorizontalIcon, ResetIcon } from "@radix-ui/react-icons"
 import { type PropsWithChildren, type SVGProps } from "react"
+import { useTableStore } from "."
 import { Badge } from "../badage"
 import { Button } from "../button"
 import { Checkbox } from "../checkbox"
@@ -7,7 +8,6 @@ import { Command, CommandGroup, CommandInput, CommandItem, CommandList, CommandS
 import { Input } from "../input"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover"
 import type { FilterState, Label } from "./context/model"
-import { useTableStore } from "./context/store"
 
 function CommandLabel({ Label }: { Label: Label }) {
 	if (typeof Label === "string") {
@@ -226,7 +226,7 @@ function TableToolbarFilters() {
 function TableToolbarColumnView() {
 	const useSelect = useTableStore()
 	const columns = useSelect(state => state.columns)
-	const toggleColumn = useSelect(state => state.toggleColumn)
+	const selectColumn = useSelect(state => state.selectColumn)
 	return (
 		<PopoverContent>
 			{({ close }) => (
@@ -243,7 +243,7 @@ function TableToolbarColumnView() {
 										key={columnIndex}
 										tw="flex gap-2 [& svg]:invisible [&[data-state=selected] svg]:visible"
 										onSelect={() => {
-											toggleColumn(columnIndex)
+											selectColumn(columnIndex, selected => !selected)
 											close()
 										}}
 										data-state={selected ? "selected" : ""}

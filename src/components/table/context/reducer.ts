@@ -35,17 +35,17 @@ function filter<T extends {}>(
 
 	const checkList = new Array(source.length).fill(true)
 
-	let filtered = source.map<WithIndex<T>>((src, i) => ({ ...src, rowIndex: i }))
+	let filtered = source.map<WithIndex<T>>((src, i) => ({ ...src, dataIndex: i }))
 
 	if (globalSearch) {
 		const match = defaultSearchFunction(globalSearch)
-		filtered = filtered.filter((record, rowIndex) => {
+		filtered = filtered.filter(record => {
 			for (const value of Object.values(record)) {
 				if (match(String(value))) {
 					return true
 				}
 			}
-			checkList[rowIndex] = false
+			checkList[record.dataIndex] = false
 			return false
 		})
 	}
@@ -57,20 +57,20 @@ function filter<T extends {}>(
 			const ans = !not
 			const defaultSearch = defaultSearchFunction(value)
 			if (typeof filter === "function") {
-				filtered = filtered.filter((record, rowIndex) => {
+				filtered = filtered.filter(record => {
 					if (filter(record, value, defaultSearch) === ans) {
 						return true
 					}
-					checkList[rowIndex] = false
+					checkList[record.dataIndex] = false
 					return false
 				})
 			} else if (filter instanceof Array) {
 				for (const opt of options) {
-					filtered = filtered.filter((record, rowIndex) => {
+					filtered = filtered.filter(record => {
 						if (opt.filter(record) === ans) {
 							return true
 						}
-						checkList[rowIndex] = false
+						checkList[record.dataIndex] = false
 						return false
 					})
 				}
@@ -79,7 +79,7 @@ function filter<T extends {}>(
 	}
 
 	if (oneOf.length > 0) {
-		filtered = filtered.filter((record, rowIndex) => {
+		filtered = filtered.filter(record => {
 			for (const { not, columnIndex, value, options } of oneOf) {
 				const filter = columns[columnIndex].filter
 				const ans = !not
@@ -96,7 +96,7 @@ function filter<T extends {}>(
 					}
 				}
 			}
-			checkList[rowIndex] = false
+			checkList[record.dataIndex] = false
 			return false
 		})
 	}
@@ -300,23 +300,22 @@ export function create<T extends {}>({
 	source,
 	columns: _columns = [],
 	limitOptions = defaultLimitOptions,
-	defaultLimit = 10,
+	limit = 10,
 }: TableOptions<T>): TableStore<T> {
 	const columns = _columns.map<TableColumnItem<T>>(column => ({
 		...column,
-		selected: column.defaultSelected ?? true,
+		selected: column.selected ?? true,
 		canSelected: column.canSelected ?? true,
-		sortType: column.defaultSortType ?? "",
+		sortType: column.sortType ?? "",
 		oneOf: column.filter && column.filter instanceof Array ? true : false,
 	}))
 
 	const { filtered, checkList } = filter(source, columns, {}, "")
 
 	const sorted = sort(filtered, columns)
-	const view = sorted.slice(0, defaultLimit)
+	const view = sorted.slice(0, limit)
 
 	const pageIndex = 0
-	const limit = defaultLimit
 
 	const pages = Math.ceil(filtered.length / limit)
 	const notPrev = source.length === 0 || pageIndex === 0

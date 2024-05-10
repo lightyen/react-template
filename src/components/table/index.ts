@@ -1,5 +1,5 @@
 export { TablePagination } from "./TablePagination"
 export { TableToolbar } from "./TableToolbar"
 export { TableView } from "./TableView"
-export { TableContext } from "./context/store"
+export { TableContext, useAction, useSelect } from "./context/store"
 export { useTable } from "./hook"

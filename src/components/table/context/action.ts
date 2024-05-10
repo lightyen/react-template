@@ -12,9 +12,12 @@ const clearFilter = createAction("clearFilter", (columnIndex: number) => ({ payl
 const setFilter = createAction("setFilter", (columnIndex: number, value: string) => ({
 	payload: { columnIndex, value },
 }))
-const toggleFilterOption = createAction("toggleFilterOption", (columnIndex: number, option: FilterSelectOptions) => ({
-	payload: { columnIndex, option },
-}))
+const toggleFilterOption = createAction(
+	"toggleFilterOption",
+	(columnIndex: number, option: FilterSelectOptions<unknown>) => ({
+		payload: { columnIndex, option },
+	}),
+)
 const sortColumn = createAction("sortColumn", (id: string, type: SortType) => ({ payload: { id, type } }))
 const setPageIndex = createAction("pageIndex", (payload: number | ((prev: number) => number)) => ({ payload }))
 const prev = createAction("prev", () => ({ payload: undefined }))

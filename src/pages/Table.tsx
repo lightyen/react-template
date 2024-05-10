@@ -18,6 +18,7 @@ export function TablePage() {
 
 	const store = useTable({
 		source,
+		// persistedId: "table01",
 		columns: [
 			{
 				id: "checkbox",
@@ -48,7 +49,7 @@ export function TablePage() {
 					{ label: "France", filter: v => v.country === "France" },
 				],
 			},
-			{ id: "region", label: "Region", defaultSelected: false },
+			{ id: "region", label: "Region", selected: false },
 			{
 				id: "currency",
 				label: "Currency",
@@ -64,13 +65,13 @@ export function TablePage() {
 			{
 				id: "alphanumeric",
 				label: "Alphanumeric",
-				defaultSelected: false,
+				selected: false,
 				compare: (a, b) => a.alphanumeric.localeCompare(b.alphanumeric),
 			},
 			{
 				id: "text",
 				label: "Text",
-				defaultSelected: false,
+				selected: false,
 				filter: (record, value, search) => search(record.text, value),
 			},
 		],

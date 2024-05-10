@@ -79,8 +79,8 @@ function ThLabel({ Label }: { Label: Label }) {
 	return <Label checked={checked} intermediate={intermediate} onChecked={checked => globalCheckbox(checked)} />
 }
 
-function Row({ row, columns }: { row: WithIndex<{}>; columns: TableColumnItem[] }) {
-	const checked = useSelect(state => state.items[row.rowIndex].checked)
+function Row<T>({ data, columns }: { data: WithIndex<T>; columns: TableColumnItem<T>[] }) {
+	const checked = useSelect(state => state.items[data.dataIndex].checked)
 	const { checkbox } = useAction()
 	return (
 		<tr
@@ -92,12 +92,12 @@ function Row({ row, columns }: { row: WithIndex<{}>; columns: TableColumnItem[] 
 					<td tw="p-2 first-of-type:pl-4 align-middle [&:has([role=checkbox])]:pr-2" key={colIndex}>
 						{Component ? (
 							<Component
-								row={row}
+								record={data}
 								checked={checked}
-								onChecked={checked => checkbox(checked, row.rowIndex)}
+								onChecked={checked => checkbox(checked, data.dataIndex)}
 							/>
 						) : (
-							id && row[id]
+							id && data[id]
 						)}
 					</td>
 				)
@@ -109,7 +109,6 @@ function Row({ row, columns }: { row: WithIndex<{}>; columns: TableColumnItem[] 
 export function TableView({ children, ...props }: PropsWithChildren<TableHTMLAttributes<HTMLTableElement>>) {
 	const limit = useSelect(state => state.pagination.limit)
 	const columns = useSelect(state => state.columns).filter(c => c.selected)
-	const total = useSelect(state => state.source.length)
 	const result = useSelect(state => state.view)
 	const hasHeader = columns.some(c => c.label)
 	const { sortColumn } = useAction()
@@ -140,9 +139,9 @@ export function TableView({ children, ...props }: PropsWithChildren<TableHTMLAtt
 				</thead>
 			)}
 			<tbody tw="[& tr:last-of-type]:border-0">
-				{result.map((row, i) => {
-					return row ? (
-						<Row key={i} row={row} columns={columns} />
+				{result.map((data, i) => {
+					return data ? (
+						<Row key={i} data={data} columns={columns} />
 					) : (
 						<tr
 							key={i}

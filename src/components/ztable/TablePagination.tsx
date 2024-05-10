@@ -7,10 +7,10 @@ import {
 	DoubleArrowRightIcon,
 } from "@radix-ui/react-icons"
 import { useMemo } from "react"
+import { useTableStore } from "."
 import { Button } from "../button"
 import { Command, CommandItem, CommandList } from "../command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover"
-import { useTableStore } from "./context/store"
 
 interface PaginationItem {
 	type: "first" | "last" | "prev" | "next"

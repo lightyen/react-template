@@ -13,18 +13,19 @@ import { create, reducer } from "./reducer"
 
 interface UseTableColumnItem<T extends {} = {}> extends TableBaseColumn<T> {
 	/** @default true */
-	defaultSelected?: boolean
+	selected?: boolean
 	/** @default true */
 	canSelected?: boolean
 	/** @default "" */
-	defaultSortType?: SortType
-	defaultLimit?: number
+	sortType?: SortType
 }
 
 export interface TableDataOptions<T extends {}> {
 	columns: UseTableColumnItem<T>[]
-	/** @default 10 */
-	defaultLimit?: number
+	/** default limit value
+	 *  @default 10
+	 */
+	limit?: number
 
 	/** @default '[10, 20, 30, 40, 50]' */
 	limitOptions?: number[]

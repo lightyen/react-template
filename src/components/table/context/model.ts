@@ -1,15 +1,15 @@
-import { type ComponentType } from "@react-spring/web"
-import { type ReactElement } from "react"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { ComponentType, ReactElement } from "react"
 
 export type SortType = "" | "asc" | "desc"
 
-export type WithIndex<T> = T & { rowIndex: number }
+export type WithIndex<T> = T & { dataIndex: number }
 
-export interface FilterInput<TData extends {} = {}> {
-	(record: TData, value: string, defaultSearch: (record: string, value: string) => boolean): boolean
+export interface FilterInput<T> {
+	(record: T, value: string, defaultSearch: (record: string, value: string) => boolean): boolean
 }
 
-export interface FilterSelectOptions<T extends {} = {}> {
+export interface FilterSelectOptions<T> {
 	label: string
 	filter(record: T): boolean
 }
@@ -27,24 +27,24 @@ interface LabelProps {
 
 export type Label = string | ReactElement | ComponentType<GlobalLabelProps>
 
-export interface TableBaseColumn<T extends {} = {}> {
+export interface TableBaseColumn<T> {
 	id: string
 	label: Label
-	Component?: ComponentType<{ row: T } & LabelProps>
+	Component?: ComponentType<{ record: T } & LabelProps>
 	className?: string
 	style?: unknown
 	compare?(a: T, b: T): number
 	filter?: FilterInput<T> | FilterSelectOptions<T>[]
 }
 
-export interface TableColumnItem<T extends {} = {}> extends TableBaseColumn<T> {
+export interface TableColumnItem<T = unknown> extends TableBaseColumn<T> {
 	oneOf: boolean
 	selected: boolean
 	canSelected: boolean
 	sortType: SortType
 }
 
-export interface FilterState<T extends {} = {}> {
+export interface FilterState<T> {
 	columnIndex: number
 	oneOf: boolean
 	not: boolean
@@ -74,7 +74,7 @@ interface Pagination {
 	notNext: boolean
 }
 
-export interface TableStore<T extends {}> {
+export interface TableStore<T = any> {
 	columns: TableColumnItem<T>[]
 	filters: Record<string, FilterState<T>>
 	items: CheckboxItem[]

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { PropsWithChildren, createContext, useContext } from "react"
+import { createContext } from "react"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
 import { defaultSearchFunction } from "./defaultSearch"
@@ -7,18 +7,13 @@ import type { FilterState, TableColumnItem, TableOptions, TableStore, WithIndex 
 
 export const defaultLimitOptions = [10, 20, 30, 40, 50]
 
-export const TableContext = createContext(null as unknown as ReturnType<typeof createStore<any>>)
+type C = ReturnType<typeof createStore<any>>
 
-export function Provider<T extends {}>({ children, ...options }: PropsWithChildren<TableOptions<T>>) {
-	return <TableContext.Provider value={createStore(options)}>{children}</TableContext.Provider>
-}
-
-export function useTableStore() {
-	return useContext(TableContext)
-}
+export const TableContext = createContext(null as unknown as C)
 
 export function createStore<T extends {}>({
 	source,
+	persistedId,
 	columns: _columns = [],
 	limitOptions = defaultLimitOptions,
 	limit = 10,
@@ -27,9 +22,9 @@ export function createStore<T extends {}>({
 		immer(set => {
 			const columns = _columns.map<TableColumnItem<T>>(column => ({
 				...column,
-				selected: column.defaultSelected ?? true,
+				selected: column.selected ?? true,
 				canSelected: column.canSelected ?? true,
-				sortType: column.defaultSortType ?? "",
+				sortType: column.sortType ?? "",
 				oneOf: column.filter && column.filter instanceof Array ? true : false,
 			}))
 
@@ -44,18 +39,25 @@ export function createStore<T extends {}>({
 			const notPrev = source.length === 0 || pageIndex === 0
 			const notNext = source.length === 0 || pageIndex === pages - 1
 
-			return {
+			const state = {
 				columns,
 				filters: {},
-				items: source.map(() => ({ checked: false })),
 				pagination: {
 					pageIndex,
 					limit,
-					limitOptions: limitOptions,
+					limitOptions,
 					pages,
 					notPrev,
 					notNext,
 				},
+			}
+
+			unbox(state as TableStore, persistedId)
+
+			return {
+				...state,
+				persistedId,
+				items: source.map(() => ({ checked: false })),
 				global: {
 					checked: false,
 					intermediate: false,
@@ -109,10 +111,15 @@ export function createStore<T extends {}>({
 						}
 					})
 				},
-				toggleColumn(columnIndex) {
+				selectColumn(columnIndex, selected) {
 					set(state => {
+						if (columnIndex < 0 || columnIndex >= state.columns.length) {
+							persist(state)
+							return
+						}
 						const column = state.columns[columnIndex]
-						column.selected = !column.selected
+						column.selected = typeof selected === "function" ? selected(column.selected) : selected
+						persist(state)
 					})
 				},
 				toggleFilter(columnIndex) {
@@ -175,8 +182,16 @@ export function createStore<T extends {}>({
 				},
 				sortColumn(columnIndex, type) {
 					set(state => {
+						if (columnIndex < 0 || columnIndex >= state.columns.length) {
+							persist(state)
+							return
+						}
+
 						const column = state.columns[columnIndex]
+						type = typeof type === "function" ? type(column.sortType) : type
+
 						if (column.sortType === type) {
+							persist(state)
 							return
 						}
 
@@ -191,6 +206,7 @@ export function createStore<T extends {}>({
 
 						state.pagination.pageIndex = 0
 						updateSort(state)
+						persist(state)
 					})
 				},
 				setPageIndex(payload) {
@@ -250,20 +266,55 @@ export function createStore<T extends {}>({
 						}
 						state.pagination.limit = limit
 						updatePagination(state)
+						persist(state)
 					})
 				},
 			}
 		}),
 	)
 
-	function update(state: TableStore<any>, resetPage = true) {
+	function persist(state: TableStore) {
+		if (state.persistedId) {
+			const data = {
+				columns: state.columns.map(v => ({
+					selected: v.selected,
+					sortType: v.sortType,
+				})),
+				pagination: {
+					limit: state.pagination.limit,
+				},
+			}
+			localStorage.setItem(state.persistedId, JSON.stringify(data))
+		}
+	}
+
+	function unbox(state: TableStore, persistedId?: string) {
+		if (persistedId) {
+			const configStr = localStorage.getItem(persistedId)
+			if (configStr) {
+				const v = JSON.parse(configStr)
+				if (typeof v === "object") {
+					if (v.pagination) {
+						Object.assign(state.pagination, v.pagination)
+					}
+					if (v.column instanceof Array) {
+						for (let i = 0; i < state.columns.length && i < v.length; i++) {
+							Object.assign(state.columns[i], v[i])
+						}
+					}
+				}
+			}
+		}
+	}
+
+	function update(state: TableStore, resetPage = true) {
 		const { filtered, checkList } = filter(state.source, state.columns, state.filters, state.global.value)
 		state.filtered = filtered
 		state.global.checkList = checkList
 		updateSort(state, resetPage)
 	}
 
-	function updateSort(state: TableStore<any>, resetPage = true) {
+	function updateSort(state: TableStore, resetPage = true) {
 		if (resetPage) {
 			state.pagination.pageIndex = 0
 		}
@@ -271,7 +322,7 @@ export function createStore<T extends {}>({
 		updatePagination(state)
 	}
 
-	function updatePagination(state: TableStore<any>) {
+	function updatePagination(state: TableStore) {
 		const offset = state.pagination.pageIndex * state.pagination.limit
 		state.view = state.sorted.slice(offset, offset + state.pagination.limit)
 		state.pagination.pages = Math.ceil(state.filtered.length / state.pagination.limit)
@@ -309,17 +360,17 @@ export function createStore<T extends {}>({
 
 		const checkList: boolean[] = new Array(source.length).fill(true)
 
-		let filtered: WithIndex<T>[] = source.map<WithIndex<T>>((src, i) => ({ ...src, rowIndex: i }))
+		let filtered: WithIndex<T>[] = source.map<WithIndex<T>>((data, i) => ({ ...data, dataIndex: i }))
 
 		if (globalSearch) {
 			const match = defaultSearchFunction(globalSearch)
-			filtered = filtered.filter((record, rowIndex) => {
+			filtered = filtered.filter(record => {
 				for (const value of Object.values(record)) {
 					if (match(String(value))) {
 						return true
 					}
 				}
-				checkList[rowIndex] = false
+				checkList[record.dataIndex] = false
 				return false
 			})
 		}
@@ -331,20 +382,20 @@ export function createStore<T extends {}>({
 				const ans = !not
 				const defaultSearch = defaultSearchFunction(value)
 				if (typeof filter === "function") {
-					filtered = filtered.filter((record, rowIndex) => {
+					filtered = filtered.filter(record => {
 						if (filter(record, value, defaultSearch) === ans) {
 							return true
 						}
-						checkList[rowIndex] = false
+						checkList[record.dataIndex] = false
 						return false
 					})
 				} else if (filter instanceof Array) {
 					for (const opt of options) {
-						filtered = filtered.filter((record, rowIndex) => {
+						filtered = filtered.filter(record => {
 							if (opt.filter(record) === ans) {
 								return true
 							}
-							checkList[rowIndex] = false
+							checkList[record.dataIndex] = false
 							return false
 						})
 					}
@@ -353,7 +404,7 @@ export function createStore<T extends {}>({
 		}
 
 		if (oneOf.length > 0) {
-			filtered = filtered.filter((record, rowIndex) => {
+			filtered = filtered.filter(record => {
 				for (const { not, columnIndex, value, options } of oneOf) {
 					const filter = columns[columnIndex].filter
 					const ans = !not
@@ -370,7 +421,7 @@ export function createStore<T extends {}>({
 						}
 					}
 				}
-				checkList[rowIndex] = false
+				checkList[record.dataIndex] = false
 				return false
 			})
 		}

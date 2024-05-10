@@ -1,10 +1,10 @@
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from "@radix-ui/react-icons"
 import { forwardRef, memo, type ForwardedRef, type PropsWithChildren, type TableHTMLAttributes } from "react"
+import { useTableStore } from "."
 import { Button } from "../button"
 import { Command, CommandItem, CommandList } from "../command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover"
 import type { Label, SortType, TableColumnItem, WithIndex } from "./context/model"
-import { useTableStore } from "./context/store"
 
 function SortButton({
 	sortType,
@@ -80,9 +80,9 @@ function ThLabel({ Label }: { Label: Label }) {
 	return <Label checked={checked} intermediate={intermediate} onChecked={checked => globalCheckbox(checked)} />
 }
 
-function Row({ row, columns }: { row: WithIndex<{}>; columns: TableColumnItem[] }) {
+function Row<T>({ data, columns }: { data: WithIndex<T>; columns: TableColumnItem<T>[] }) {
 	const useSelect = useTableStore()
-	const checked = useSelect(state => state.items[row.rowIndex].checked)
+	const checked = useSelect(state => state.items[data.dataIndex].checked)
 	const checkbox = useSelect(state => state.checkbox)
 	return (
 		<tr
@@ -97,12 +97,12 @@ function Row({ row, columns }: { row: WithIndex<{}>; columns: TableColumnItem[] 
 					<td tw="p-2 first-of-type:pl-4 align-middle [&:has([role=checkbox])]:pr-2" key={colIndex}>
 						{Component ? (
 							<Component
-								row={row}
+								record={data}
 								checked={checked}
-								onChecked={checked => checkbox(checked, row.rowIndex)}
+								onChecked={checked => checkbox(checked, data.dataIndex)}
 							/>
 						) : (
-							id && row[id]
+							id && data[id]
 						)}
 					</td>
 				)
@@ -150,9 +150,9 @@ export function TableView({ children, ...props }: PropsWithChildren<TableHTMLAtt
 				</thead>
 			)}
 			<tbody tw="[& tr:last-of-type]:border-0">
-				{result.map((row, i) => {
-					return row ? (
-						<Row key={i} row={row} columns={columns} />
+				{result.map((data, i) => {
+					return data ? (
+						<Row key={i} data={data} columns={columns} />
 					) : (
 						<tr
 							key={i}
