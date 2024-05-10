@@ -7,10 +7,10 @@ import {
 	DoubleArrowRightIcon,
 } from "@radix-ui/react-icons"
 import { useMemo } from "react"
+import { useTableStore } from "."
 import { Button } from "../button"
 import { Command, CommandItem, CommandList } from "../command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover"
-import { useAction, useSelect } from "./context/store"
 
 interface PaginationItem {
 	type: "first" | "last" | "prev" | "next"
@@ -19,9 +19,10 @@ interface PaginationItem {
 }
 
 function SwitchLimit() {
+	const useSelect = useTableStore()
 	const limit = useSelect(state => state.pagination.limit)
 	const limitOptions = useSelect(state => state.pagination.limitOptions)
-	const { setLimit } = useAction()
+	const setLimit = useSelect(state => state.setLimit)
 	return (
 		<div tw="ml-auto flex items-center gap-x-2">
 			<span tw="hidden lg:inline">Rows per page</span>
@@ -58,9 +59,13 @@ function SwitchLimit() {
 }
 
 export function TablePagination() {
-	const { first, last, prev, next } = useAction()
+	const useSelect = useTableStore()
 	const total = useSelect(state => state.filtered.length)
 	const { pageIndex, limit, notNext, notPrev } = useSelect(state => state.pagination)
+	const first = useSelect(state => state.first)
+	const last = useSelect(state => state.last)
+	const prev = useSelect(state => state.prev)
+	const next = useSelect(state => state.next)
 
 	const items = useMemo<PaginationItem[]>(() => {
 		const items: PaginationItem[] = []

@@ -1,5 +1,5 @@
 import { Checkbox } from "@components/checkbox"
-import { Provider, TablePagination, TableToolbar, TableView, useTable } from "@components/ztable"
+import { Provider, TablePagination, TableToolbar, TableView, useTable } from "@components/table"
 import { useEffect, useState } from "react"
 import { MockRecord, data } from "./data"
 

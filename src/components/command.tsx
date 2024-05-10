@@ -55,7 +55,7 @@ CommandInput.displayName = CommandPrimitive.Input.displayName
 export const CommandList = forwardRef<
 	ElementRef<typeof CommandPrimitive.List>,
 	ComponentPropsWithoutRef<typeof CommandPrimitive.List>
->((props, ref) => <CommandPrimitive.List ref={ref} tw="max-h-[300px] overflow-y-auto overflow-x-hidden" {...props} />)
+>((props, ref) => <CommandPrimitive.List ref={ref} tw="overflow-y-auto overflow-x-hidden" {...props} />)
 CommandList.displayName = CommandPrimitive.List.displayName
 
 export const CommandEmpty = forwardRef<
