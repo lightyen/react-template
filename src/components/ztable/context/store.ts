@@ -297,9 +297,9 @@ export function createStore<T extends {}>({
 					if (v.pagination) {
 						Object.assign(state.pagination, v.pagination)
 					}
-					if (v.column instanceof Array) {
-						for (let i = 0; i < state.columns.length && i < v.length; i++) {
-							Object.assign(state.columns[i], v[i])
+					if (v.columns instanceof Array) {
+						for (let i = 0; i < state.columns.length && i < v.columns.length; i++) {
+							Object.assign(state.columns[i], v.columns[i])
 						}
 					}
 				}
