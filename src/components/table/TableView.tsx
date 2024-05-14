@@ -111,7 +111,15 @@ function Row<T>({ data, columns }: { data: WithIndex<T>; columns: TableColumnIte
 	)
 }
 
-export function TableView({ children, ...props }: PropsWithChildren<TableHTMLAttributes<HTMLTableElement>>) {
+interface Props<T> {
+	keyFn?: (record: T) => React.Key
+}
+
+export function TableView<T extends {} = {}>({
+	children,
+	keyFn,
+	...props
+}: PropsWithChildren<TableHTMLAttributes<HTMLTableElement> & Props<T>>) {
 	const useSelect = useTableStore()
 	const limit = useSelect(state => state.pagination.limit)
 	const columns = useSelect(state => state.columns)
@@ -153,10 +161,10 @@ export function TableView({ children, ...props }: PropsWithChildren<TableHTMLAtt
 			<tbody tw="[& tr:last-of-type]:border-0">
 				{result.map((data, i) => {
 					return data ? (
-						<Row key={i} data={data} columns={columns} />
+						<Row key={keyFn ? keyFn(data) ?? i : i} data={data} columns={columns} />
 					) : (
 						<tr
-							key={i}
+							key={keyFn ? keyFn(data) ?? i : i}
 							tw="border-b transition-colors duration-100 hover:bg-muted/50 data-[state=selected]:bg-muted"
 						>
 							<td
