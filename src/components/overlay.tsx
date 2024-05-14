@@ -29,9 +29,19 @@ export function Overlay({
 
 	const hold = useRef(false)
 
+	const destroyedRef = useRef<null | boolean>(null)
+
 	useEffect(() => {
+		const destroyed = destroyedRef.current
 		if (visible) {
 			setScroll(true)
+		}
+		return () => {
+			if (typeof destroyed === "boolean") {
+				if (getDialogCount() === 0) {
+					setScroll(false)
+				}
+			}
 		}
 	}, [visible])
 
@@ -42,10 +52,14 @@ export function Overlay({
 		leave: { opacity: 0 },
 		config: { duration },
 		onDestroyed(end) {
-			if (end) {
-				if (getDialogCount() === 0) {
-					setScroll(false)
-				}
+			if (!end) {
+				destroyedRef.current = false
+				return
+			}
+
+			destroyedRef.current = true
+			if (getDialogCount() === 0) {
+				setScroll(false)
 			}
 		},
 	}))
@@ -62,6 +76,14 @@ export function Overlay({
 			}
 		}
 	}, [visible, api])
+
+	useEffect(() => {
+		return () => {
+			if (destroyedRef.current === false && getDialogCount() === 0) {
+				setScroll(false)
+			}
+		}
+	}, [])
 
 	return createPortal(
 		transitions((s, item) => {
