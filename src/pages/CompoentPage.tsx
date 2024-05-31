@@ -13,6 +13,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@components/dialog"
+import { isNormalIPv4 } from "@components/form/validate"
 import { Input } from "@components/input"
 import { Label } from "@components/label"
 import { Overlay } from "@components/overlay"
@@ -31,14 +32,12 @@ import { CircleLoading } from "@components/spin"
 import { Switch } from "@components/switch"
 import { RouteTab, RouterTabs } from "@concepts/RouteTabs"
 import { useToast } from "@context"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { PlusIcon } from "@radix-ui/react-icons"
 import dayjs from "dayjs"
-import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { FormattedMessage, useIntl } from "react-intl"
+import { InputHTMLAttributes, forwardRef, useEffect, useState } from "react"
+import { FormProvider, useForm } from "react-hook-form"
+import { FormattedMessage } from "react-intl"
 import { Outlet, Route, useNavigate } from "react-router-dom"
-import * as z from "zod"
 
 export const ComponentRoutes = (
 	<Route path="components" Component={ComponentPage}>
@@ -178,46 +177,106 @@ function AccordionComponent() {
 	)
 }
 
+interface FormData {
+	ipv4: string
+	x: number
+	y: number
+}
+
 function FormComponent() {
-	const intl = useIntl()
-
-	const schema = z.object({
-		myvalue: z.string().ip({ version: "v4", message: intl.formatMessage({ id: "invalid_message_000" }) }),
-		val: z.string().refine(
-			val => {
-				const myvalue = getValues("myvalue")
-				console.log(myvalue)
-				return typeof val === "string" ? /^\d+px$/.test(val) : false
-			},
-			{ message: "not pixel value" },
-		),
+	const methods = useForm<FormData>({
+		defaultValues: {
+			ipv4: "10.1.1.1",
+			x: 0,
+			y: 0,
+		},
 	})
-
-	const {
-		register,
-		getValues,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<z.infer<typeof schema>>({ resolver: zodResolver(schema) })
 
 	return (
 		<div tw="py-7 flex flex-col gap-7">
 			<div tw="max-w-xl">
 				<h1 tw="font-bold text-lg mb-4">Form</h1>
-				<form
-					tw="grid gap-4 max-w-[600px]"
-					onSubmit={handleSubmit(_data => {
-						console.log("Form is valid.")
-					})}
-				>
-					<Input placeholder="ipv4" aria-invalid={!!errors.myvalue} {...register("myvalue")} />
-					{errors.myvalue && <div>{errors.myvalue.message}</div>}
-					<Input placeholder="val" aria-invalid={!!errors.val} {...register("val")} />
-					{errors.val && <div>{errors.val.message}</div>}
-					<Button type="submit">Apply</Button>
-				</form>
+				<FormProvider {...methods}>
+					<DemoForm />
+				</FormProvider>
 			</div>
 		</div>
+	)
+}
+
+function validateData(data: FormData) {
+	return Number(data.x) + Number(data.y) <= 100
+}
+
+const PercentInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>((props, ref) => {
+	return (
+		<div tw="flex items-center relative">
+			<Input tw="pr-6" ref={ref} {...props} />
+			<span tw="absolute top-1/2 -translate-y-1/2 right-2 pointer-events-none text-foreground/30">%</span>
+		</div>
+	)
+})
+PercentInput.displayName = "PercentInput"
+
+function DemoForm() {
+	const { register, handleSubmit, getValues, setError, clearErrors, formState } = useForm<FormData>()
+	const { errors, isSubmitted } = formState
+	const [output, setOutput] = useState("")
+	return (
+		<form
+			tw="grid gap-4 max-w-[600px]"
+			onSubmit={handleSubmit(data => {
+				if (!validateData(data)) {
+					setError("x", { type: "validate" })
+					setError("y", { type: "validate" })
+					return
+				}
+
+				setOutput(JSON.stringify(data))
+			})}
+		>
+			<Input
+				placeholder="ipv4"
+				aria-invalid={errors.ipv4 != null}
+				{...register("ipv4", { validate: value => isNormalIPv4(value, true) })}
+			/>
+			<PercentInput
+				placeholder="x"
+				aria-invalid={errors.x != null}
+				{...register("x", {
+					onChange() {
+						if (isSubmitted) {
+							if (!validateData(getValues())) {
+								setError("x", { type: "validate" })
+								setError("y", { type: "validate" })
+								return
+							}
+							clearErrors("x")
+							clearErrors("y")
+						}
+					},
+				})}
+			/>
+			<PercentInput
+				placeholder="y"
+				aria-invalid={errors.y != null}
+				{...register("y", {
+					onChange() {
+						if (isSubmitted) {
+							if (!validateData(getValues())) {
+								setError("x", { type: "validate" })
+								setError("y", { type: "validate" })
+								return
+							}
+							clearErrors("x")
+							clearErrors("y")
+						}
+					},
+				})}
+			/>
+			{output && <p>{output}</p>}
+			<Button type="submit">Apply</Button>
+		</form>
 	)
 }
 

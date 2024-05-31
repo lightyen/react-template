@@ -3,7 +3,7 @@ import { forwardRef, useId, useState, type HTMLAttributes, type InputHTMLAttribu
 import { tw } from "twobj"
 
 const input = tw`
-w-full flex-1 flex h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors
+w-full flex-1 flex h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm transition-colors
 file:(border-0 bg-transparent text-sm font-medium)
 placeholder:text-muted-foreground
 focus-within:(outline-none ring-1 ring-ring)
