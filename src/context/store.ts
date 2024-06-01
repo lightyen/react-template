@@ -1,8 +1,8 @@
 import { configureStore, Tuple } from "@reduxjs/toolkit"
 import createSagaMiddleware from "redux-saga"
-import { app, AppStore } from "./app/reducer"
-import { data, DataStore } from "./data/reducer"
-import { intl, IntlStore } from "./intl/reducer"
+import { app, type AppStore } from "./app/reducer"
+import { data, type DataStore } from "./data/reducer"
+import { intl, type IntlStore } from "./intl/reducer"
 import rootSaga from "./saga"
 
 interface RootStoreType {
