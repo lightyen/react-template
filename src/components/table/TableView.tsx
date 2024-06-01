@@ -1,5 +1,14 @@
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from "@radix-ui/react-icons"
-import { forwardRef, memo, type ForwardedRef, type PropsWithChildren, type TableHTMLAttributes } from "react"
+import Mark from "mark.js"
+import {
+	forwardRef,
+	memo,
+	useEffect,
+	useRef,
+	type ForwardedRef,
+	type PropsWithChildren,
+	type TableHTMLAttributes,
+} from "react"
 import { useTableStore } from "."
 import { Button } from "../button"
 import { Command, CommandItem, CommandList } from "../command"
@@ -94,7 +103,11 @@ function Row<T>({ data, columns }: { data: WithIndex<T>; columns: TableColumnIte
 					return null
 				}
 				return (
-					<td tw="p-2 first-of-type:pl-4 align-middle [&:has([role=checkbox])]:pr-2" key={colIndex}>
+					<td
+						tw="p-2 first-of-type:pl-4 align-middle [&:has([role=checkbox])]:pr-2"
+						key={colIndex}
+						className={`col-${id}`}
+					>
 						{Component ? (
 							<Component
 								record={data}
@@ -115,6 +128,58 @@ interface Props<T> {
 	keyFn?: (record: T) => React.Key
 }
 
+function useMark<T>(result: T[], columns: TableColumnItem<T>[]) {
+	const useSelect = useTableStore()
+	const globalValue = useSelect(state => state.global.value)
+	const filters = useSelect(state => state.filters)
+
+	interface ColumnMark {
+		id: string
+		mark?: Mark
+		nth: number
+	}
+
+	const arr = useRef<ColumnMark[]>([])
+
+	useEffect(() => {
+		let nth = 1
+		arr.current = columns.map(({ id, selected }) => {
+			if (id === "checkbox" || !selected) {
+				return { id, nth: -1 }
+			}
+			const el = document.querySelectorAll<HTMLElement>(`#table-view tr td:nth-of-type(${nth + 1})`)
+			let mark: Mark | undefined
+			if (el) {
+				mark = new Mark(el)
+			}
+			nth++
+			return { id, mark, nth }
+		})
+
+		const marks = arr.current
+
+		marks.forEach(({ id, mark }) => {
+			if (mark) {
+				const f = filters[id]
+				if (f && typeof f.value === "string" && f.value) {
+					mark.mark(f.value)
+				}
+				if (globalValue) {
+					mark.mark(globalValue)
+				}
+			}
+		})
+
+		return () => {
+			marks.forEach(({ mark }) => {
+				if (mark) {
+					mark.unmark()
+				}
+			})
+		}
+	}, [result, columns, filters, globalValue])
+}
+
 export function TableView<T extends {} = {}>({
 	children,
 	keyFn,
@@ -127,6 +192,9 @@ export function TableView<T extends {} = {}>({
 	const result = useSelect(state => state.view)
 	const hasHeader = columns.some(c => c.label)
 	const sortColumn = useSelect(state => state.sortColumn)
+
+	useMark<T>(result, columns)
+
 	return (
 		<TableWrapper {...props}>
 			{hasHeader && (
@@ -158,7 +226,7 @@ export function TableView<T extends {} = {}>({
 					</tr>
 				</thead>
 			)}
-			<tbody tw="[& tr:last-of-type]:border-0">
+			<tbody id="table-view" tw="[& tr:last-of-type]:border-0 [mark]:(text-primary-foreground bg-primary)">
 				{result.map((data, i) => {
 					return data ? (
 						<Row key={keyFn ? keyFn(data) ?? i : i} data={data} columns={columns} />
