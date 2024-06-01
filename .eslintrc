@@ -1,9 +1,7 @@
 {
 	"root": true,
 	"parser": "@typescript-eslint/parser",
-	"plugins": [
-		"@typescript-eslint"
-	],
+	"plugins": ["@typescript-eslint"],
 	"extends": [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
@@ -12,32 +10,17 @@
 	"parserOptions": {
 		"project": "./tsconfig.json"
 	},
-	"ignorePatterns": [
-		"tailwind.config.js"
-	],
+	"ignorePatterns": ["tailwind.config.js"],
 	"rules": {
 		"spaced-comment": "error",
 		"no-var": "error",
 		"no-extra-bind": "error",
-		"no-mixed-spaces-and-tabs": [
-			"warn",
-			"smart-tabs"
-		],
-		"no-empty": [
-			"warn",
-			{
-				"allowEmptyCatch": true
-			}
-		],
+		"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
+		"no-empty": ["warn", { "allowEmptyCatch": true }],
 		"no-empty-pattern": "off",
 		"@typescript-eslint/no-unused-vars": [
 			"warn",
-			{
-				"vars": "all",
-				"argsIgnorePattern": "^_",
-				"ignoreRestSiblings": true,
-				"caughtErrors": "none"
-			}
+			{ "vars": "all", "argsIgnorePattern": "^_", "ignoreRestSiblings": true, "caughtErrors": "none" }
 		],
 		"@typescript-eslint/no-empty-interface": "off",
 		"@typescript-eslint/no-empty-function": "warn",
@@ -62,14 +45,9 @@
 			"error",
 			{
 				"extendDefaults": true,
-				"types": {
-					"{}": false
-				}
+				"types": { "{}": false }
 			}
 		]
 	},
-	"env": {
-		"browser": true,
-		"node": true
-	}
+	"env": { "browser": true, "node": true }
 }

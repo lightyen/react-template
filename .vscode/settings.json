@@ -31,6 +31,9 @@
     "**/build": true
   },
   "javascript.suggestionActions.enabled": false,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
