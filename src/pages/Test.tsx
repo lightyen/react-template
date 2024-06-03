@@ -1,9 +1,11 @@
 import { Button } from "@components/button"
+import { CandidateInput } from "@components/candidate-input"
 import { Command, CommandInput, CommandItem, CommandList } from "@components/command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@components/popover"
 import { animated, easings, useSprings } from "@react-spring/web"
 import { useDrag } from "@use-gesture/react"
 import { HTMLAttributes, createContext, useContext, useRef, useState } from "react"
+import { useForm } from "react-hook-form"
 import { TodoList } from "./Todolist"
 
 function DragExample() {
@@ -51,6 +53,7 @@ export function Test() {
 	return (
 		<article tw="relative">
 			<h1 tw="border-b mb-4">Test</h1>
+			<CandidateForm />
 			<div tw="bg-accent/50 p-2 max-w-[600px] flex gap-5 justify-end">
 				<Button variant="outline" tw="flex-1 sm:max-w-[130px]">
 					Cancel
@@ -69,6 +72,26 @@ export function Test() {
 
 			<Demo />
 		</article>
+	)
+}
+
+function CandidateForm() {
+	const methods = useForm<{ value: string }>()
+	return (
+		<form
+			onSubmit={methods.handleSubmit(data => {
+				//
+				console.log(data)
+			})}
+		>
+			<CandidateInput
+				candidates={["aaa", "bbb", "ccc"]}
+				onSelect={value => {
+					methods.setValue("value", value)
+				}}
+				{...methods.register("value")}
+			/>
+		</form>
 	)
 }
 
@@ -134,7 +157,7 @@ function SelectList() {
 				<Button variant="outline">{value}</Button>
 			</PopoverTrigger>
 			<PopoverContent>
-				<Command tw="relative p-1 max-w-[26ch]">
+				<Command tw="relative p-1 max-w-[26ch] max-h-[400px]">
 					<CommandInput autoFocus />
 					<PopoverClose>
 						<CommandList>

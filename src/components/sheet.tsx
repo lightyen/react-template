@@ -84,7 +84,7 @@ export function SheetTrigger({ children, ...props }: PropsWithChildren<Omit<Butt
 		)
 	}
 
-	const child = children as ReactElement<HTMLAttributes<HTMLElement>>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		...props,

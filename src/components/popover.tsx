@@ -21,10 +21,10 @@ import {
 	type ButtonHTMLAttributes,
 	type CSSProperties,
 	type HTMLAttributes,
+	type MutableRefObject,
 	type PropsWithChildren,
 	type ReactElement,
 	type ReactNode,
-	type RefAttributes,
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { Button, type ButtonProps } from "./button"
@@ -43,31 +43,86 @@ interface PopoverContext {
 
 const popoverContext = createContext<PopoverContext>(null as unknown as PopoverContext)
 
-export function PopoverTrigger({ children, ...props }: PropsWithChildren<Omit<ButtonProps, "onClick">>) {
+interface PopoverTriggerProps extends Omit<ButtonProps, "onClick" | "onFocus"> {
+	triggerType?: "button" | "input"
+}
+
+export function PopoverTrigger({ triggerType = "button", children, ...props }: PropsWithChildren<PopoverTriggerProps>) {
 	const { setVisible, refs, getReferenceProps } = useContext(popoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <PopoverTrigger>{c}</PopoverTrigger>)
 	}
 
+	let innerProps: Record<string, unknown>
+
 	if (!isValidElement(children) || isElement(children, FormattedMessage)) {
+		if (triggerType === "input") {
+			innerProps = getReferenceProps({
+				onBlur() {
+					setVisible(false)
+				},
+				onFocus() {
+					setVisible(true)
+				},
+			})
+		} else {
+			innerProps = getReferenceProps({
+				onClick() {
+					setVisible(true)
+				},
+			})
+		}
 		return (
-			<Button ref={refs.setReference} {...getReferenceProps()}>
+			<Button ref={refs.setReference} {...innerProps}>
 				{children}
 			</Button>
 		)
 	}
 
-	const child = children as ReactElement<RefAttributes<HTMLElement>>
+	const child = children as React.ReactElement<React.HTMLAttributes<Element>> & {
+		ref: ((instance: HTMLElement | null) => void) | MutableRefObject<HTMLElement | null> | null
+	}
+
+	if (triggerType === "input") {
+		innerProps = getReferenceProps({
+			ref: node => {
+				refs.setReference(node)
+				if (typeof child.ref === "function") {
+					child.ref(node as HTMLElement)
+				} else if (child.ref) {
+					child.ref.current = node as HTMLElement
+				}
+			},
+			onBlur(e) {
+				setVisible(false)
+				child.props.onBlur?.(e)
+			},
+			onFocus(e) {
+				setVisible(true)
+				child.props.onFocus?.(e)
+			},
+		})
+	} else {
+		innerProps = getReferenceProps({
+			ref: node => {
+				refs.setReference(node)
+				if (typeof child.ref === "function") {
+					child.ref(node as HTMLElement)
+				} else if (child.ref) {
+					child.ref.current = node as HTMLElement
+				}
+			},
+			onClick(e) {
+				setVisible(true)
+				child.props.onClick?.(e)
+			},
+		})
+	}
 
 	return cloneElement(child, {
 		...props,
-		ref: refs.setReference,
-		...getReferenceProps({
-			onClick() {
-				setVisible(true)
-			},
-		}),
+		...innerProps,
 	})
 }
 
