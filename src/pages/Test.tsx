@@ -1,12 +1,15 @@
 import { Button } from "@components/button"
 import { CandidateInput } from "@components/candidate-input"
-import { Command, CommandItem, CommandList } from "@components/command"
+import { commandScore } from "@components/command-score"
+import { SearchInput } from "@components/input"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@components/popover"
 import { animated, easings, useSprings } from "@react-spring/web"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { useDrag } from "@use-gesture/react"
 import { HTMLAttributes, createContext, startTransition, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
+import { create } from "zustand"
+import { immer } from "zustand/middleware/immer"
 import { TodoList } from "./Todolist"
 
 function DragExample() {
@@ -100,11 +103,6 @@ interface BearState {
 	increase: (by: number) => void
 }
 
-import { commandScore } from "@components/command-score"
-import { SearchInput } from "@components/input"
-import { create } from "zustand"
-import { immer } from "zustand/middleware/immer"
-
 type Store = ReturnType<typeof createStore>
 
 function createStore() {
@@ -178,69 +176,125 @@ function SelectList() {
 		return ans.map(s => s.value)
 	}, [searchInput])
 
+	const [selectedIndex, setSelectedIndex] = useState(-1)
+
 	useEffect(() => {
-		if (!visible) {
-			setSearchInput("")
+		setSelectedIndex(0)
+	}, [filteredSuggestion])
+
+	useEffect(() => {
+		if (visible) {
+			setSelectedIndex(-1)
 		}
 	}, [visible])
+
+	const hovering = useRef(false)
+	const keyboard = useRef<Date>(new Date())
+
+	const itemSize = 32
+
+	useEffect(() => {
+		const scrollbox = parentRef.current
+		if (scrollbox && selectedIndex >= 0 && !hovering.current) {
+			if (selectedIndex * itemSize < scrollbox.scrollTop) {
+				scrollbox.scrollTo({ top: selectedIndex * itemSize })
+			} else if ((selectedIndex + 1) * itemSize > scrollbox.scrollTop + scrollbox.offsetHeight) {
+				scrollbox.scrollTo({ top: (selectedIndex + 1) * itemSize - scrollbox.offsetHeight })
+			}
+		}
+	}, [selectedIndex])
 
 	const rowVirtualizer = useVirtualizer({
 		count: filteredSuggestion.length,
 		getScrollElement: () => parentRef.current,
-		estimateSize: () => 32,
+		estimateSize: () => itemSize,
 		overscan: 30,
 	})
 
 	return (
-		<Popover placement="bottom-start" visible={visible} setVisible={setVisible}>
+		<Popover
+			placement="bottom-start"
+			visible={visible}
+			setVisible={setVisible}
+			onLeave={() => {
+				setSearchInput("")
+			}}
+		>
 			<PopoverTrigger>
 				<Button variant="outline">{value}</Button>
 			</PopoverTrigger>
 			<PopoverContent>
 				<div>
-					<Command>
+					<div tw="rounded-md border shadow-md overflow-hidden">
 						<SearchInput
 							tw="focus-within:ring-0 border-0 border-b rounded-b-none"
 							onChange={e => {
 								const value = e.target.value
 								startTransition(() => setSearchInput(value))
 							}}
+							onKeyDown={e => {
+								if (e.key === "Enter") {
+									const value = filteredSuggestion[selectedIndex]
+									if (value) {
+										setValue(value)
+										setVisible(false)
+									}
+								} else if (e.key === "ArrowDown") {
+									if (selectedIndex < filteredSuggestion.length - 1) {
+										hovering.current = false
+										keyboard.current = new Date()
+										setSelectedIndex(index => index + 1)
+									}
+								} else if (e.key === "ArrowUp") {
+									if (selectedIndex > 0) {
+										hovering.current = false
+										keyboard.current = new Date()
+										setSelectedIndex(index => index - 1)
+									}
+								}
+							}}
 							autoFocus
 						/>
 						<PopoverClose>
-							<CommandList tw="max-h-[320px] w-[250px]" ref={parentRef}>
+							<div
+								tw="overflow-auto overscroll-contain max-h-[400px] w-[350px] bg-background"
+								ref={parentRef}
+							>
 								<div tw="relative w-full" css={{ height: `${rowVirtualizer.getTotalSize()}px` }}>
 									{rowVirtualizer.getVirtualItems().map(({ key, index, size, start }) => {
 										const data = filteredSuggestion[index]
 										return (
-											<CommandItem
+											<div
 												key={key}
-												tw="absolute top-0 left-0 w-full"
+												tw="absolute top-0 left-0 w-full
+												flex items-center px-3
+												// hover:(bg-primary/10 text-primary/80 cursor-pointer)
+												aria-selected:(bg-primary/10 text-primary/80 cursor-pointer)
+												"
+												aria-selected={index === selectedIndex}
 												css={{ height: `${size}px`, transform: `translateY(${start}px)` }}
-												onSelect={() => {
+												onMouseOver={() => {
+													const now = new Date()
+													if (now.getTime() - keyboard.current.getTime() > 33) {
+														hovering.current = true
+														setSelectedIndex(index)
+													}
+												}}
+												onClick={() => {
+													hovering.current = false
 													setValue(data)
 													setVisible(false)
+													setSelectedIndex(-1)
 												}}
 											>
 												{data}
-											</CommandItem>
+											</div>
 										)
 									})}
-									{/* {suggestion.map((v, i) => (
-									<CommandItem
-										key={i}
-										onSelect={() => {
-											setValue(v)
-											setVisible(false)
-										}}
-									>
-										{v}
-									</CommandItem>
-								))} */}
 								</div>
-							</CommandList>
+							</div>
 						</PopoverClose>
-					</Command>
+					</div>
 				</div>
 			</PopoverContent>
 		</Popover>
