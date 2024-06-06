@@ -56,10 +56,10 @@ export function Test() {
 			<h1 tw="border-b mb-4">Test</h1>
 			<CandidateForm />
 			<div tw="bg-accent/50 p-2 max-w-[600px] flex gap-5 justify-end">
-				<Button variant="outline" tw="flex-1 sm:max-w-[130px]">
+				<Button variant="outline" size="sm" tw="flex-1 sm:max-w-[130px]">
 					Cancel
 				</Button>
-				<Button variant="outline" tw="flex-1 sm:max-w-[130px]">
+				<Button variant="outline" size="sm" tw="flex-1 sm:max-w-[130px]">
 					Submit
 				</Button>
 			</div>

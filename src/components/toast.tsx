@@ -45,7 +45,7 @@ export function Toaster() {
 	return (
 		<div
 			id="toaster"
-			tw="fixed top-0 z-50 max-h-screen w-full p-4 pointer-events-none	sm:(right-0 bottom-0 top-auto) md:max-w-[420px]"
+			tw="fixed top-0 z-50 max-h-screen w-full p-4 pointer-events-none sm:(right-0 bottom-0 top-auto) md:max-w-[420px]"
 		>
 			<div tw="relative flex flex-col-reverse sm:flex-col">
 				<Toasts />
@@ -56,7 +56,7 @@ export function Toaster() {
 
 function ToastTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
-		<div tw="text-sm font-semibold [&+div]:text-xs" {...props}>
+		<div tw="text-base font-semibold [&+div]:text-sm" {...props}>
 			{children}
 		</div>
 	)
@@ -98,8 +98,8 @@ function ToastAction({ children, id }: PropsWithChildren<{ id: string }>) {
 		return (
 			<button
 				type="button"
-				tw="inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent
-			px-3 text-sm font-medium transition-colors
+				tw="inline-flex shrink-0 items-center justify-center rounded-md border bg-transparent
+			px-3 h-[34px] text-sm font-medium transition-colors
 			hover:bg-secondary focus:(outline-none ring-1 ring-ring) disabled:(pointer-events-none opacity-50)
 			group-[.destructive]:(
 				border-muted

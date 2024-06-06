@@ -25,7 +25,7 @@ export function CommandMenu() {
 			<span tw="text-sm text-muted-foreground whitespace-nowrap cursor-pointer" onClick={() => setVisible(true)}>
 				Press{" "}
 				<kbd tw="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-					<span tw="text-xs">⌘</span>K
+					<span tw="text-sm">⌘</span>K
 				</kbd>
 			</span>
 			<CommandDialog visible={visible} setVisible={setVisible}>

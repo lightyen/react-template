@@ -23,7 +23,7 @@ function SortButton({
 	return (
 		<Popover>
 			<PopoverTrigger>
-				<Button variant="ghost" size="sm" tw="relative -ml-3 h-8">
+				<Button variant="ghost" size="sm" tw="relative -ml-3">
 					{children}
 					{sortType === "desc" ? (
 						<ArrowDownIcon tw="ml-2 h-4 w-4" />

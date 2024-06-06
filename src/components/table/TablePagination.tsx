@@ -28,7 +28,11 @@ function SwitchLimit() {
 			<span tw="hidden lg:inline">Rows per page</span>
 			<Popover placement="bottom-end">
 				<PopoverTrigger>
-					<Button variant="outline" tw="order-1 px-3 w-[70px] h-8 flex gap-2 justify-between items-center">
+					<Button
+						size="sm"
+						variant="outline"
+						tw="order-1 px-3 w-[70px] flex gap-2 justify-between items-center"
+					>
 						<span tw="pointer-events-none">{limit}</span>
 						<CaretSortIcon tw="h-4 w-4 opacity-50" />
 					</Button>
@@ -114,7 +118,8 @@ export function TablePagination() {
 									key={i}
 									onClick={first}
 									variant="outline"
-									tw="hidden h-8 w-8 p-0 lg:flex"
+									size="icon"
+									tw="hidden lg:flex"
 									disabled={item.disabled}
 								>
 									<DoubleArrowLeftIcon tw="h-4 w-4" />
@@ -128,7 +133,7 @@ export function TablePagination() {
 									onClick={prev}
 									aria-label="previous page"
 									variant="outline"
-									tw="h-8 w-8 p-0"
+									size="icon"
 									disabled={item.disabled}
 								>
 									<ChevronLeftIcon tw="h-4 w-4" />
@@ -142,7 +147,7 @@ export function TablePagination() {
 									onClick={next}
 									aria-label="next page"
 									variant="outline"
-									tw="h-8 w-8 p-0"
+									size="icon"
 									disabled={item.disabled}
 								>
 									<ChevronRightIcon tw="h-4 w-4" />
@@ -155,7 +160,8 @@ export function TablePagination() {
 									key={i}
 									onClick={last}
 									variant="outline"
-									tw="hidden h-8 w-8 p-0 lg:flex"
+									size="icon"
+									tw="hidden lg:flex"
 									disabled={item.disabled}
 								>
 									<DoubleArrowRightIcon tw="h-4 w-4" />
