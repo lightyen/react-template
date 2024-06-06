@@ -5,7 +5,7 @@ import { MockRecord, data } from "./data"
 
 export function TablePage() {
 	// API like
-	const [source, setSource] = useState<MockRecord[]>(data)
+	const [source] = useState<MockRecord[]>(data)
 	// useEffect(() => {
 	// 	setSource(data)
 	// }, [source])

@@ -1,10 +1,11 @@
 import { Button } from "@components/button"
 import { CandidateInput } from "@components/candidate-input"
-import { Command, CommandInput, CommandItem, CommandList } from "@components/command"
+import { Command, CommandItem, CommandList } from "@components/command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@components/popover"
 import { animated, easings, useSprings } from "@react-spring/web"
+import { useVirtualizer } from "@tanstack/react-virtual"
 import { useDrag } from "@use-gesture/react"
-import { HTMLAttributes, createContext, useContext, useRef, useState } from "react"
+import { HTMLAttributes, createContext, startTransition, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { TodoList } from "./Todolist"
 
@@ -80,7 +81,6 @@ function CandidateForm() {
 	return (
 		<form
 			onSubmit={methods.handleSubmit(data => {
-				//
 				console.log(data)
 			})}
 		>
@@ -100,6 +100,8 @@ interface BearState {
 	increase: (by: number) => void
 }
 
+import { commandScore } from "@components/command-score"
+import { SearchInput } from "@components/input"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
 
@@ -151,30 +153,95 @@ function DemoBox() {
 function SelectList() {
 	const [value, setValue] = useState("Africa/Abidjan")
 	const [visible, setVisible] = useState(false)
+
+	const parentRef = useRef<HTMLDivElement>(null)
+
+	const [searchInput, setSearchInput] = useState("")
+
+	const filteredSuggestion = useMemo(() => {
+		if (!searchInput) {
+			return suggestion
+		}
+		interface Result {
+			score: number
+			value: (typeof suggestion)[0]
+		}
+
+		const ans = suggestion
+			.map<Result>(value => ({ score: commandScore(value, searchInput, []), value }))
+			.filter(value => value.score > 0)
+
+		ans.sort((a, b) => {
+			return b.score - a.score
+		})
+
+		return ans.map(s => s.value)
+	}, [searchInput])
+
+	useEffect(() => {
+		if (!visible) {
+			setSearchInput("")
+		}
+	}, [visible])
+
+	const rowVirtualizer = useVirtualizer({
+		count: filteredSuggestion.length,
+		getScrollElement: () => parentRef.current,
+		estimateSize: () => 32,
+		overscan: 30,
+	})
+
 	return (
 		<Popover placement="bottom-start" visible={visible} setVisible={setVisible}>
 			<PopoverTrigger>
 				<Button variant="outline">{value}</Button>
 			</PopoverTrigger>
 			<PopoverContent>
-				<Command tw="relative p-1 max-w-[26ch] max-h-[400px]">
-					<CommandInput autoFocus />
-					<PopoverClose>
-						<CommandList>
-							{suggestion.map((v, i) => (
-								<CommandItem
-									key={i}
-									onSelect={() => {
-										setValue(v)
-										setVisible(false)
-									}}
-								>
-									{v}
-								</CommandItem>
-							))}
-						</CommandList>
-					</PopoverClose>
-				</Command>
+				<div>
+					<Command>
+						<SearchInput
+							tw="focus-within:ring-0 border-0 border-b rounded-b-none"
+							onChange={e => {
+								const value = e.target.value
+								startTransition(() => setSearchInput(value))
+							}}
+							autoFocus
+						/>
+						<PopoverClose>
+							<CommandList tw="max-h-[320px] w-[250px]" ref={parentRef}>
+								<div tw="relative w-full" css={{ height: `${rowVirtualizer.getTotalSize()}px` }}>
+									{rowVirtualizer.getVirtualItems().map(({ key, index, size, start }) => {
+										const data = filteredSuggestion[index]
+										return (
+											<CommandItem
+												key={key}
+												tw="absolute top-0 left-0 w-full"
+												css={{ height: `${size}px`, transform: `translateY(${start}px)` }}
+												onSelect={() => {
+													setValue(data)
+													setVisible(false)
+												}}
+											>
+												{data}
+											</CommandItem>
+										)
+									})}
+									{/* {suggestion.map((v, i) => (
+									<CommandItem
+										key={i}
+										onSelect={() => {
+											setValue(v)
+											setVisible(false)
+										}}
+									>
+										{v}
+									</CommandItem>
+								))} */}
+								</div>
+							</CommandList>
+						</PopoverClose>
+					</Command>
+				</div>
 			</PopoverContent>
 		</Popover>
 	)
