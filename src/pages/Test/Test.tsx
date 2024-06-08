@@ -1,9 +1,11 @@
 import { Button } from "@components/button"
 import { animated, easings, useSprings } from "@react-spring/web"
+import { useWindowVirtualizer } from "@tanstack/react-virtual"
 import { useDrag } from "@use-gesture/react"
 import { HTMLAttributes, createContext, useContext, useRef, useState } from "react"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
+import { addresses } from "~/data/macaddr"
 import { TodoList } from "./Todolist"
 
 function DragExample() {
@@ -65,8 +67,8 @@ export function Component() {
 			<div tw="max-w-lg">
 				<TodoList />
 			</div>
-
 			<Demo />
+			<LongList />
 		</article>
 	)
 }
@@ -119,4 +121,36 @@ function DemoBox() {
 	const bears = useStore(state => state.bears)
 	const increase = useStore(state => state.increase)
 	return <div onClick={() => increase(1)}>{bears}</div>
+}
+
+function LongList() {
+	const listRef = useRef<HTMLDivElement | null>(null)
+	const virtualizer = useWindowVirtualizer({
+		count: addresses.length,
+		estimateSize: () => 32,
+		overscan: 5,
+		scrollMargin: listRef.current?.offsetTop ?? 0,
+	})
+	return (
+		<div
+			ref={listRef}
+			tw="relative"
+			css={{
+				height: `${virtualizer.getTotalSize()}px`,
+			}}
+		>
+			{virtualizer.getVirtualItems().map(({ key, index, size, start }) => (
+				<div
+					key={key}
+					tw="absolute top-0 left-0 w-full flex items-center"
+					css={{
+						height: `${size}px`,
+						transform: `translateY(${start - virtualizer.options.scrollMargin}px)`,
+					}}
+				>
+					{addresses[index]}
+				</div>
+			))}
+		</div>
+	)
 }
