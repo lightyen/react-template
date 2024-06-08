@@ -15,6 +15,7 @@ import {
 	useState,
 	type ButtonHTMLAttributes,
 	type ComponentProps,
+	type DetailedReactHTMLElement,
 	type HTMLAttributes,
 	type PropsWithChildren,
 	type ReactElement,
@@ -41,7 +42,7 @@ export function SheetTrigger({
 		)
 	}
 
-	const child = children as ReactElement<HTMLAttributes<HTMLElement>>
+	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		...props,
@@ -187,7 +188,7 @@ export function SheetClose({
 		)
 	}
 
-	const child = children as ReactElement<HTMLAttributes<HTMLElement>>
+	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {

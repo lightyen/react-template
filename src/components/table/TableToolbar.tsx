@@ -278,7 +278,12 @@ export function TableToolbar() {
 	return (
 		<div aria-label="table-toolbar" tw="z-10 flex flex-wrap gap-2">
 			<div tw="relative grow lg:max-w-[350px]">
-				<Input placeholder="Search..." value={value} onChange={e => setGlobalSearch(e.target.value)} />
+				<Input
+					tw="h-[34px]"
+					placeholder="Search..."
+					value={value}
+					onChange={e => setGlobalSearch(e.target.value)}
+				/>
 				<div
 					tw="absolute right-4 top-[50%] translate-y-[-50%] text-foreground/50 hover:(text-primary cursor-pointer)"
 					onClick={() => setGlobalSearch("")}

@@ -29,6 +29,16 @@ const navs: NavItemType[] = [
 	},
 	{
 		kind: NavItemKind.Link,
+		pathname: "components",
+		label: "Component",
+	},
+	{
+		kind: NavItemKind.Link,
+		pathname: "form",
+		label: "Form",
+	},
+	{
+		kind: NavItemKind.Link,
 		pathname: "table",
 		label: "Table",
 	},
@@ -36,11 +46,6 @@ const navs: NavItemType[] = [
 		kind: NavItemKind.Link,
 		pathname: "test",
 		label: "Test",
-	},
-	{
-		kind: NavItemKind.Link,
-		pathname: "components",
-		label: "Components",
 	},
 	{
 		kind: NavItemKind.Link,
@@ -107,6 +112,7 @@ export function NavigationSheetMenu() {
 				<Button
 					size="icon"
 					variant="ghost"
+					aria-label="Menu"
 					tw="rounded-none inline-flex md:hidden [-webkit-tap-highlight-color: transparent]"
 				>
 					<HamburgerMenuIcon />

@@ -22,9 +22,11 @@ import {
 	useState,
 	type ButtonHTMLAttributes,
 	type CSSProperties,
+	type DetailedReactHTMLElement,
 	type HTMLAttributes,
 	type MutableRefObject,
 	type PropsWithChildren,
+	type ReactElement,
 	type ReactNode,
 } from "react"
 import { FormattedMessage } from "react-intl"
@@ -45,81 +47,61 @@ interface PopoverContext {
 
 const popoverContext = createContext<PopoverContext>(null as unknown as PopoverContext)
 
-interface PopoverTriggerProps extends Omit<ButtonProps, "onClick" | "onFocus"> {
-	triggerType?: "button" | "input"
+interface PopoverTriggerProps extends Omit<ButtonProps, "onClick"> {
+	mode?: "click" | "none"
 }
 
-export function PopoverTrigger({ triggerType = "button", children, ...props }: PropsWithChildren<PopoverTriggerProps>) {
+export function PopoverTrigger({ children, mode = "click", ...props }: PropsWithChildren<PopoverTriggerProps>) {
 	const { setVisible, refs, getReferenceProps } = useContext(popoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <PopoverTrigger>{c}</PopoverTrigger>)
 	}
 
-	let innerProps: Record<string, unknown>
-
 	if (!isValidElement(children) || isElement(children, FormattedMessage)) {
-		if (triggerType === "input") {
-			innerProps = getReferenceProps({
-				onBlur() {
-					setVisible(false)
-				},
-				onFocus() {
-					setVisible(true)
-				},
-			})
-		} else {
-			innerProps = getReferenceProps({
-				onClick() {
-					setVisible(true)
-				},
-			})
-		}
 		return (
-			<Button ref={refs.setReference} {...innerProps}>
+			<Button ref={refs.setReference} {...getReferenceProps()}>
 				{children}
 			</Button>
 		)
 	}
 
-	const child = children as React.ReactElement<React.HTMLAttributes<Element>> & {
+	const child = children as ReactElement<HTMLAttributes<Element>> & {
 		ref: ((instance: HTMLElement | null) => void) | MutableRefObject<HTMLElement | null> | null
 	}
 
-	if (triggerType === "input") {
-		innerProps = getReferenceProps({
-			ref: node => {
-				refs.setReference(node)
-				if (typeof child.ref === "function") {
-					child.ref(node as HTMLElement)
-				} else if (child.ref) {
-					child.ref.current = node as HTMLElement
-				}
-			},
-			onBlur(e) {
-				setVisible(false)
-				child.props.onBlur?.(e)
-			},
-			onFocus(e) {
+	const innerProps = getReferenceProps({
+		ref: node => {
+			refs.setReference(node)
+			if (typeof child.ref === "function") {
+				child.ref(node as HTMLElement)
+			} else if (child.ref) {
+				child.ref.current = node as HTMLElement
+			}
+		},
+		onClick(e) {
+			if (mode === "click") {
 				setVisible(true)
-				child.props.onFocus?.(e)
-			},
-		})
-	} else {
-		innerProps = getReferenceProps({
-			ref: node => {
-				refs.setReference(node)
-				if (typeof child.ref === "function") {
-					child.ref(node as HTMLElement)
-				} else if (child.ref) {
-					child.ref.current = node as HTMLElement
+			}
+			child.props.onClick?.(e)
+		},
+	})
+
+	const keys = Object.getOwnPropertyNames(child.props)
+	for (const k of keys) {
+		if (k === "ref") {
+			continue
+		}
+		if (Object.prototype.hasOwnProperty.call(innerProps, k)) {
+			const ch = child.props[k]
+			const inner = innerProps[k]
+			if (typeof ch === "function" && typeof inner === "function") {
+				innerProps[k] = (...args: unknown[]) => {
+					ch(...args)
+					inner(...args)
 				}
-			},
-			onClick(e) {
-				setVisible(true)
-				child.props.onClick?.(e)
-			},
-		})
+			}
+		}
 	}
 
 	return cloneElement(child, {
@@ -176,7 +158,7 @@ export function PopoverClose({
 		)
 	}
 
-	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {

@@ -10,6 +10,7 @@ import {
 	useState,
 	type ButtonHTMLAttributes,
 	type ComponentProps,
+	type DetailedReactHTMLElement,
 	type HTMLAttributes,
 	type PropsWithChildren,
 	type ReactElement,
@@ -42,7 +43,7 @@ export function DialogTrigger({ children, ...props }: PropsWithChildren<Omit<But
 		)
 	}
 
-	const child = children as ReactElement<HTMLAttributes<HTMLElement>>
+	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		...props,
@@ -179,7 +180,7 @@ export function DialogClose({
 		)
 	}
 
-	const child = children as ReactElement<HTMLAttributes<HTMLElement>>
+	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {

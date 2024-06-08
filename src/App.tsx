@@ -19,7 +19,7 @@ const appStyle = css`
 	${bodyScrollbar}
 	body {
 		${tw`
-			bg-background text-foreground font-normal leading-normal font-sans
+			bg-background text-foreground font-normal leading-normal font-sans [font-display: optional]
 			m-0 min-w-[320px] min-h-screen
 		`}
 	}

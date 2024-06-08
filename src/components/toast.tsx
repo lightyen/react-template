@@ -8,9 +8,9 @@ import {
 	isValidElement,
 	useEffect,
 	useMemo,
+	type DetailedReactHTMLElement,
 	type HTMLAttributes,
 	type PropsWithChildren,
-	type ReactElement,
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
@@ -118,7 +118,7 @@ function ToastAction({ children, id }: PropsWithChildren<{ id: string }>) {
 		)
 	}
 
-	const child = children as ReactElement<HTMLAttributes<HTMLElement>>
+	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {
