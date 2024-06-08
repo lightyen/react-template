@@ -2,6 +2,7 @@ import yaml from "@rollup/plugin-yaml"
 import react from "@vitejs/plugin-react"
 import { exec } from "node:child_process"
 import { promisify } from "node:util"
+import license from "rollup-plugin-license"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig, PluginOption } from "vite"
 import eslint from "vite-plugin-eslint"
@@ -86,9 +87,16 @@ export default defineConfig({
 				plugins: [["twobj", { tailwindConfig, throwError: true }], "@emotion"],
 			},
 		}),
+		license({
+			thirdParty: {
+				output: "build/assets/vendor.LICENSE.txt",
+			},
+		}),
 	],
 	esbuild: {
 		logOverride: { "this-is-undefined-in-esm": "silent" },
+		banner: "/*! licenses: /assets/vendor.LICENSE.txt */",
+		legalComments: "none",
 	},
 	server: {
 		host: "0.0.0.0",
