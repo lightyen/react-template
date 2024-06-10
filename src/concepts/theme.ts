@@ -57,4 +57,8 @@ export function setTheme({ style, color }: ThemeOptions = {}) {
 	const s = document.documentElement.style
 	s.removeProperty("--background")
 	s.removeProperty("--foreground")
+	s.removeProperty("--primary")
+	s.removeProperty("--primary-foreground")
+	s.removeProperty("--secondary")
+	s.removeProperty("--secondary-foreground")
 }

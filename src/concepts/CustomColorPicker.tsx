@@ -30,7 +30,7 @@ function getThemeColors(style: CSSStyleDeclaration) {
 }
 
 function ensureContrast(bg: HslColor): string {
-	const fg: HslColor = isDark() ? { h: bg.h, s: bg.s, l: 100 } : { h: bg.h, s: bg.s, l: 0 }
+	const fg: HslColor = { h: bg.h, s: 5, l: isDark() ? 100 : 0 }
 	const ans = ensureContrastRatio(hsl2rgb(fg), hsl2rgb(bg), 6)
 	if (ans) {
 		return hsl2Css(rgb2hsl(ans))
@@ -39,18 +39,23 @@ function ensureContrast(bg: HslColor): string {
 }
 
 export function CustomColorPicker() {
-	function handle(color: HslColor) {
-		const background = hsl2Css(color)
-		const foreground = ensureContrast(color)
+	function handle(primary: HslColor) {
+		const background: HslColor = { h: primary.h, s: 50, l: isDark() ? 5 : 95 }
+		const secondary: HslColor = { h: primary.h, s: 30, l: isDark() ? 20 : 90 }
+
 		const style = document.documentElement.style
 
-		style.setProperty("--background", background)
-		style.setProperty("--foreground", foreground)
+		style.setProperty("--background", hsl2Css(background))
+		style.setProperty("--foreground", ensureContrast(background))
+		style.setProperty("--primary", hsl2Css(primary))
+		style.setProperty("--primary-foreground", ensureContrast(primary))
+		style.setProperty("--secondary", hsl2Css(secondary))
+		style.setProperty("--secondary-foreground", ensureContrast(secondary))
 	}
 
 	const [selectedColor, setSelectedColor] = useState<HslColor | undefined>(() => {
 		const style = getComputedStyle(document.documentElement)
-		const background = style.getPropertyValue("--background")
+		const background = style.getPropertyValue("--primary")
 		return parseHslColor(background)
 	})
 
@@ -61,7 +66,7 @@ export function CustomColorPicker() {
 			const el = mutations[0]?.target as HTMLElement
 			if (el) {
 				const theme = getThemeColors(getComputedStyle(el))
-				const color = parseHslColor(theme["--background"])
+				const color = parseHslColor(theme["--primary"])
 				setSelectedColor(v => {
 					if (!color) {
 						return undefined
