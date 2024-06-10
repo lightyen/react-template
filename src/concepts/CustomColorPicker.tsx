@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { HslColorPicker } from "react-colorful"
 import { Button } from "~/components/button"
-import { HslColor, ensureContrastRatio, hsl2Css, hsl2rgb, rgb2hsl } from "~/components/lib/color"
+import { HslColor, ensureContrastRatio, hsl2Css, hsl2rgb, parseHslColor, rgb2hsl } from "~/components/lib/color"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
+import { isDark } from "./theme"
 
 function getThemeColors(style: CSSStyleDeclaration) {
 	return {
@@ -28,54 +29,51 @@ function getThemeColors(style: CSSStyleDeclaration) {
 	}
 }
 
-function parseHslColor(value: string): HslColor | undefined {
-	if (value) {
-		const re = /^([+-]?(?:\d*[.])?\d+)\s* \s*([+-]?(?:\d*[.])?\d+)%?\s* \s*([+-]?(?:\d*[.])?\d+)%?$/
-		const m = re.exec(value)
-		if (m) {
-			const [, h, s, l] = m
-			return { h: Number(h), s: Number(s), l: Number(l) }
-		}
+function ensureContrast(bg: HslColor): string {
+	const fg: HslColor = isDark() ? { h: bg.h, s: bg.s, l: 100 } : { h: bg.h, s: bg.s, l: 0 }
+	const ans = ensureContrastRatio(hsl2rgb(fg), hsl2rgb(bg), 6)
+	if (ans) {
+		return hsl2Css(rgb2hsl(ans))
 	}
-}
-
-function ensureContrast(fg_hsl: string, bg: HslColor, ratio: number): string | undefined {
-	const foreground = parseHslColor(fg_hsl)
-	if (foreground) {
-		const fg = ensureContrastRatio(hsl2rgb(foreground), hsl2rgb(bg), ratio)
-		if (fg) {
-			return hsl2Css(rgb2hsl(fg))
-		} else {
-			return fg_hsl
-		}
-	}
+	return hsl2Css(fg)
 }
 
 export function CustomColorPicker() {
 	function handle(color: HslColor) {
-		const primary = hsl2Css(color)
+		const background = hsl2Css(color)
+		const foreground = ensureContrast(color)
 		const style = document.documentElement.style
-		style.setProperty("--primary", primary)
 
-		const computed = getComputedStyle(document.documentElement)
-		const new_foreground = ensureContrast(computed.getPropertyValue("--foreground"), color, 3.0)
-		if (new_foreground) {
-			style.setProperty("--primary-foreground", new_foreground)
-		}
+		style.setProperty("--background", background)
+		style.setProperty("--foreground", foreground)
 	}
 
 	const [selectedColor, setSelectedColor] = useState<HslColor | undefined>(() => {
 		const style = getComputedStyle(document.documentElement)
-		const primary = style.getPropertyValue("--primary")
-		return parseHslColor(primary)
+		const background = style.getPropertyValue("--background")
+		return parseHslColor(background)
 	})
+
+	console.log(selectedColor)
 
 	useEffect(() => {
 		const ob = new MutationObserver(mutations => {
 			const el = mutations[0]?.target as HTMLElement
 			if (el) {
 				const theme = getThemeColors(getComputedStyle(el))
-				setSelectedColor(parseHslColor(theme["--primary"]))
+				const color = parseHslColor(theme["--background"])
+				setSelectedColor(v => {
+					if (!color) {
+						return undefined
+					}
+					if (!v) {
+						return color
+					}
+					if (v.h === color.h && v.s === color.s && v.l === color.l) {
+						return v
+					}
+					return
+				})
 			}
 		})
 		ob.observe(document.documentElement, { attributeFilter: ["class"] })

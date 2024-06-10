@@ -3,7 +3,7 @@ interface ThemeOptions {
 	color?: string | null
 }
 
-function isMediaDark() {
+export function isDark() {
 	return window.matchMedia(`(prefers-color-scheme: dark)`).matches
 }
 
@@ -13,7 +13,7 @@ function initTheme() {
 	const classList: string[] = []
 	if (style) {
 		classList.push(style)
-	} else if (isMediaDark()) {
+	} else if (isDark()) {
 		classList.push("dark")
 	}
 	if (color) {
@@ -35,7 +35,7 @@ export function setTheme({ style, color }: ThemeOptions = {}) {
 			classList.push(style)
 			break
 		case "system":
-			if (isMediaDark()) {
+			if (isDark()) {
 				classList.push("dark")
 			}
 			break
@@ -53,4 +53,8 @@ export function setTheme({ style, color }: ThemeOptions = {}) {
 		}
 	}
 	document.documentElement.className = classList.join(" ")
+
+	const s = document.documentElement.style
+	s.removeProperty("--background")
+	s.removeProperty("--foreground")
 }
