@@ -45,7 +45,7 @@ export const CommandInput = forwardRef<
 		<MagnifyingGlassIcon tw="mr-2 h-4 w-4 shrink-0 opacity-50" />
 		<CommandPrimitive.Input
 			ref={ref}
-			tw="flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:(cursor-not-allowed opacity-50)"
+			tw="flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:(pointer-events-none opacity-50)"
 			{...props}
 		/>
 	</div>

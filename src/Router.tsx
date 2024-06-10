@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import { Outlet, Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
 import { FormRoutes } from "~/pages/Form"
 import { Layout } from "./layout"
+import { ColorsRoutes } from "./pages/Colors"
 import { ComponentRoutes } from "./pages/Component"
 import { Home } from "./pages/Home"
 import { Login } from "./pages/Login"
@@ -31,6 +32,7 @@ export const router = createBrowserRouter(
 				{ComponentRoutes}
 				{FormRoutes}
 				{TableRoutes}
+				{ColorsRoutes}
 				{TestRoutes}
 			</Route>
 		</Route>,

@@ -29,7 +29,7 @@ import {
 import { CircleLoading } from "@components/spin"
 import { RouteTab, RouterTabs } from "@concepts/RouteTabs"
 import { useToast } from "@context"
-import { PlusIcon } from "@radix-ui/react-icons"
+import { InfoCircledIcon, PlusIcon } from "@radix-ui/react-icons"
 import dayjs from "dayjs"
 import { Fragment, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
@@ -53,6 +53,9 @@ export function Component() {
 			<Separator />
 			<Header>Dialog</Header>
 			<DialogView />
+			<Separator />
+			<Header>Toolip</Header>
+			<ToolipView />
 			<Separator />
 			<Header>Accordion</Header>
 			<AccordionView />
@@ -246,6 +249,30 @@ export function Waiting() {
 				</div>
 			</Overlay>
 		</Fragment>
+	)
+}
+
+function ToolipView() {
+	return (
+		<Popover placement="bottom-start">
+			<PopoverTrigger>
+				<Button variant="outline" size="icon">
+					<InfoCircledIcon />
+				</Button>
+			</PopoverTrigger>
+			<PopoverContent>
+				<div tw="border overflow-hidden rounded-lg bg-card w-[360px]">
+					<div tw="p-4">
+						<div tw="mb-4 font-bold">SASA</div>
+						<div>
+							Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+							been the standard dummy text ever since the 1500s, when an unknown printer took a galley of
+							type and scrambled it to make a type specimen book.
+						</div>
+					</div>
+				</div>
+			</PopoverContent>
+		</Popover>
 	)
 }
 

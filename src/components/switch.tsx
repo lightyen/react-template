@@ -6,13 +6,13 @@ const InputControl = tw.input`hidden`
 
 const effects = css`
 	${InputControl}:disabled + & {
-		${tw`cursor-not-allowed opacity-50`}
+		${tw`pointer-events-none opacity-50`}
 	}
 	${InputControl}:checked + & {
 		${tw`bg-primary`}
 	}
 	${InputControl}:checked + &::after {
-		${tw`translate-x-4`}
+		${tw`translate-x-5`}
 	}
 `
 
@@ -40,11 +40,11 @@ export const Switch = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInput
 				<label
 					htmlFor={id}
 					tabIndex={0}
-					tw="inline-flex h-[20px] w-[36px] shrink-0 cursor-pointer items-center rounded-full
+					tw="inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full
 						border-2 border-transparent shadow-sm transition-colors
 						bg-input
 						focus-visible:(outline-none ring-2 ring-ring ring-offset-2 ring-offset-background)
-						after:(pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform)
+						after:(pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform)
 					"
 					css={effects}
 					className={className}

@@ -7,7 +7,7 @@ w-full flex-1 flex h-9 min-h-[34px] text-sm rounded-md border border-input bg-ba
 file:(border-0 bg-background text-sm font-medium)
 placeholder:text-muted-foreground
 focus-within:(outline-none ring-1 ring-ring)
-disabled:(cursor-not-allowed opacity-50)
+disabled:(pointer-events-none opacity-50)
 [&[aria-invalid=true]]:(ring-1 ring-destructive bg-destructive/10)
 `
 
@@ -42,7 +42,7 @@ export const Password = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInp
 					autoCorrect="off"
 					spellCheck="false"
 					tabIndex={0}
-					tw="w-0 flex-1 focus-visible:outline-none bg-background [::-ms-reveal]:hidden disabled:cursor-not-allowed"
+					tw="w-0 flex-1 focus-visible:outline-none bg-background [::-ms-reveal]:hidden disabled:(pointer-events-none opacity-50)"
 					type={reveal ? "text" : "password"}
 					disabled={disabled}
 					aria-invalid={invalid}
@@ -52,7 +52,7 @@ export const Password = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInp
 					type="button"
 					tabIndex={-1}
 					disabled={disabled}
-					tw="text-muted-foreground p-1 focus:outline-none transition rounded-lg disabled:(pointer-events-none cursor-not-allowed text-muted)"
+					tw="text-muted-foreground p-1 focus:outline-none transition rounded-lg disabled:(pointer-events-none text-muted)"
 					onClick={() => setReveal(t => !t)}
 				>
 					{reveal ? <EyeOpenIcon /> : <EyeNoneIcon />}

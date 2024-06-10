@@ -17,23 +17,25 @@ import { Candidate, SuggestionInput } from "./SuggestionInput"
 export function Component() {
 	return (
 		<article>
-			<Header>Input</Header>
-			<InputView />
-			<Separator />
-			<Header>Switch</Header>
-			<SwitchView />
-			<Separator />
-			<Header>Checkbox</Header>
-			<CheckboxView />
-			<Separator />
-			<Header>Select</Header>
-			<ZonenameSelect />
-			<Separator />
-			<Header>Suggestion</Header>
-			<SuggestionView />
-			<Separator />
-			<Header>Form</Header>
-			<FormView />
+			<div tw="max-w-xl bg-card">
+				<Header>Input</Header>
+				<InputView />
+				<Separator />
+				<Header>Switch</Header>
+				<SwitchView />
+				<Separator />
+				<Header>Checkbox</Header>
+				<CheckboxView />
+				<Separator />
+				<Header>Select</Header>
+				<SelectView />
+				<Separator />
+				<Header>Suggestion</Header>
+				<SuggestionView />
+				<Separator />
+				<Header>Form</Header>
+				<FormView />
+			</div>
 		</article>
 	)
 }
@@ -41,11 +43,9 @@ export function Component() {
 function InputView() {
 	const id = useId()
 	return (
-		<div tw="max-w-xl">
-			<Label htmlFor={id} tw="mb-1 mt-3 text-lg">
-				Field
-			</Label>
-			<Input id={id} placeholder="some text" />
+		<div tw="grid gap-2">
+			<Label htmlFor={id}>Field</Label>
+			<Input id={id} placeholder="Type something..." />
 		</div>
 	)
 }
@@ -53,11 +53,9 @@ function InputView() {
 function SwitchView() {
 	const id = useId()
 	return (
-		<div tw="max-w-xl">
-			<div tw="flex items-center gap-2">
-				<Switch id={id} />
-				<Label htmlFor={id}>on/off</Label>
-			</div>
+		<div tw="flex items-center gap-2">
+			<Switch id={id} />
+			<Label htmlFor={id}>on/off</Label>
 		</div>
 	)
 }
@@ -65,16 +63,24 @@ function SwitchView() {
 function CheckboxView() {
 	const id = useId()
 	return (
-		<div tw="max-w-xl">
-			<div tw="flex items-center gap-2">
-				<Checkbox id={id} />
-				<Label htmlFor={id}>Enable</Label>
-			</div>
+		<div tw="flex items-center gap-2">
+			<Checkbox id={id} />
+			<Label htmlFor={id}>Enable</Label>
 		</div>
 	)
 }
 
-function ZonenameSelect() {
+function SelectView() {
+	const id = useId()
+	return (
+		<div tw="grid gap-2">
+			<Label htmlFor={id}>Zonename</Label>
+			<ZonenameSelect id={id} />
+		</div>
+	)
+}
+
+function ZonenameSelect({ id }: { id?: string }) {
 	const [value, setValue] = useState("Africa/Abidjan")
 
 	const parentRef = useRef<HTMLDivElement>(null)
@@ -144,7 +150,9 @@ function ZonenameSelect() {
 			}}
 		>
 			<PopoverTrigger>
-				<Button variant="outline">{value}</Button>
+				<Button variant="outline" tw="place-self-start" id={id}>
+					{value}
+				</Button>
 			</PopoverTrigger>
 			<PopoverContent>
 				<div tw="rounded-md border shadow-lg overflow-hidden">
@@ -242,10 +250,8 @@ function SuggestionView() {
 	const ref = useRef<HTMLInputElement>(null)
 	const id = useId()
 	return (
-		<div tw="max-w-xl">
-			<Label htmlFor={id} tw="mb-1 mt-3 text-lg">
-				MAC
-			</Label>
+		<div tw="grid gap-2">
+			<Label htmlFor={id}>MAC</Label>
 			<SuggestionInput
 				ref={ref}
 				id={id}

@@ -1,6 +1,7 @@
 import { SwitchLanguage } from "@concepts/SwitchLanguage"
 import { SwitchPrimaryColor } from "@concepts/SwitchPrimaryColor"
 import { SwitchTheme } from "@concepts/SwitchTheme"
+import { CustomColorPicker } from "~/concepts/CustomColorPicker"
 import { CommandMenu } from "./CommandMenu"
 import { NavigationSheetMenu } from "./NavigationMenu"
 
@@ -18,6 +19,7 @@ export function HeaderMenu() {
 					</div>
 					<SwitchPrimaryColor />
 					<SwitchLanguage />
+					<CustomColorPicker />
 					<SwitchTheme />
 				</div>
 			</div>

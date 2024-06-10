@@ -60,7 +60,16 @@ export function PopoverTrigger({ children, mode = "click", ...props }: PropsWith
 
 	if (!isValidElement(children) || isElement(children, FormattedMessage)) {
 		return (
-			<Button ref={refs.setReference} {...getReferenceProps()}>
+			<Button
+				ref={refs.setReference}
+				{...getReferenceProps({
+					onClick() {
+						if (mode === "click") {
+							setVisible(true)
+						}
+					},
+				})}
+			>
 				{children}
 			</Button>
 		)

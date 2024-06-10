@@ -10,7 +10,7 @@ const effects = css`
 		${tw`outline-none ring-1 ring-ring`}
 	}
 	${InputControl}:disabled + & {
-		${tw`cursor-not-allowed opacity-50`}
+		${tw`pointer-events-none opacity-50`}
 	}
 	${InputControl}:checked + &, ${InputControl}:indeterminate + & {
 		${tw`bg-primary text-primary-foreground`}
