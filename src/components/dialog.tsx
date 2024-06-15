@@ -239,7 +239,7 @@ export function Dialog({
 	setVisible = () => void 0,
 	blur,
 	overlayExit = true,
-	onClickOverlay,
+	onClickOverlay = () => void 0,
 	children,
 }: PropsWithChildren<DialogProps>) {
 	const [innerVisible, innerSetVisible] = useState(false)
@@ -266,8 +266,8 @@ export function Dialog({
 			<Overlay
 				visible={ctx.visible}
 				blur={blur}
-				onClick={() => {
-					onClickOverlay?.()
+				onClickOverlay={() => {
+					onClickOverlay()
 					if (overlayExit === true) {
 						ctx.setVisible(false)
 					}

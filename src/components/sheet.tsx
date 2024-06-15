@@ -280,7 +280,7 @@ export function Sheet({
 			<Overlay
 				visible={ctx.visible}
 				blur={blur}
-				onClick={() => {
+				onClickOverlay={() => {
 					onClickOverlay?.()
 					if (overlayExit === true) {
 						ctx.setVisible(false)

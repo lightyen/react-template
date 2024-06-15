@@ -255,7 +255,7 @@ export function Sheet({ blur, overlayExit = true, onClickOverlay, children }: Pr
 			<Overlay
 				visible={visible}
 				blur={blur}
-				onClick={() => {
+				onClickOverlay={() => {
 					onClickOverlay?.()
 					if (overlayExit === true) {
 						setVisible(false)
