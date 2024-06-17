@@ -238,7 +238,7 @@ export interface SheetProps {
 	onClickOverlay?(): void
 }
 
-export function Sheet({ blur, overlayExit = true, onClickOverlay, children }: PropsWithChildren<SheetProps>) {
+export function Sheet({ blur, overlayExit = true, onClickOverlay = () => void 0, children }: PropsWithChildren<SheetProps>) {
 	const [visible, setVisible] = useState(false)
 	const contentReactElement = Children.toArray(children).find(
 		(e): e is ReactElement<ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),
@@ -256,7 +256,7 @@ export function Sheet({ blur, overlayExit = true, onClickOverlay, children }: Pr
 				visible={visible}
 				blur={blur}
 				onClickOverlay={() => {
-					onClickOverlay?.()
+					onClickOverlay()
 					if (overlayExit === true) {
 						setVisible(false)
 					}

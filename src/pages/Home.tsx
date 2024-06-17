@@ -1,5 +1,7 @@
 import { useSelect } from "@context"
 
+import * as Slider from "@radix-ui/react-slider"
+
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
 	return (
@@ -40,6 +42,31 @@ export function Home() {
 					</a>
 				</div>
 			</div>
+			<span>A</span>
+			<Slider.Root
+				tw="relative flex items-center select-none touch-none w-[300px] h-5 data-[orientation='vertical']:(flex-col w-5 h-[200px])"
+				defaultValue={[500, 900]}
+				max={1000}
+				step={1}
+				// orientation="vertical"
+				// onValueCommit
+				onValueChange={e => {
+					console.log(e)
+				}}
+			>
+				<Slider.Track tw="bg-accent relative grow rounded-full h-[3px] data-[orientation='vertical']:(w-[3px])">
+					<Slider.Range tw="absolute bg-primary rounded-full h-full data-[orientation='vertical']:(w-full h-auto)" />
+				</Slider.Track>
+				<Slider.Thumb
+					tw="block w-5 h-5 bg-primary rounded-[10px] focus:(shadow-primary/30 shadow-[0 0 0 5px var(--tw-shadow-color)] outline-none)"
+					aria-label="Volume"
+				/>
+				<Slider.Thumb
+					tw="block w-5 h-5 bg-primary rounded-[10px] focus:(shadow-primary/30 shadow-[0 0 0 5px var(--tw-shadow-color)] outline-none)"
+					aria-label="Volume"
+				/>
+			</Slider.Root>
+			<span>B</span>
 		</article>
 	)
 }
