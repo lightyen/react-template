@@ -107,7 +107,7 @@ export function SliderRoot({
 			return
 		}
 
-		let rect = rectRef.current!
+		let rect = rectRef.current
 		if (!rect) {
 			rect = sliderRef.current.getBoundingClientRect()
 			rectRef.current = rect
