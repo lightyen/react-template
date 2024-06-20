@@ -1,4 +1,5 @@
 import {
+	KeyboardEvent,
 	PointerEvent,
 	PropsWithChildren,
 	createContext,
@@ -9,6 +10,7 @@ import {
 	type AriaAttributes,
 	type HTMLAttributes,
 } from "react"
+import { composeEventHandlers, composeRefs } from "./lib/compose"
 
 interface SliderContext {
 	values: number[]
@@ -23,7 +25,7 @@ interface SliderContext {
 
 const sliderContext = createContext(null as unknown as SliderContext)
 
-interface SliderProps extends SliderRootProps {
+interface SliderProps extends Omit<HTMLAttributes<HTMLSpanElement>, "defaultValue"> {
 	onValueChange?(value: number[]): void
 	onValueCommit?(value: number[]): void
 	disabled?: boolean
@@ -34,7 +36,14 @@ interface SliderProps extends SliderRootProps {
 	step?: number
 }
 
-interface SliderRootProps extends Omit<HTMLAttributes<HTMLSpanElement>, "defaultValue"> {}
+interface SliderPrivateProps extends Omit<HTMLAttributes<HTMLSpanElement>, "defaultValue"> {
+	onSlideStart(event: PointerEvent): void
+	onSlideMove(event: PointerEvent): void
+	onSlideEnd(event: PointerEvent): void
+	onHomeKeyDown(event: KeyboardEvent): void
+	onEndKeyDown(event: KeyboardEvent): void
+	onStepKeyDown(event: React.KeyboardEvent): void
+}
 
 interface SliderTrackProps extends Omit<HTMLAttributes<HTMLSpanElement>, "defaultValue"> {}
 
@@ -70,7 +79,7 @@ export function Slider({
 
 	return (
 		<sliderContext.Provider value={context}>
-			<SliderRoot {...props}>{children}</SliderRoot>
+			<SliderImpl {...props}>{children}</SliderImpl>
 		</sliderContext.Provider>
 	)
 }
@@ -88,66 +97,94 @@ function getValueFromPointer(rect: DOMRect, pointerPosition: number, min: number
 	return output[0] + ratio * (v - input[0])
 }
 
-export function SliderRoot({
-	children,
-	onPointerDown,
-	onPointerUp,
-	onPointerMove,
-	...props
-}: PropsWithChildren<SliderRootProps>) {
-	const { min, max } = useContext(sliderContext)
+const PAGE_KEYS = ["PageUp", "PageDown"]
+const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
 
-	const sliderRef = useRef<HTMLSpanElement>(null)
-	const rectRef = useRef<DOMRect | undefined>()
+const SliderImpl = forwardRef<HTMLSpanElement, SliderPrivateProps>(
+	(
+		{
+			children,
+			onKeyDown,
+			onPointerDown,
+			onPointerUp,
+			onPointerMove,
+			onSlideStart,
+			onSlideMove,
+			onSlideEnd,
+			onHomeKeyDown,
+			onEndKeyDown,
+			onStepKeyDown,
+			...props
+		},
+		ref,
+	) => {
+		const { min, max } = useContext(sliderContext)
 
-	const { onValueChange, onValueCommit } = useContext(sliderContext)
+		const sliderRef = useRef<HTMLSpanElement>(null)
+		const rectRef = useRef<DOMRect | undefined>()
 
-	function handlePointer(event: PointerEvent<HTMLSpanElement>) {
-		if (sliderRef.current == null) {
-			return
+		const { onValueChange, onValueCommit } = useContext(sliderContext)
+
+		function handlePointer(event: PointerEvent<HTMLSpanElement>) {
+			if (!sliderRef.current) {
+				return
+			}
+
+			let rect = rectRef.current
+			if (!rect) {
+				rect = sliderRef.current.getBoundingClientRect()
+				rectRef.current = rect
+			}
+
+			const value = getValueFromPointer(rect, event.clientX, min, max)
+			console.log("onValueChange", value)
 		}
 
-		let rect = rectRef.current
-		if (!rect) {
-			rect = sliderRef.current.getBoundingClientRect()
-			rectRef.current = rect
-		}
-
-		const value = getValueFromPointer(rect, event.clientX, min, max)
-		console.log("onValueChange", value)
-	}
-
-	return (
-		<span
-			ref={sliderRef}
-			id="slider-root"
-			onPointerDown={event => {
-				event.preventDefault()
-				const target = event.target as HTMLElement
-				target.setPointerCapture(event.pointerId)
-				handlePointer(event)
-			}}
-			onPointerMove={event => {
-				if (event.pointerId === 0) {
-					return
-				}
-				const target = event.target as HTMLElement
-				if (target.hasPointerCapture(event.pointerId)) {
+		return (
+			<span
+				ref={composeRefs(ref, sliderRef)}
+				id="slider-root"
+				onKeyDown={composeEventHandlers(onKeyDown, event => {
+					if (event.key === "Home") {
+						event.preventDefault()
+						onHomeKeyDown(event)
+					} else if (event.key === "End") {
+						event.preventDefault()
+						onEndKeyDown(event)
+					} else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
+						event.preventDefault()
+						onStepKeyDown(event)
+					}
+				})}
+				onPointerDown={composeEventHandlers(onPointerDown, event => {
+					event.preventDefault()
+					const target = event.target as HTMLElement
+					target.setPointerCapture(event.pointerId)
 					handlePointer(event)
-				}
-			}}
-			onPointerUp={event => {
-				const target = event.target as HTMLElement
-				if (target.hasPointerCapture(event.pointerId)) {
-					target.releasePointerCapture(event.pointerId)
-				}
-			}}
-			{...props}
-		>
-			{children}
-		</span>
-	)
-}
+				})}
+				onPointerMove={composeEventHandlers(onPointerMove, event => {
+					if (event.pointerId === 0) {
+						return
+					}
+					const target = event.target as HTMLElement
+					if (target.hasPointerCapture(event.pointerId)) {
+						handlePointer(event)
+					}
+				})}
+				onPointerUp={composeEventHandlers(onPointerUp, event => {
+					const target = event.target as HTMLElement
+					if (target.hasPointerCapture(event.pointerId)) {
+						target.releasePointerCapture(event.pointerId)
+						// onSlideEnd
+					}
+				})}
+				{...props}
+			>
+				{children}
+			</span>
+		)
+	},
+)
 
 export function SliderTrack({ ...props }: PropsWithChildren<SliderTrackProps>) {
 	const { disabled, orientation } = useContext(sliderContext)

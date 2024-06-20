@@ -32,17 +32,22 @@ import {
 import { FormattedMessage } from "react-intl"
 import { Button, type ButtonProps } from "./button"
 import { isElement } from "./lib"
+import { composeRefs } from "./lib/compose"
 
-interface PopoverContext {
+interface IPopover {
 	visible: boolean
 	setVisible(v: boolean): void
+	onEnter(): void
+	onLeave(): void
+}
+
+interface PopoverContext extends IPopover {
+	isMounted: boolean
 	refs: UseFloatingReturn["refs"]
 	floatingStyles: UseFloatingReturn["floatingStyles"]
 	getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"]
 	getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"]
 	styles: CSSProperties
-	isMounted: boolean
-	onLeave(): void
 }
 
 const popoverContext = createContext(null as unknown as PopoverContext)
@@ -80,14 +85,7 @@ export function PopoverTrigger({ children, mode = "click", ...props }: PropsWith
 	}
 
 	const innerProps = getReferenceProps({
-		ref: node => {
-			refs.setReference(node)
-			if (typeof child.ref === "function") {
-				child.ref(node as HTMLElement)
-			} else if (child.ref) {
-				child.ref.current = node as HTMLElement
-			}
-		},
+		ref: composeRefs(child.ref, refs.setReference),
 		onClick(e) {
 			if (mode === "click") {
 				setVisible(true)
@@ -124,11 +122,11 @@ interface PopoverContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "chil
 }
 
 export function PopoverContent({ children, ...props }: PopoverContentProps) {
-	const { isMounted, refs, floatingStyles, getFloatingProps, styles, setVisible, onLeave } =
+	const { isMounted, refs, floatingStyles, getFloatingProps, styles, setVisible, visible, onEnter, onLeave } =
 		useContext(popoverContext)
-	const cb = useRef(onLeave)
+	const onleave = useRef(onLeave)
 	useEffect(() => {
-		const onLeave = cb.current
+		const onLeave = onleave.current
 		return () => {
 			if (isMounted) {
 				onLeave()
@@ -141,7 +139,14 @@ export function PopoverContent({ children, ...props }: PopoverContentProps) {
 	return (
 		isMounted && (
 			<div ref={refs.setFloating} style={{ ...floatingStyles, zIndex: 20 }} {...getFloatingProps()} {...props}>
-				<div style={styles}>
+				<div
+					style={styles}
+					onTransitionEnd={() => {
+						if (visible) {
+							onEnter()
+						}
+					}}
+				>
 					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
 				</div>
 			</div>
@@ -186,6 +191,7 @@ interface PopoverProps {
 	placement?: Placement
 	visible?: boolean
 	setVisible?(v: boolean | ((prev: boolean) => boolean)): void
+	onEnter?(): void
 	onLeave?(): void
 }
 
@@ -194,24 +200,27 @@ export function Popover({
 	placement = "bottom",
 	visible,
 	setVisible = () => void 0,
+	onEnter = () => void 0,
 	onLeave = () => void 0,
 }: PropsWithChildren<PopoverProps>) {
 	const [innerVisible, innerSetVisible] = useState(false)
 
-	const ctx = useMemo(() => {
+	const ctx = useMemo<IPopover>(() => {
 		if (visible == null) {
-			return { visible: innerVisible, setVisible: innerSetVisible, onLeave }
+			return { visible: innerVisible, setVisible: innerSetVisible, onEnter, onLeave }
 		}
-		return { visible, setVisible, onLeave }
-	}, [innerVisible, visible, setVisible, onLeave])
+		return { visible, setVisible, onEnter, onLeave }
+	}, [innerVisible, visible, setVisible, onEnter, onLeave])
 
 	const { refs, floatingStyles, context } = useFloating({
 		open: ctx.visible,
 		onOpenChange: ctx.setVisible,
 		placement,
+
 		middleware: [offset(5), shift({ padding: 8 }), flip()],
 		whileElementsMounted: autoUpdate,
 	})
+
 	const dismiss = useDismiss(context, {
 		referencePressEvent: "pointerdown",
 		outsidePress: true,

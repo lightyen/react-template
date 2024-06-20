@@ -12,6 +12,7 @@ import {
 	type InputHTMLAttributes,
 	type Key,
 } from "react"
+import { composeRefs } from "~/components/lib/compose"
 
 export interface Candidate {
 	value: string
@@ -116,14 +117,7 @@ export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps
 			>
 				<PopoverTrigger mode="none">
 					<Input
-						ref={node => {
-							innerRef.current = node
-							if (typeof ref === "function") {
-								ref(node)
-							} else if (ref) {
-								ref.current = node
-							}
-						}}
+						ref={composeRefs(ref, innerRef)}
 						onFocus={() => {
 							if (suggestions.length > 0) {
 								setVisible(true)

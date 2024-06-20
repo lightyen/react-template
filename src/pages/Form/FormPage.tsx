@@ -119,6 +119,7 @@ function ZonenameSelect({ id }: { id?: string }) {
 
 	const hovering = useRef(false)
 	const keyboard = useRef<Date>(new Date())
+	const inputRef = useRef<HTMLInputElement>(null)
 
 	const itemSize = 32
 
@@ -145,6 +146,11 @@ function ZonenameSelect({ id }: { id?: string }) {
 			placement="bottom-start"
 			visible={visible}
 			setVisible={setVisible}
+			onEnter={() => {
+				if (inputRef.current) {
+					inputRef.current.focus({ preventScroll: true })
+				}
+			}}
 			onLeave={() => {
 				setSearchInput("")
 			}}
@@ -157,6 +163,7 @@ function ZonenameSelect({ id }: { id?: string }) {
 			<PopoverContent>
 				<div tw="rounded-md border shadow-lg overflow-hidden">
 					<SearchInput
+						ref={inputRef}
 						tw="focus-within:ring-0 border-0 border-b rounded-b-none"
 						onChange={e => {
 							const value = e.target.value
@@ -194,7 +201,6 @@ function ZonenameSelect({ id }: { id?: string }) {
 						onBlur={() => {
 							setVisible(false)
 						}}
-						autoFocus
 					/>
 					<PopoverClose>
 						<div

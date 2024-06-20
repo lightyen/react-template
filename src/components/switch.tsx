@@ -1,6 +1,7 @@
 import { css } from "@emotion/react"
 import { forwardRef, useId, useRef, type InputHTMLAttributes } from "react"
 import { tw } from "twobj"
+import { composeRefs } from "./lib/compose"
 
 const InputControl = tw.input`hidden`
 
@@ -24,19 +25,7 @@ export const Switch = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInput
 		if (!id) id = innerId
 		return (
 			<>
-				<InputControl
-					ref={el => {
-						inputRef.current = el
-						if (typeof ref === "function") {
-							ref(el)
-						} else if (ref) {
-							ref.current = el
-						}
-					}}
-					id={id}
-					type="checkbox"
-					{...props}
-				/>
+				<InputControl ref={composeRefs(ref, inputRef)} id={id} type="checkbox" {...props} />
 				<label
 					htmlFor={id}
 					tabIndex={0}
