@@ -72,9 +72,7 @@ interface SheetContentProps {
 }
 
 export function SheetContent({
-	onPointerDown,
-	onPointerUp,
-	onClick,
+	onClick = () => void 0,
 	children,
 	...props
 }: SheetContentProps & HTMLAttributes<HTMLDivElement>) {
@@ -148,6 +146,8 @@ export function SheetContent({
 		return null
 	}
 
+	console.log(gestures())
+
 	return transitions((style, item) => {
 		return (
 			item && (
@@ -158,7 +158,7 @@ export function SheetContent({
 					style={{ ...style, touchAction: "none" }}
 					onClick={event => {
 						event.stopPropagation()
-						onClick?.(event)
+						onClick(event)
 					}}
 					{...gestures()}
 					{...props}
@@ -238,7 +238,12 @@ export interface SheetProps {
 	onClickOverlay?(): void
 }
 
-export function Sheet({ blur, overlayExit = true, onClickOverlay = () => void 0, children }: PropsWithChildren<SheetProps>) {
+export function Sheet({
+	blur,
+	overlayExit = true,
+	onClickOverlay = () => void 0,
+	children,
+}: PropsWithChildren<SheetProps>) {
 	const [visible, setVisible] = useState(false)
 	const contentReactElement = Children.toArray(children).find(
 		(e): e is ReactElement<ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),

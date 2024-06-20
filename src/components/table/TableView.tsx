@@ -17,7 +17,7 @@ import type { Label, SortType, TableColumnItem, WithIndex } from "./context/mode
 
 function SortButton({
 	sortType,
-	onSort,
+	onSort = () => void 0,
 	children,
 }: PropsWithChildren<{ sortType?: SortType; onSort?(t: SortType): void }>) {
 	return (
@@ -38,15 +38,15 @@ function SortButton({
 				<Command tw="w-32 p-1">
 					<PopoverClose>
 						<CommandList>
-							<CommandItem onSelect={() => onSort?.("")} tw="flex gap-2">
+							<CommandItem onSelect={() => onSort("")} tw="flex gap-2">
 								<CaretSortIcon />
 								<span tw="pointer-events-none capitalize">Default</span>
 							</CommandItem>
-							<CommandItem onSelect={() => onSort?.("asc")} tw="flex gap-2">
+							<CommandItem onSelect={() => onSort("asc")} tw="flex gap-2">
 								<ArrowUpIcon />
 								<span tw="pointer-events-none capitalize">Asc</span>
 							</CommandItem>
-							<CommandItem onSelect={() => onSort?.("desc")} tw="flex gap-2">
+							<CommandItem onSelect={() => onSort("desc")} tw="flex gap-2">
 								<ArrowDownIcon />
 								<span tw="pointer-events-none capitalize">Desc</span>
 							</CommandItem>

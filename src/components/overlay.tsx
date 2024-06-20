@@ -22,8 +22,8 @@ export function Overlay({
 	blur = true,
 	duration = 100,
 	onClickOverlay = () => void 0,
-	onPointerDown,
-	onPointerUp,
+	onPointerDown = () => void 0,
+	onPointerUp = () => void 0,
 	onClick,
 	...props
 }: PropsWithChildren<OverlayProps>) {
@@ -97,13 +97,13 @@ export function Overlay({
 						css={blur && tw`backdrop-blur-sm`}
 						style={s}
 						onPointerDown={event => {
-							onPointerDown?.(event)
+							onPointerDown(event)
 							if (event.pointerId) {
 								pointerId.current = event.pointerId
 							}
 						}}
 						onPointerUp={event => {
-							onPointerUp?.(event)
+							onPointerUp(event)
 							if (event.pointerId) {
 								pointerId.current = 0
 								onClickOverlay(event)

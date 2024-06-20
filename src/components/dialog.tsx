@@ -80,9 +80,9 @@ interface DialogContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "child
 
 export function DialogContent({
 	layout = true,
-	onPointerDown,
-	onPointerUp,
-	onClick,
+	onPointerDown = () => void 0,
+	onPointerUp = () => void 0,
+	onClick = () => void 0,
 	children,
 	...props
 }: DialogContentProps) {
@@ -135,15 +135,15 @@ export function DialogContent({
 					}
 					onPointerDown={event => {
 						event.stopPropagation()
-						onPointerDown?.(event)
+						onPointerDown(event)
 					}}
 					onPointerUp={event => {
 						event.stopPropagation()
-						onPointerUp?.(event)
+						onPointerUp(event)
 					}}
 					onClick={event => {
 						event.stopPropagation()
-						onClick?.(event)
+						onClick(event)
 					}}
 				>
 					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}

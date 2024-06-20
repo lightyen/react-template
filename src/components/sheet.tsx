@@ -122,9 +122,9 @@ interface SheetContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "childr
 
 export function SheetContent({
 	side = "right",
-	onPointerDown,
-	onPointerUp,
-	onClick,
+	onPointerDown = () => void 0,
+	onPointerUp = () => void 0,
+	onClick = () => void 0,
 	children,
 	...props
 }: PropsWithChildren<SheetContentProps> & HTMLAttributes<HTMLDivElement>) {
@@ -170,15 +170,15 @@ export function SheetContent({
 					style={style}
 					onPointerDown={event => {
 						event.stopPropagation()
-						onPointerDown?.(event)
+						onPointerDown(event)
 					}}
 					onPointerUp={event => {
 						event.stopPropagation()
-						onPointerUp?.(event)
+						onPointerUp(event)
 					}}
 					onClick={event => {
 						event.stopPropagation()
-						onClick?.(event)
+						onClick(event)
 					}}
 				>
 					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
@@ -254,7 +254,7 @@ export function Sheet({
 	setVisible = () => void 0,
 	blur,
 	overlayExit = true,
-	onClickOverlay,
+	onClickOverlay = () => void 0,
 	children,
 }: PropsWithChildren<DialogProps>) {
 	const [innerVisible, innerSetVisible] = useState(false)
@@ -281,7 +281,7 @@ export function Sheet({
 				visible={ctx.visible}
 				blur={blur}
 				onClickOverlay={() => {
-					onClickOverlay?.()
+					onClickOverlay()
 					if (overlayExit === true) {
 						ctx.setVisible(false)
 					}

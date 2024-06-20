@@ -25,7 +25,7 @@ export interface SuggestionInputProps extends Omit<InputHTMLAttributes<HTMLInput
 }
 
 export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps>(
-	({ candidates, onSelect, onChange, onKeyDown, ...props }, ref) => {
+	({ candidates, onSelect = () => void 0, onChange = () => void 0, onKeyDown = () => void 0, ...props }, ref) => {
 		const innerRef = useRef<HTMLInputElement | null>(null)
 		const parentRef = useRef<HTMLDivElement>(null)
 		const [searchInput, setSearchInput] = useState("")
@@ -77,7 +77,7 @@ export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps
 
 		function handleSelect(s: Candidate) {
 			typing.current = false
-			onSelect?.(s)
+			onSelect(s)
 		}
 
 		useEffect(() => {
@@ -130,7 +130,7 @@ export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps
 							}
 						}}
 						onChange={e => {
-							onChange?.(e)
+							onChange(e)
 							const value = e.target.value
 							typing.current = true
 							startTransition(() => {
@@ -180,7 +180,7 @@ export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps
 								return
 							}
 
-							onKeyDown?.(e)
+							onKeyDown(e)
 						}}
 						{...props}
 					/>

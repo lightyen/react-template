@@ -30,7 +30,7 @@ interface RouterTabsProps {
 	onNavigate?: NavigateFunction
 }
 
-export function RouterTabs({ children, to: propTo, onNavigate }: RouterTabsProps) {
+export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: RouterTabsProps) {
 	const id = useId()
 
 	const [stateTo, setTo] = useState(() => propTo)
@@ -67,7 +67,7 @@ export function RouterTabs({ children, to: propTo, onNavigate }: RouterTabsProps
 								if (!propTo) {
 									setTo(to)
 								}
-								onNavigate?.(to, undefined)
+								onNavigate(to, undefined)
 							}}
 						/>
 						<label
