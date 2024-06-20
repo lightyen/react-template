@@ -5,6 +5,7 @@ import { useDrag } from "@use-gesture/react"
 import { HTMLAttributes, createContext, useContext, useRef, useState } from "react"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
+import { Slider, SliderRange, SliderTrack } from "~/components/slider"
 import { addresses } from "~/data/macaddr"
 import { TodoList } from "./Todolist"
 
@@ -52,20 +53,29 @@ function AnimatedItem({ children, ...props }: HTMLAttributes<HTMLDivElement>) {
 export function Component() {
 	return (
 		<article tw="relative">
-			<h1 tw="border-b mb-4">Test</h1>
-			<div tw="bg-accent/50 p-2 max-w-[600px] flex gap-5 justify-end">
-				<Button variant="outline" size="sm" tw="flex-1 sm:max-w-[130px]">
-					Cancel
-				</Button>
-				<Button variant="outline" size="sm" tw="flex-1 sm:max-w-[130px]">
-					Submit
-				</Button>
+			<div aria-label="slider-demo">
+				<Slider tw="relative flex items-center flex-wrap select-none touch-none w-[300px] h-5 data-[orientation='vertical']:(flex-col w-5 h-[200px])">
+					<SliderTrack tw="bg-input flex relative grow rounded-full w-full h-[3px] data-[orientation='vertical']:(w-[3px])">
+						<SliderRange tw="absolute bg-primary rounded-full h-full data-[orientation='vertical']:(w-full h-auto)" />
+					</SliderTrack>
+				</Slider>
 			</div>
-			<div tw="relative p-4">
-				<DragExample />
-			</div>
-			<div tw="max-w-lg">
-				<TodoList />
+			<div>
+				<h1 tw="border-b mb-4">Test</h1>
+				<div tw="bg-accent/50 p-2 max-w-[600px] flex gap-5 justify-end">
+					<Button variant="outline" size="sm" tw="flex-1 sm:max-w-[130px]">
+						Cancel
+					</Button>
+					<Button variant="outline" size="sm" tw="flex-1 sm:max-w-[130px]">
+						Submit
+					</Button>
+				</div>
+				<div tw="relative p-4">
+					<DragExample />
+				</div>
+				<div tw="max-w-lg">
+					<TodoList />
+				</div>
 			</div>
 			<Demo />
 			<LongList />

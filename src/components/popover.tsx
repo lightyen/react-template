@@ -45,7 +45,7 @@ interface PopoverContext {
 	onLeave(): void
 }
 
-const popoverContext = createContext<PopoverContext>(null as unknown as PopoverContext)
+const popoverContext = createContext(null as unknown as PopoverContext)
 
 interface PopoverTriggerProps extends Omit<ButtonProps, "onClick"> {
 	mode?: "click" | "none"

@@ -45,7 +45,7 @@ export function Home() {
 			<div>
 				<span>A</span>
 				<Slider.Root
-					tw="relative flex items-center select-none touch-none w-[300px] h-5 data-[orientation='vertical']:(flex-col w-5 h-[200px])"
+					tw="relative flex items-center flex-wrap select-none touch-none w-[300px] h-5 data-[orientation='vertical']:(flex-col w-5 h-[200px])"
 					// defaultValue={[500, 900]}
 					// max={1000}
 					// step={1}
@@ -55,7 +55,7 @@ export function Home() {
 						console.log(e)
 					}}
 				>
-					<Slider.Track tw="bg-input relative grow rounded-full h-[3px] data-[orientation='vertical']:(w-[3px])">
+					<Slider.Track tw="bg-input flex relative grow rounded-full w-full h-[3px] data-[orientation='vertical']:(w-[3px])">
 						<Slider.Range tw="absolute bg-primary rounded-full h-full data-[orientation='vertical']:(w-full h-auto)" />
 					</Slider.Track>
 					<Slider.Thumb
