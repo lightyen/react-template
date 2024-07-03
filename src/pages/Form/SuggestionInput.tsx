@@ -26,7 +26,10 @@ export interface SuggestionInputProps extends Omit<InputHTMLAttributes<HTMLInput
 }
 
 export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps>(
-	({ candidates, onSelect = () => void 0, onChange = () => void 0, onKeyDown = () => void 0, ...props }, ref) => {
+	(
+		{ candidates, onSelect = () => void 0, onChange = () => void 0, onKeyDown = () => void 0, ...props },
+		forwardedRef,
+	) => {
 		const innerRef = useRef<HTMLInputElement | null>(null)
 		const parentRef = useRef<HTMLDivElement>(null)
 		const [searchInput, setSearchInput] = useState("")
@@ -117,7 +120,7 @@ export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps
 			>
 				<PopoverTrigger mode="none">
 					<Input
-						ref={composeRefs(ref, innerRef)}
+						ref={composeRefs(forwardedRef, innerRef)}
 						onFocus={() => {
 							if (suggestions.length > 0) {
 								setVisible(true)

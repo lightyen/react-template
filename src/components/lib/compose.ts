@@ -1,4 +1,4 @@
-import type { MutableRefObject, Ref, SyntheticEvent } from "react"
+import { useCallback, type MutableRefObject, type Ref, type SyntheticEvent } from "react"
 
 export type NullableRef<T> = Ref<T> | null | undefined
 
@@ -17,6 +17,11 @@ export function composeRefs<T extends Element>(...refs: NullableRef<T>[]) {
 			setRef(ref, node)
 		}
 	}
+}
+
+export function useComposedRefs<T extends Element>(...refs: NullableRef<T>[]) {
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	return useCallback(composeRefs(...refs), refs)
 }
 
 export function composeEventHandlers<E extends SyntheticEvent>(

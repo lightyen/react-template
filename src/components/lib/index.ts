@@ -52,7 +52,6 @@ export function isElement<C extends JSXElementConstructor<any> = JSXElementConst
 		if (e.type === c) {
 			return true
 		}
-
 		if (process.env.NODE_ENV === "development") {
 			const a = e.type["name"]
 			const b = c["name"]
@@ -67,6 +66,13 @@ export function isElement<C extends JSXElementConstructor<any> = JSXElementConst
 	if (typeof type === "function" && typeof c === "function") {
 		if (type === c) {
 			return true
+		}
+		if (process.env.NODE_ENV === "development") {
+			const a = e.type["name"]
+			const b = c["name"]
+			if (a && a === b) {
+				return true
+			}
 		}
 	}
 

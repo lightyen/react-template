@@ -2,7 +2,7 @@ import { css } from "@emotion/react"
 import { CheckIcon, DividerHorizontalIcon } from "@radix-ui/react-icons"
 import { InputHTMLAttributes, forwardRef, useEffect, useId, useRef } from "react"
 import { tw } from "twobj"
-import { composeRefs } from "./lib/compose"
+import { useComposedRefs } from "./lib/compose"
 
 const InputControl = tw.input`hidden`
 
@@ -35,9 +35,10 @@ interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-	({ id, className, intermediate, onFocus, onBlur, onKeyDown, ...props }, ref) => {
+	({ id, className, intermediate, onFocus, onBlur, onKeyDown, ...props }, forwardedRef) => {
 		const innerId = useId()
 		const inputRef = useRef<HTMLInputElement | null>(null)
+		const ref = useComposedRefs(forwardedRef, inputRef)
 		const isFocus = useRef(false)
 		if (!id) id = innerId
 		useEffect(() => {
@@ -49,7 +50,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 		}, [intermediate])
 		return (
 			<>
-				<InputControl ref={composeRefs(ref, inputRef)} id={id} type="checkbox" {...props} />
+				<InputControl ref={ref} id={id} type="checkbox" {...props} />
 				<label
 					htmlFor={id}
 					tabIndex={0}

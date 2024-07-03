@@ -46,6 +46,8 @@ function InputView() {
 		<div tw="grid gap-2">
 			<Label htmlFor={id}>Field</Label>
 			<Input id={id} placeholder="Type something..." />
+			<Label>Field2</Label>
+			<Input disabled placeholder="Disabled" />
 		</div>
 	)
 }

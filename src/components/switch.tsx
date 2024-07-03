@@ -18,14 +18,14 @@ const effects = css`
 `
 
 export const Switch = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
-	({ id, className, onFocus, onBlur, onKeyDown, ...props }, ref) => {
+	({ id, className, onFocus, onBlur, onKeyDown, ...props }, forwardedRef) => {
 		const innerId = useId()
 		const inputRef = useRef<HTMLInputElement | null>(null)
 		const isFocus = useRef(false)
 		if (!id) id = innerId
 		return (
 			<>
-				<InputControl ref={composeRefs(ref, inputRef)} id={id} type="checkbox" {...props} />
+				<InputControl ref={composeRefs(forwardedRef, inputRef)} id={id} type="checkbox" {...props} />
 				<label
 					htmlFor={id}
 					tabIndex={0}
