@@ -60,7 +60,7 @@
     "rollup-plugin-visualizer": "5.12.0",
     "typescript": "5.5.3",
     "vite": "5.3.3",
-    "vite-plugin-eslint": "1.8.1",
+    "@nabla/vite-plugin-eslint": "2.0.4",
     "vite-plugin-svgr": "4.2.0",
     "vite-plugin-tsconfig-paths": "1.4.1"
   }
