@@ -54,7 +54,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 				<label
 					htmlFor={id}
 					tabIndex={0}
-					tw="h-4 w-4 shrink-0 rounded-lg border border-primary shadow select-none cursor-pointer
+					tw="h-[18px] w-[18px] shrink-0 rounded-full border-2 border-primary shadow select-none cursor-pointer
 						focus-visible:(outline-none ring-1 ring-ring)
 						flex items-center text-current
 					"

@@ -96,13 +96,7 @@ function SliderView() {
 				<SliderThumb css={sliderStyle.thumb} aria-label="Volume" />
 			</SliderRoot>
 			<div>{value[0]}</div>
-			<SliderRoot
-				min={20}
-				max={200}
-				value={value2}
-				onValueCommit={value => setValue2(value)}
-				css={sliderStyle.root}
-			>
+			<SliderRoot value={value2} onValueCommit={value => setValue2(value)} css={sliderStyle.root}>
 				<SliderTrack css={sliderStyle.track}>
 					<SliderRange css={sliderStyle.range} />
 				</SliderTrack>
