@@ -153,6 +153,7 @@ export function DialogContent({
 		)
 	})
 }
+DialogContent["$id"] = Symbol.for("com.DialogContent")
 
 export function DialogClose({
 	children,
@@ -189,6 +190,7 @@ export function DialogClose({
 		},
 	})
 }
+DialogClose["$id"] = Symbol.for("com.DialogClose")
 
 export function DialogHeader({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -197,6 +199,7 @@ export function DialogHeader({ children, ...props }: PropsWithChildren<HTMLAttri
 		</div>
 	)
 }
+DialogHeader["$id"] = Symbol.for("com.DialogHeader")
 
 export function DialogTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -205,6 +208,7 @@ export function DialogTitle({ children, ...props }: PropsWithChildren<HTMLAttrib
 		</div>
 	)
 }
+DialogTitle["$id"] = Symbol.for("com.DialogTitle")
 
 export function DialogDescription({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -213,6 +217,7 @@ export function DialogDescription({ children, ...props }: PropsWithChildren<HTML
 		</div>
 	)
 }
+DialogDescription["$id"] = Symbol.for("com.DialogDescription")
 
 export function DialogFooter({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -221,6 +226,7 @@ export function DialogFooter({ children, ...props }: PropsWithChildren<HTMLAttri
 		</div>
 	)
 }
+DialogFooter["$id"] = Symbol.for("com.DialogFooter")
 
 export interface DialogProps {
 	visible?: boolean

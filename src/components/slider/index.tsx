@@ -18,8 +18,8 @@ import {
 	type HTMLAttributes,
 } from "react"
 import { create } from "zustand"
+import { isElement } from "../lib"
 import { composeEventHandlers, composeRefs } from "../lib/compose"
-import { isElement } from "../lib/debug"
 
 type Orientation = "horizontal" | "vertical"
 type Direction = "ltr" | "rtl"

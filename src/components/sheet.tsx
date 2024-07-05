@@ -95,6 +95,7 @@ export function SheetTrigger({ children, ...props }: PropsWithChildren<Omit<Butt
 		},
 	})
 }
+SheetTrigger["$id"] = Symbol.for("com.SheetTrigger")
 
 function CloseButton() {
 	return (
@@ -188,6 +189,7 @@ export function SheetContent({
 		)
 	})
 }
+SheetContent["$id"] = Symbol.for("com.SheetContent")
 
 export function SheetClose({
 	children,
@@ -216,6 +218,7 @@ export function SheetClose({
 		},
 	})
 }
+SheetClose["$id"] = Symbol.for("com.SheetClose")
 
 export function SheetHeader({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -224,6 +227,7 @@ export function SheetHeader({ children, ...props }: PropsWithChildren<HTMLAttrib
 		</div>
 	)
 }
+SheetHeader["$id"] = Symbol.for("com.SheetHeader")
 
 export function SheetTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -232,6 +236,7 @@ export function SheetTitle({ children, ...props }: PropsWithChildren<HTMLAttribu
 		</div>
 	)
 }
+SheetTitle["$id"] = Symbol.for("com.SheetTitle")
 
 export function SheetDescription({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -240,6 +245,7 @@ export function SheetDescription({ children, ...props }: PropsWithChildren<HTMLA
 		</div>
 	)
 }
+SheetDescription["$id"] = Symbol.for("com.SheetDescription")
 
 export function SheetFooter({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -248,6 +254,7 @@ export function SheetFooter({ children, ...props }: PropsWithChildren<HTMLAttrib
 		</div>
 	)
 }
+SheetFooter["$id"] = Symbol.for("com.SheetFooter")
 
 export function Sheet({
 	visible,

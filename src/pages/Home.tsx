@@ -1,68 +1,5 @@
 import { useSelect } from "@context"
 
-import * as Slider from "@radix-ui/react-slider"
-import { useState } from "react"
-import { tw } from "twobj"
-
-import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from "~/components/slider"
-
-const style = {
-	root: tw`relative flex items-center flex-wrap select-none touch-none w-[300px] h-5 data-[orientation=vertical]:(flex-col w-5 h-[300px])`,
-	track: tw`bg-input flex relative grow rounded-full w-full h-[3px] data-[orientation=vertical]:(w-[3px])`,
-	range: tw`absolute bg-primary rounded-full h-full data-[orientation=vertical]:(w-full h-auto)`,
-	thumb: tw`block w-5 h-5 bg-primary rounded-[10px] transition duration-150 (hover: focus-within:):(shadow-primary/30 shadow-[0 0 0 5px var(--tw-shadow-color)] outline-none)`,
-}
-
-const options = {
-	inverted: false,
-	orientation: "horizontal" as "vertical" | "horizontal",
-	dir: "ltr" as "ltr" | "rtl",
-}
-
-function ADemo() {
-	const [value, setValue] = useState([20, 80])
-	return (
-		<Slider.Root
-			min={20}
-			max={200}
-			defaultValue={value}
-			onValueCommit={value => {
-				setValue(value)
-			}}
-			css={style.root}
-			{...options}
-		>
-			<Slider.Track css={style.track}>
-				<Slider.Range css={style.range} />
-			</Slider.Track>
-			<Slider.Thumb css={style.thumb} aria-label="Volume" />
-			<Slider.Thumb css={style.thumb} aria-label="Volume" />
-		</Slider.Root>
-	)
-}
-
-function SliderDemo() {
-	const [value, setValue] = useState([20, 80])
-	return (
-		<SliderRoot
-			min={20}
-			max={200}
-			value={value}
-			onValueCommit={value => {
-				setValue(value)
-			}}
-			css={style.root}
-			{...options}
-		>
-			<SliderTrack css={style.track}>
-				<SliderRange css={style.range} />
-			</SliderTrack>
-			<SliderThumb css={style.thumb} aria-label="Volume" />
-			<SliderThumb css={style.thumb} aria-label="Volume" />
-		</SliderRoot>
-	)
-}
-
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
 	return (
@@ -102,12 +39,6 @@ export function Home() {
 						https://ui.shadcn.com/
 					</a>
 				</div>
-			</div>
-			<div tw="mb-20">
-				<span>A</span>
-				<ADemo />
-				<span>B</span>
-				<SliderDemo />
 			</div>
 		</article>
 	)

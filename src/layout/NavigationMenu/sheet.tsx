@@ -52,6 +52,7 @@ export function SheetTrigger({
 		},
 	})
 }
+SheetTrigger["$id"] = Symbol.for("nav.SheetTrigger")
 
 export const sheetVariants = zs(tw`fixed gap-4 bg-background p-6 shadow-lg`, {
 	variants: {
@@ -169,6 +170,7 @@ export function SheetContent({
 		)
 	})
 }
+SheetContent["$id"] = Symbol.for("nav.SheetContent")
 
 export function SheetClose({
 	children,
@@ -197,6 +199,7 @@ export function SheetClose({
 		},
 	})
 }
+SheetClose["$id"] = Symbol.for("nav.SheetClose")
 
 export function SheetHeader({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -205,6 +208,7 @@ export function SheetHeader({ children, ...props }: PropsWithChildren<HTMLAttrib
 		</div>
 	)
 }
+SheetHeader["$id"] = Symbol.for("nav.SheetHeader")
 
 export function SheetTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -213,6 +217,7 @@ export function SheetTitle({ children, ...props }: PropsWithChildren<HTMLAttribu
 		</div>
 	)
 }
+SheetTitle["$id"] = Symbol.for("nav.SheetTitle")
 
 export function SheetDescription({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -221,6 +226,7 @@ export function SheetDescription({ children, ...props }: PropsWithChildren<HTMLA
 		</div>
 	)
 }
+SheetDescription["$id"] = Symbol.for("nav.SheetDescription")
 
 export function SheetFooter({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
 	return (
@@ -229,6 +235,7 @@ export function SheetFooter({ children, ...props }: PropsWithChildren<HTMLAttrib
 		</div>
 	)
 }
+SheetFooter["$id"] = Symbol.for("nav.SheetFooter")
 
 export interface SheetProps {
 	/** @default true */

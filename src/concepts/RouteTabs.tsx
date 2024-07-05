@@ -23,6 +23,7 @@ interface RouteTabProps {
 export function RouteTab(_props: RouteTabProps) {
 	return null
 }
+RouteTab["$id"] = Symbol.for("com.RouteTab")
 
 interface RouterTabsProps {
 	children: ReactElement<RouteTabProps> | ReactElement<RouteTabProps>[]

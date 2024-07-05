@@ -134,6 +134,7 @@ export function AccordionItem({ children, index = -1, position = "relative" }: P
 		</section>
 	)
 }
+AccordionItem["$id"] = Symbol.for("com.AccordionItem")
 
 interface AccordionTriggerProps extends IndexProp {}
 
@@ -158,6 +159,7 @@ export function AccordionTrigger({ index = -1, children }: PropsWithChildren<Acc
 		</button>
 	)
 }
+AccordionTrigger["$id"] = Symbol.for("com.AccordionTrigger")
 
 export function AccordionContent({ children, ...props }: PropsWithChildren) {
 	const ref = useRef<HTMLDivElement>(null)

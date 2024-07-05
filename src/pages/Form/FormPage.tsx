@@ -9,6 +9,8 @@ import { Switch } from "@components/switch"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { InputHTMLAttributes, forwardRef, startTransition, useEffect, useId, useMemo, useRef, useState } from "react"
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
+import { tw } from "twobj"
+import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from "~/components/slider"
 import { addresses } from "~/data/macaddr"
 import { zonenames } from "~/data/zonename"
 import { Header, Separator } from "~/pages/common"
@@ -26,6 +28,9 @@ export function Component() {
 				<Separator />
 				<Header>Checkbox</Header>
 				<CheckboxView />
+				<Separator />
+				<Header>Slider</Header>
+				<SliderView />
 				<Separator />
 				<Header>Select</Header>
 				<SelectView />
@@ -68,6 +73,45 @@ function CheckboxView() {
 		<div tw="flex items-center gap-2">
 			<Checkbox id={id} />
 			<Label htmlFor={id}>Enable</Label>
+		</div>
+	)
+}
+
+const sliderStyle = {
+	root: tw`relative flex items-center flex-wrap select-none touch-none w-[300px] h-5 data-[orientation=vertical]:(flex-col w-5 h-[300px])`,
+	track: tw`bg-input flex relative grow rounded-full w-full h-[3px] data-[orientation=vertical]:(w-[3px])`,
+	range: tw`absolute bg-primary rounded-full h-full data-[orientation=vertical]:(w-full h-auto)`,
+	thumb: tw`block w-5 h-5 bg-primary rounded-[10px] transition duration-150 (hover: focus-within:):(shadow-primary/30 shadow-[0 0 0 5px var(--tw-shadow-color)] outline-none)`,
+}
+
+function SliderView() {
+	const [value, setValue] = useState([10])
+	const [value2, setValue2] = useState([30, 80])
+	return (
+		<div tw="grid gap-4 [grid-template-columns: auto 1fr]">
+			<SliderRoot value={value} onValueChange={value => setValue(value)} css={sliderStyle.root}>
+				<SliderTrack css={sliderStyle.track}>
+					<SliderRange css={sliderStyle.range} />
+				</SliderTrack>
+				<SliderThumb css={sliderStyle.thumb} aria-label="Volume" />
+			</SliderRoot>
+			<div>{value[0]}</div>
+			<SliderRoot
+				min={20}
+				max={200}
+				value={value2}
+				onValueCommit={value => setValue2(value)}
+				css={sliderStyle.root}
+			>
+				<SliderTrack css={sliderStyle.track}>
+					<SliderRange css={sliderStyle.range} />
+				</SliderTrack>
+				<SliderThumb css={sliderStyle.thumb} aria-label="Volume" />
+				<SliderThumb css={sliderStyle.thumb} aria-label="Volume" />
+			</SliderRoot>
+			<div>
+				{value2[0]}, {value2[1]}
+			</div>
 		</div>
 	)
 }

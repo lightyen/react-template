@@ -14,21 +14,21 @@ export function isElement<C extends JSXElementConstructor<any> = JSXElementConst
 	if (!isValidElement(element)) {
 		return false
 	}
-	if (assertElement(component, element.type)) {
+	if (assertElement(element.type, component)) {
 		return true
 	}
-	return assertElement(component, element.props["__EMOTION_TYPE_PLEASE_DO_NOT_USE__"])
+	return assertElement(element.props["__EMOTION_TYPE_PLEASE_DO_NOT_USE__"], component)
 }
 
 export function assertElement<C extends JSXElementConstructor<any> = JSXElementConstructor<any>>(
+	type: string | JSXElementConstructor<any>,
 	component: C,
-	type?: string | JSXElementConstructor<any>,
 ): boolean {
-	if (!type) {
+	if (!type || !component) {
 		return false
 	}
-	if (!component) {
-		return false
+	if (type === component) {
+		return true
 	}
 	if (component["$id"]) {
 		if (type["$id"] === component["$id"]) {
