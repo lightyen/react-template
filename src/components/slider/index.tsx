@@ -211,10 +211,12 @@ export const SliderRoot = memo(
 		const commit = useSelect(state => state.commit)
 
 		function updateValues(nextValue: number, activeIndex: number) {
-			nextValue = Math.floor(clamp(nextValue, min, max))
 			const t = thumbs.current.get(activeIndex)
 			if (t) {
-				setValue(activeIndex, nextValue)
+				const d = (String(value).split(".")[1] ?? "").length
+				nextValue = min + Math.round((nextValue - min) / step) * step
+				nextValue = Number(nextValue.toFixed(d))
+				setValue(activeIndex, clamp(nextValue, min, max))
 			}
 		}
 
