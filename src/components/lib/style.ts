@@ -16,7 +16,7 @@ export type InnerVariantProps<T extends Variants<S>, S> = {
 export type VariantProps<Fn extends (...args: any) => CSSObject | SerializedStyles[]> = Parameters<Fn>[0]
 
 export function zs<V extends Variants<S>, S extends SerializedStyles = SerializedStyles>(base: S, variants: V) {
-	return (props: InnerVariantProps<V, S>): S[] => {
+	return (props: InnerVariantProps<V, S> = {}): S[] => {
 		const s: S[] = [base]
 		for (const t in variants.variants) {
 			const value = (props[t] as string) ?? variants.defaultVariants[t]
