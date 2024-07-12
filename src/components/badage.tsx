@@ -20,9 +20,9 @@ export const badgeVariants = zs(
 	},
 )
 
-export interface BadgeProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
-
-export const Badge = forwardRef<HTMLDivElement, BadgeProps>((props, ref) => {
-	return <div css={badgeVariants(props)} ref={ref} {...props} />
-})
+export const Badge = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & VariantProps<typeof badgeVariants>>(
+	(props, ref) => {
+		return <div css={badgeVariants(props)} ref={ref} {...props} />
+	},
+)
 Badge.displayName = "Badge"
