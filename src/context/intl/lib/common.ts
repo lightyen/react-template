@@ -13,24 +13,42 @@ export { $enUS, $jaJP, $zhTW, defaultLocale, locales }
 
 export type LocaleType = keyof typeof locales
 
+let cache: [LocaleType, Record<string, string>]
+
 export function getLocale(): [LocaleType, Record<string, string>] {
+	if (cache) {
+		return cache
+	}
 	const locale = localStorage.getItem("locale") || defaultLocale
 	const [primary] = locale.toLocaleLowerCase().split(/-/)
+	document.documentElement.lang = primary
 	switch (primary) {
 		case "zh":
-			document.documentElement.lang = "zh"
-			return ["zh-TW", $zhTW]
+			cache = ["zh-TW", $zhTW]
+			break
 		case "ja":
-			document.documentElement.lang = "ja"
-			return ["ja-JP", $jaJP]
+			cache = ["ja-JP", $jaJP]
+			break
 		default:
-			document.documentElement.lang = "en"
-			return ["en-US", $enUS]
+			cache = ["en-US", $enUS]
+			break
 	}
+	return cache
 }
 
 export function storeLocale(locale: string) {
 	localStorage.setItem("locale", locale)
 	const [primary] = locale.toLocaleLowerCase().split(/-/)
 	document.documentElement.lang = primary
+	switch (primary) {
+		case "zh":
+			cache = ["zh-TW", $zhTW]
+			break
+		case "ja":
+			cache = ["ja-JP", $jaJP]
+			break
+		default:
+			cache = ["en-US", $enUS]
+			break
+	}
 }
