@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit"
-import { setLocale } from "./action"
-import { getLocale, storeLocale } from "./languages"
+import * as ac from "./action"
+import { getLocale, locales, setLocale, storeLocale } from "./lib"
 
 interface IntlStoreType {
 	locale: string
@@ -15,8 +15,13 @@ const init: IntlStore = {
 }
 
 export const intl = createReducer(init, builder =>
-	builder.addCase(setLocale, (state, { payload }) => {
-		storeLocale(payload)
-		state.locale = payload
+	builder.addCase(ac.setLocale, (state, { payload: locale }) => {
+		if (locale in locales) {
+			setLocale(locale)
+			storeLocale(locale)
+			state.locale = locale
+		} else {
+			throw new Error(`resource "${locale}" is not found.`)
+		}
 	}),
 )

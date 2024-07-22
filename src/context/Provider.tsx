@@ -2,7 +2,7 @@ import { type PropsWithChildren } from "react"
 import { IntlProvider } from "react-intl"
 import { Provider as ReactReduxProvider } from "react-redux"
 import { AppStoreContext, useSelect } from "./hooks"
-import { getLocale } from "./intl/languages"
+import { getLocale } from "./intl"
 import { store } from "./store"
 
 export function StoreProvider({ children }: PropsWithChildren<{}>) {

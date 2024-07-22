@@ -30,17 +30,17 @@ import { CircleLoading } from "@components/spin"
 import { RouteTab, RouterTabs } from "@concepts/RouteTabs"
 import { useToast } from "@context"
 import { InfoCircledIcon, PlusIcon } from "@radix-ui/react-icons"
-import dayjs from "dayjs"
 import { Fragment, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { Outlet, useNavigate } from "react-router-dom"
+import { format } from "~/context/intl/lib"
 import { Header, Separator } from "~/pages/common"
 
 export function Component() {
 	return (
 		<article>
 			<Header>Time</Header>
-			<div tw="whitespace-pre">{dayjs().format("LLLL")}</div>
+			<div tw="whitespace-pre">{format(new Date(), "PPPpp")}</div>
 			<Separator />
 			<Header>Button</Header>
 			<ButtonView />
