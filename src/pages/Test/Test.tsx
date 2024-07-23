@@ -1,15 +1,11 @@
-import { Button, buttonVariants } from "@components/button"
-import { css } from "@emotion/react"
+import { Button } from "@components/button"
 import { animated, easings, useSprings } from "@react-spring/web"
 import { useWindowVirtualizer } from "@tanstack/react-virtual"
 import { useDrag } from "@use-gesture/react"
 import { HTMLAttributes, createContext, useContext, useRef, useState } from "react"
-import { DayPicker } from "react-day-picker"
 import "react-day-picker/style.css"
-import { tw } from "twobj"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
-import { format, getDateLocale } from "~/context/intl/lib/date-fns"
 import { addresses } from "~/data/macaddr"
 import { TodoList } from "./Todolist"
 
@@ -54,65 +50,11 @@ function AnimatedItem({ children, ...props }: HTMLAttributes<HTMLDivElement>) {
 	)
 }
 
-function DemoDatePicker() {
-	const [date, setDate] = useState(new Date())
-	return (
-		<div>
-			<div>{date ? format(date, "PPP") : "-"}</div>
-			<DayPicker
-				selected={date}
-				onSelect={value => {
-					if (!value) {
-						return
-					}
-					setDate(value)
-				}}
-				mode="single"
-				showOutsideDays
-				required
-				locale={getDateLocale()}
-				css={css`
-					--rdp-selected-font: initial;
-					--rdp-selected-border: 0;
-					--rdp-outside-opacity: 0.5;
-					--rdp-accent-color: hsl(var(--primary));
-					.rdp-nav {
-						[class^="rdp-button"] {
-							${tw`opacity-50 hover:opacity-100`}
-						}
-					}
-					.rdp-day_button {
-						${[buttonVariants({ variant: "ghost" }), tw`h-9 w-9`]}
-					}
-					.rdp-today:not(:has(.rdp-selected)) {
-						.rdp-day_button {
-							${tw`text-primary`}
-						}
-					}
-					.rdp-day {
-						// ${tw`relative p-0 text-center focus-within:(relative z-20)`}
-					}
-					.rdp-day.rdp-selected {
-						--rdp-outside-opacity: 1;
-						.day-outside {
-							${tw`bg-accent/50`}
-						}
-						.rdp-day_button {
-							${tw`bg-primary text-primary-foreground (hover: focus:):(bg-primary text-primary-foreground)`}
-						}
-					}
-				`}
-			/>
-		</div>
-	)
-}
-
 export function Component() {
 	return (
 		<article tw="relative">
 			<div>
 				<h1 tw="border-b mb-4">Test</h1>
-				<DemoDatePicker />
 				<div tw="bg-accent/50 p-2 max-w-[600px] flex gap-5 justify-end">
 					<Button variant="outline" size="sm" tw="flex-1 sm:max-w-[130px]">
 						Cancel

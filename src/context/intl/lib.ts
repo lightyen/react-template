@@ -3,9 +3,9 @@ const locales = {
 	"ja-JP": "日本語",
 	"zh-TW": "繁中",
 }
-import $enUS from "../locales/en-US.yml"
-import $jaJP from "../locales/ja-JP.yml"
-import $zhTW from "../locales/zh-TW.yml"
+import $enUS from "./locales/en-US.yml"
+import $jaJP from "./locales/ja-JP.yml"
+import $zhTW from "./locales/zh-TW.yml"
 
 const defaultLocale: string = window.navigator.language || "en-US"
 

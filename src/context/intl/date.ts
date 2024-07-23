@@ -1,6 +1,6 @@
 import type { Duration, FormatLongFn, FormatLongWidth } from "date-fns"
-import { formatDistanceToNowStrict as __formatDistanceToNowStrict } from "date-fns/formatDistanceToNowStrict"
-import { formatDuration as __formatDuration } from "date-fns/formatDuration"
+import { formatDistanceToNowStrict as $formatDistanceToNowStrict } from "date-fns/formatDistanceToNowStrict"
+import { formatDuration as $formatDuration } from "date-fns/formatDuration"
 import { formatWithOptions } from "date-fns/fp/formatWithOptions"
 
 import { enUS, ja, zhTW } from "date-fns/locale"
@@ -10,11 +10,7 @@ const locales = {
 	"zh-TW": zhTW,
 }
 
-import { getLocale } from "./common"
-
-export function setLocale(_locale: string) {
-	//
-}
+import { getLocale } from "./lib"
 
 interface BuildFormatLongFnArgs<DefaultMatchWidth extends FormatLongWidth> {
 	formats: Partial<{ [format in FormatLongWidth]: string }> & {
@@ -23,7 +19,7 @@ interface BuildFormatLongFnArgs<DefaultMatchWidth extends FormatLongWidth> {
 	defaultWidth: DefaultMatchWidth
 }
 
-function buildFormatLongFn<DefaultMatchWidth extends FormatLongWidth>(
+export function buildFormatLongFn<DefaultMatchWidth extends FormatLongWidth>(
 	args: BuildFormatLongFnArgs<DefaultMatchWidth>,
 ): FormatLongFn {
 	return (options = {}) => {
@@ -34,15 +30,16 @@ function buildFormatLongFn<DefaultMatchWidth extends FormatLongWidth>(
 }
 
 if (zhTW.formatLong) {
-	zhTW.formatLong.date = buildFormatLongFn({
-		formats: {
-			full: "y'年'M'月'd'日' EEEE",
-			long: "y'年'M'月'd'日'",
-			medium: "yyyy/MM/dd",
-			short: "y/MM/dd",
-		},
-		defaultWidth: "full",
-	})
+	// XXX: Change date format
+	// zhTW.formatLong.date = buildFormatLongFn({
+	// 	formats: {
+	// 		full: "y'年'M'月'd'日' EEEE",
+	// 		long: "y'年'M'月'd'日'",
+	// 		medium: "yyyy/MM/dd",
+	// 		short: "y/MM/dd",
+	// 	},
+	// 	defaultWidth: "full",
+	// })
 }
 
 export const format = (date: Date, formatStr: string) => {
@@ -52,7 +49,7 @@ export const format = (date: Date, formatStr: string) => {
 	})(formatStr)(date)
 }
 
-export function getDateLocale() {
+export function getDateFnsLocale() {
 	const [locale] = getLocale()
 	const [primary] = locale.toLocaleLowerCase().split(/-/)
 	switch (primary) {
@@ -69,11 +66,11 @@ export function getDateLocale() {
 
 export function formatDistanceToNowStrict(
 	date: number | Date,
-	{ locale, ...rest }: Parameters<typeof __formatDistanceToNowStrict>[1] = {},
+	{ locale, ...rest }: Parameters<typeof $formatDistanceToNowStrict>[1] = {},
 ) {
-	return __formatDistanceToNowStrict(date, {
+	return $formatDistanceToNowStrict(date, {
 		...rest,
-		locale: locale ?? getDateLocale(),
+		locale: locale ?? getDateFnsLocale(),
 	})
 }
 
@@ -93,16 +90,14 @@ export function getDuration(duration: number): Duration {
 
 export function formatDuration(
 	duration: Duration | number,
-	{ locale, ...rest }: Parameters<typeof __formatDuration>[1] = {},
+	{ locale, ...rest }: Parameters<typeof $formatDuration>[1] = {},
 ) {
 	if (typeof duration === "number") {
 		duration = getDuration(duration)
 	}
-
-	format
-	return __formatDuration(duration, {
+	return $formatDuration(duration, {
 		...rest,
-		locale: locale ?? getDateLocale(),
+		locale: locale ?? getDateFnsLocale(),
 		format: ["years", "months", "days", "hours", "minutes", "seconds"],
 	})
 }

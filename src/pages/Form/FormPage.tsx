@@ -14,6 +14,7 @@ import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from "~/components/
 import { addresses } from "~/data/macaddr"
 import { zonenames } from "~/data/zonename"
 import { Header, Separator } from "~/pages/common"
+import { DemoDatePicker } from "./DateTimePicker"
 import { Candidate, SuggestionInput } from "./SuggestionInput"
 
 export function Component() {
@@ -34,6 +35,9 @@ export function Component() {
 				<Separator />
 				<Header>Select</Header>
 				<SelectView />
+				<Separator />
+				<Header>Datetime</Header>
+				<DemoDatePicker />
 				<Separator />
 				<Header>Suggestion</Header>
 				<SuggestionView />

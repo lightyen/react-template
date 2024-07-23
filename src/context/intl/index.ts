@@ -1,1 +1,2 @@
-export { getLocale, storeLocale } from "./lib"
+export * from "./date"
+export * from "./lib"

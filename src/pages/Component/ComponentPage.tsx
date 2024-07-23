@@ -33,7 +33,7 @@ import { InfoCircledIcon, PlusIcon } from "@radix-ui/react-icons"
 import { Fragment, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { Outlet, useNavigate } from "react-router-dom"
-import { format } from "~/context/intl/lib"
+import { format } from "~/context/intl"
 import { Header, Separator } from "~/pages/common"
 
 export function Component() {
