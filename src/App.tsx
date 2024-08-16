@@ -5,6 +5,8 @@ import { globalStyles, tw } from "twobj"
 import { router } from "./Router"
 import "./global.css"
 
+var vvv = "sdfs"
+
 const bodyScrollbar = tw`
 	not-mobile:(
 		[@supports selector(::-webkit-scrollbar)]:(
