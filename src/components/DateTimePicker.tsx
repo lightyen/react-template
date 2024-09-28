@@ -55,8 +55,8 @@ export function DateTimePickerForm({ value = new Date(), onSubmit, onCancel, cla
 									--rdp-outside-opacity: 0.5;
 									--rdp-accent-color: hsl(var(--primary));
 									.rdp-nav {
-										[class^="rdp-button"] {
-											${tw`opacity-50 hover:opacity-100`}
+										[class^="rdp-chevron"] {
+											${tw`opacity-50 hover:opacity-100 fill-foreground`}
 										}
 									}
 									.rdp-day_button {
