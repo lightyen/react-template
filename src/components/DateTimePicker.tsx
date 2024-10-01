@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { FormattedMessage } from "react-intl"
-import { tw } from "twobj"
+import { theme, tw } from "twobj"
 import { Button, buttonVariants } from "~/components/button"
 import { getDateFnsLocale } from "~/context/intl"
 import { Popover, PopoverContent, PopoverTrigger, usePopover } from "./popover"
@@ -22,6 +22,8 @@ export interface DateTimeFormProps {
 	onCancel?(): void
 	className?: string
 }
+
+const fontFamily = theme`fontFamily.sans` as string
 
 export function DateTimePickerForm({ value = new Date(), onSubmit, onCancel, className }: DateTimeFormProps) {
 	const methods = useForm<FormData>({ defaultValues: { date: value } })
@@ -50,25 +52,27 @@ export function DateTimePickerForm({ value = new Date(), onSubmit, onCancel, cla
 									onChange(set(next, { hours: getHours(value), minutes: getMinutes(value) }))
 								}}
 								css={css`
-									--rdp-selected-font: initial;
 									--rdp-selected-border: 0;
 									--rdp-outside-opacity: 0.5;
 									--rdp-accent-color: hsl(var(--primary));
+									--rdp-selected-border: 2px solid var(--rdp-accent-color);
+									--rdp-today-color: var(--rdp-accent-color);
+									--rdp-font-family: ${fontFamily};
 									.rdp-nav {
 										[class^="rdp-chevron"] {
 											${tw`opacity-50 hover:opacity-100 fill-foreground`}
 										}
 									}
 									.rdp-day_button {
+										--rdp-accent-color: hsl(var(--primary));
+										--rdp-selected-border: 2px solid var(--rdp-accent-color);
+										--rdp-today-color: var(--rdp-accent-color);
 										${[buttonVariants({ variant: "ghost" }), tw`h-9 w-9 p-0`]}
 									}
 									.rdp-today:not(:has(.rdp-selected)) {
 										.rdp-day_button {
 											${tw`text-primary font-semibold underline`}
 										}
-									}
-									.rdp-day {
-										// ${tw`relative p-0 text-center focus-within:(relative z-20)`}
 									}
 									.rdp-day.rdp-selected {
 										--rdp-outside-opacity: 1;

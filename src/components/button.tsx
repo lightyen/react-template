@@ -16,9 +16,9 @@ export const buttonVariants = zs(
 				link: tw`text-primary underline-offset-4 hover:underline`,
 			},
 			size: {
-				default: tw`h-10 px-4 py-2 text-base [svg]:(w-4 h-4)`,
-				sm: tw`h-[34px] rounded-md px-3 text-sm [svg]:(w-4 h-4)`,
-				lg: tw`h-10 rounded-md px-8`,
+				default: tw`h-10 px-4 text-base line-height-2 [svg]:(w-4 h-4)`,
+				sm: tw`h-[34px] rounded-md px-3 text-sm line-height-2 [svg]:(w-4 h-4)`,
+				lg: tw`h-10 rounded-md px-8 text-base line-height-2`,
 				icon: tw`h-[34px] w-[34px]`,
 			},
 		},

@@ -92,12 +92,30 @@ export default {
 			animation: {
 				enter: "enter 200ms ease",
 			},
+			customLineHeight: {
+				"1": 1,
+				"2": 1.25,
+				"3": 1.34,
+				"4": 1.5,
+			},
 		},
 	},
 	plugins: [
 		({ addVariant }) => {
 			addVariant("mobile", "@media (pointer: coarse)")
 			addVariant("not-mobile", "@media not (pointer: coarse)")
+		},
+		({ theme, matchUtilities }) => {
+			matchUtilities(
+				{
+					"line-height"(value) {
+						return {
+							lineHeight: value,
+						}
+					},
+				},
+				{ values: theme("customLineHeight") },
+			)
 		},
 	],
 } satisfies import("twobj").ConfigJS
