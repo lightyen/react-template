@@ -3,7 +3,7 @@ import { tw } from "twobj"
 import { zs, type VariantProps } from "./lib"
 
 export const buttonVariants = zs(
-	tw`inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md font-medium transition-colors
+	tw`line-height-3 inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md font-medium transition-colors
 	focus-visible:(outline-none ring-1 ring-ring) disabled:(pointer-events-none opacity-50)`,
 	{
 		variants: {
@@ -16,9 +16,9 @@ export const buttonVariants = zs(
 				link: tw`text-primary underline-offset-4 hover:underline`,
 			},
 			size: {
-				default: tw`h-10 px-4 text-base line-height-2 [svg]:(w-4 h-4)`,
-				sm: tw`h-[34px] rounded-md px-3 text-sm line-height-2 [svg]:(w-4 h-4)`,
-				lg: tw`h-10 rounded-md px-8 text-base line-height-2`,
+				default: tw`h-9 px-4 [font-size: 15px] [svg]:(w-4 h-4)`,
+				sm: tw`h-8 rounded-md px-3 [font-size: 13px] [svg]:(w-4 h-4)`,
+				lg: tw`h-10 rounded-md px-8 [font-size: 17px]`,
 				icon: tw`h-[34px] w-[34px]`,
 			},
 		},

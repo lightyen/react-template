@@ -1,20 +1,43 @@
 import { EyeNoneIcon, EyeOpenIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
 import { forwardRef, useId, useState, type HTMLAttributes, type InputHTMLAttributes } from "react"
 import { tw } from "twobj"
+import { zs, type VariantProps } from "./lib"
 
 const input = tw`
-w-full flex-1 flex h-9 min-h-[34px] text-sm rounded-md border border-input bg-background px-3 shadow-sm transition-colors
+w-full flex-1 flex h-9 text-sm rounded-md border border-input bg-background px-3 shadow-sm transition-colors
 file:(border-0 bg-background text-sm font-medium)
 placeholder:text-muted-foreground
 focus-within:(outline-none ring-1 ring-ring)
 disabled:(pointer-events-none opacity-50)
+box-border
 [&[aria-invalid=true]]:(ring-1 ring-destructive bg-destructive/10)
 `
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+export const inputVariants = zs(
+	tw`w-full flex-1 flex [font-size: 14px] line-height-3 rounded-md border border-input bg-background px-3 shadow-sm transition-colors
+	file:(border-0 bg-background text-sm font-medium)
+	placeholder:text-muted-foreground
+	focus-within:(outline-none ring-1 ring-ring)
+	disabled:(pointer-events-none opacity-50)
+	[&[aria-invalid=true]]:(ring-1 ring-destructive bg-destructive/10)`,
+	{
+		variants: {
+			variant: {
+				default: tw`h-9`,
+				sm: tw`h-8`,
+				lg: tw`h-10`,
+			},
+		},
+		defaultVariants: {
+			variant: "default",
+		},
+	},
+)
+
+export type InputProps = InputHTMLAttributes<HTMLInputElement> & VariantProps<typeof inputVariants>
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(({ type, ...props }, ref) => {
-	return <input type={type} css={input} ref={ref} {...props} />
+	return <input type={type} css={inputVariants(props)} ref={ref} {...props} />
 })
 Input.displayName = "Input"
 
