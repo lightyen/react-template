@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { CSSObject } from "@emotion/react"
 import type { ComponentType, ReactElement } from "react"
 
 export type SortType = "" | "asc" | "desc"
@@ -30,7 +31,7 @@ export interface TableBaseColumn<T> {
 	label: Label
 	Component?: ComponentType<{ record: T } & LabelProps>
 	className?: string
-	style?: unknown
+	style?: CSSObject
 	compare?(a: T, b: T): number
 	filter?: FilterInput<T> | Array<FilterSelectOptions<T>>
 }

@@ -20,7 +20,7 @@ import { Candidate, SuggestionInput } from "./SuggestionInput"
 export function Component() {
 	return (
 		<article>
-			<div tw="max-w-xl bg-card">
+			<div tw="max-w-xl bg-card mb-10">
 				<Header>Input</Header>
 				<InputView />
 				<Separator />
@@ -353,7 +353,9 @@ export function FormView() {
 				<FormProvider {...methods}>
 					<FormDetail />
 				</FormProvider>
-				<Button type="submit">Apply</Button>
+				<div>
+					<Button type="submit">Apply</Button>
+				</div>
 			</form>
 			{output && (
 				<pre tw="my-4">
