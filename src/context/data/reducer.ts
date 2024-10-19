@@ -10,9 +10,7 @@ export interface DataCache<Data = unknown> {
 	error?: AxiosError
 }
 
-export interface DataStore {
-	[key: string]: DataCache
-}
+export type DataStore = Record<string, DataCache>
 
 const init: DataStore = {}
 

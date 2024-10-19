@@ -18,7 +18,7 @@ export function* toast() {
 		removed?: boolean
 	}
 
-	const toastTasks: Map<string, ToastTask> = new Map()
+	const toastTasks = new Map<string, ToastTask>()
 
 	function* dismiss({ id, delay: d }: ac.InnerToasterToast) {
 		try {

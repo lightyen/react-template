@@ -29,7 +29,7 @@ export default function* data() {
 		const dataStore: DataStore = yield select((state: RootStore) => state.data)
 		for (const key in dataStore) {
 			const cache = dataStore[key]
-			if (cache == null || !cache.mount) {
+			if (!cache?.mount) {
 				continue
 			}
 			yield fork(fetchData, key, cache.url)
@@ -38,7 +38,7 @@ export default function* data() {
 	yield takeEvery(isInvalidateAction, function* ({ payload: { key } }) {
 		const dataStore: DataStore = yield select((state: RootStore) => state.data)
 		const cache = dataStore[key]
-		if (cache == null || !cache.mount) {
+		if (!cache?.mount) {
 			return
 		}
 		yield fork(fetchData, key, cache.url)

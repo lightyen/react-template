@@ -2,7 +2,7 @@ const regexpSafety = (text: string): RegExp => {
 	try {
 		if (text.startsWith("/")) {
 			if (text.length > 2) {
-				if (text[text.length - 1] === "/") {
+				if (text.endsWith("/")) {
 					return new RegExp(`${text.substring(1, text.length - 1)}`)
 				}
 				if (text[text.length - 2] === "/") {

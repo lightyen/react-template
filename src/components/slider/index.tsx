@@ -290,11 +290,8 @@ export const SliderRoot = memo(
 			return false
 		}
 
-		for (let i = 0; i < keysA.length; i++) {
-			if (
-				!Object.prototype.hasOwnProperty.call(nextProps, keysA[i]) ||
-				prevProps[keysA[i]] !== nextProps[keysA[i]]
-			) {
+		for (const k of keysA) {
+			if (!Object.prototype.hasOwnProperty.call(nextProps, k) || prevProps[k] !== nextProps[k]) {
 				return false
 			}
 		}

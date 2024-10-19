@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "lib": ["esnext", "dom", "dom.iterable", "webworker"],
-    "types": ["vite/client", "babel-plugin-twobj/types/emotion"],
+    "types": ["vite/types/importMeta.d.ts", "babel-plugin-twobj/types/emotion"],
     "jsx": "preserve",
     "noImplicitAny": false,
     "strict": true,
@@ -22,5 +22,5 @@
       "shadcn/*": ["./shadcn/*"]
     }
   },
-  "include": ["./src/**/*", "./tailwind.config.ts", "./vite.config.ts", "./shadcn/**/*"]
+  "include": ["eslint.config.js", "tailwind.config.ts", "vite.config.ts", "./src/**/*", "./shadcn/**/*"]
 }

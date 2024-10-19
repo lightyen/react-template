@@ -1,7 +1,7 @@
 import { type CSSObject, type SerializedStyles } from "@emotion/react"
 type UserVariants<S> = Record<string, S>
 
-export type Variants<S> = {
+export interface Variants<S> {
 	variants: Record<string, UserVariants<S>>
 	defaultVariants: {
 		[P in keyof Variants<S>["variants"]]: keyof Variants<S>["variants"][P]

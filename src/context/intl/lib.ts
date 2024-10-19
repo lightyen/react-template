@@ -19,7 +19,7 @@ export function getLocale(): [LocaleType, Record<string, string>] {
 	if (cache) {
 		return cache
 	}
-	const locale = localStorage.getItem("locale") || defaultLocale
+	const locale = localStorage.getItem("locale") ?? defaultLocale
 	const [primary] = locale.toLocaleLowerCase().split(/-/)
 	document.documentElement.lang = primary
 	switch (primary) {

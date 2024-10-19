@@ -24,7 +24,7 @@ export function buildFormatLongFn<DefaultMatchWidth extends FormatLongWidth>(
 ): FormatLongFn {
 	return (options = {}) => {
 		const width = options.width ? (String(options.width) as FormatLongWidth) : args.defaultWidth
-		const format = args.formats[width] || args.formats[args.defaultWidth]
+		const format = args.formats[width] ?? args.formats[args.defaultWidth]
 		return format
 	}
 }

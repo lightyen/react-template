@@ -14,6 +14,7 @@ import {
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
+import { type InnerToasterToast } from "~/context/app/action"
 import { isElement, zs } from "./lib"
 
 const toastVariants = zs(
@@ -135,7 +136,7 @@ function Toasts() {
 		return Object.values(toasts).sort((a, b) => Number(a.id) - Number(b.id))
 	}, [toasts])
 
-	const refMap = useMemo(() => new WeakMap(), [])
+	const refMap = useMemo(() => new WeakMap<InnerToasterToast, HTMLDivElement>(), [])
 	const cancelMap = useMemo(() => new WeakMap(), [])
 	const api = useSpringRef()
 	const transitions = useTransition(items, {
@@ -151,7 +152,7 @@ function Toasts() {
 			await next({
 				opacity: 1,
 				transform: "translateX(0%)",
-				height: refMap.get(item).offsetHeight,
+				height: refMap.get(item)?.offsetHeight,
 			})
 		},
 		leave: [{ opacity: 0, transform: "translateX(100%)" }, { height: 0 }],

@@ -3,6 +3,7 @@ import { animated, easings, useSpringRef, useTransition } from "@react-spring/we
 import {
 	Children,
 	cloneElement,
+	forwardRef,
 	isValidElement,
 	useContext,
 	useEffect,
@@ -121,6 +122,10 @@ interface SheetContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "childr
 	children?: ReactNode | ((args: { close(): void }) => ReactNode)
 }
 
+export const Div = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
+	return <div ref={ref} {...props} />
+})
+
 export function SheetContent({
 	side = "right",
 	onPointerDown = () => void 0,
@@ -167,7 +172,9 @@ export function SheetContent({
 				<animated.div
 					role="dialog"
 					{...props}
-					css={sheetVariants({ side })}
+					// ignore react-strings types declaration issue
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					css={sheetVariants({ side }) as any}
 					style={style}
 					onPointerDown={event => {
 						event.stopPropagation()

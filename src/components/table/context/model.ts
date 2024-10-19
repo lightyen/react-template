@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CSSObject } from "@emotion/react"
 import type { ComponentType, ReactElement } from "react"
 
@@ -114,6 +113,7 @@ export interface TableOptions<T> extends TableDataOptions<T> {
 
 export type WithIndex<T> = T & { dataIndex: number }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface TableStore<T = any> {
 	persistedId?: string
 	columns: TableColumnItem<T>[]

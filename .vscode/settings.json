@@ -5,6 +5,7 @@
     "source.organizeImports": "explicit"
   },
   "editor.snippetSuggestions": "none",
+  "eslint.useFlatConfig": true,
   "emmet.excludeLanguages": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "files.exclude": {
     "**/.git": true,
