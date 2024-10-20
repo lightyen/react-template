@@ -22,5 +22,5 @@
       "shadcn/*": ["./shadcn/*"]
     }
   },
-  "include": ["eslint.config.js", "tailwind.config.ts", "vite.config.ts", "./src/**/*", "./shadcn/**/*"]
+  "include": ["tailwind.config.ts", "vite.config.ts", "./src/**/*", "./shadcn/**/*"]
 }

@@ -18,6 +18,7 @@ import {
 	type HTMLAttributes,
 } from "react"
 import { create } from "zustand"
+import { useShallow } from "zustand/react/shallow"
 import { isElement } from "../lib"
 import { composeEventHandlers, composeRefs } from "../lib/compose"
 
@@ -206,9 +207,9 @@ export const SliderRoot = memo(
 			.slice(0, value.length)
 
 		const thumbs = useRef(new Map<number, HTMLElement>())
-		const setStep = useSelect(state => state.setStep)
-		const setValue = useSelect(state => state.setValue)
-		const commit = useSelect(state => state.commit)
+		const setStep = useSelect(useShallow(state => state.setStep))
+		const setValue = useSelect(useShallow(state => state.setValue))
+		const commit = useSelect(useShallow(state => state.commit))
 
 		function updateValues(nextValue: number, activeIndex: number) {
 			const t = thumbs.current.get(activeIndex)
@@ -220,13 +221,15 @@ export const SliderRoot = memo(
 			}
 		}
 
-		const slideDirection = useSelect((state): SlideDirection => {
-			if (state.orientation === "vertical") {
-				return state.inverted ? "from-top" : "from-bottom"
-			}
-			const isRTL = state.dir === "rtl"
-			return isRTL === state.inverted ? "from-left" : "from-right"
-		})
+		const slideDirection = useSelect(
+			useShallow((state): SlideDirection => {
+				if (state.orientation === "vertical") {
+					return state.inverted ? "from-top" : "from-bottom"
+				}
+				const isRTL = state.dir === "rtl"
+				return isRTL === state.inverted ? "from-left" : "from-right"
+			}),
+		)
 
 		return (
 			<ThumbCollectionContext.Provider value={thumbs.current}>
@@ -399,12 +402,12 @@ const SliderRootImpl = forwardRef<HTMLSpanElement, SliderPrivateProps>(
 		forwardedRef,
 	) => {
 		const useSelect = useSliderStore()
-		const disabled = useSelect(state => state.disabled)
-		const min = useSelect(state => state.min)
-		const max = useSelect(state => state.max)
-		const inverted = useSelect(state => state.inverted)
-		const orientation = useSelect(state => state.orientation)
-		const dir = useSelect(state => state.dir)
+		const disabled = useSelect(useShallow(state => state.disabled))
+		const min = useSelect(useShallow(state => state.min))
+		const max = useSelect(useShallow(state => state.max))
+		const inverted = useSelect(useShallow(state => state.inverted))
+		const orientation = useSelect(useShallow(state => state.orientation))
+		const dir = useSelect(useShallow(state => state.dir))
 		const activeIndex = useRef(-1)
 
 		const sliderRef = useRef<HTMLButtonElement>(null)
@@ -473,6 +476,7 @@ const SliderRootImpl = forwardRef<HTMLSpanElement, SliderPrivateProps>(
 					}
 				})}
 				onPointerUp={composeEventHandlers(onPointerUp, event => {
+					console.log("test")
 					const target = event.target
 					if (!(target instanceof Element)) {
 						return
@@ -501,17 +505,19 @@ SliderTrack["$id"] = Symbol.for("com.SliderTrack")
 
 export const SliderRange = forwardRef<HTMLSpanElement>((props, forwardedRef) => {
 	const useSelect = useSliderStore()
-	const orientation = useSelect(state => state.orientation)
-	const style = useSelect(({ orientation, inverted, dir, value, min, max }) => {
-		const transform = linearScale([min, max], [0, 100])
-		const [start, end] = [value.length > 1 ? transform(Math.min(...value)) : 0, transform(Math.max(...value))]
-		if (orientation === "vertical") {
-			const [top, bottom] = swapif(inverted, [`${100 - end}%`, `${start}%`])
-			return { top, bottom }
-		}
-		const [left, right] = swapif(inverted !== (dir === "rtl"), [`${start}%`, `${100 - end}%`])
-		return { left, right }
-	})
+	const orientation = useSelect(useShallow(state => state.orientation))
+	const style = useSelect(
+		useShallow(({ orientation, inverted, dir, value, min, max }) => {
+			const transform = linearScale([min, max], [0, 100])
+			const [start, end] = [value.length > 1 ? transform(Math.min(...value)) : 0, transform(Math.max(...value))]
+			if (orientation === "vertical") {
+				const [top, bottom] = swapif(inverted, [`${100 - end}%`, `${start}%`])
+				return { top, bottom }
+			}
+			const [left, right] = swapif(inverted !== (dir === "rtl"), [`${start}%`, `${100 - end}%`])
+			return { left, right }
+		}),
+	)
 	return <span ref={forwardedRef} data-orientation={orientation} css={style} {...props} />
 })
 SliderRange.displayName = "SliderRange"

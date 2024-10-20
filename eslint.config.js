@@ -1,6 +1,6 @@
 import eslint from "@eslint/js"
-import pluginReact from "eslint-plugin-react"
-import pluginReactHooks from "eslint-plugin-react-hooks"
+import react from "eslint-plugin-react"
+import reactHooks from "eslint-plugin-react-hooks"
 import tseslint from "typescript-eslint"
 
 export default tseslint.config(
@@ -18,7 +18,6 @@ export default tseslint.config(
 					allowEmptyCatch: true,
 				},
 			],
-			"no-empty-pattern": "off",
 			"no-extra-bind": "error",
 			"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
 			"no-var": "error",
@@ -70,7 +69,7 @@ export default tseslint.config(
 	},
 	{
 		files: ["src/**/*.{js,ts,jsx,tsx}"],
-		...pluginReact.configs.flat.recommended,
+		...react.configs.flat.recommended,
 		settings: {
 			react: {
 				version: "detect",
@@ -83,12 +82,10 @@ export default tseslint.config(
 	{
 		files: ["src/**/*.{js,ts,jsx,tsx}"],
 		plugins: {
-			"react-hooks": pluginReactHooks,
+			"react-hooks": reactHooks,
 		},
 		rules: {
-			...pluginReactHooks.configs.recommended.rules,
-			"react/prop-types": "off",
-			"react/react-in-jsx-scope": "off",
+			...reactHooks.configs.recommended.rules,
 		},
 	},
 )
