@@ -3,7 +3,7 @@
   "scripts": {
     "doit": "pnpm update --interactive --latest",
     "dev": "vite dev",
-    "lint": "eslint",
+    "check": "eslint",
     "build": "vite build --mode production",
     "shadcn": "pnpm dlx shadcn-ui@latest add"
   },
@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "@eslint/js": "9.13.0",
-    "@nabla/vite-plugin-eslint": "2.0.4",
     "@rollup/plugin-yaml": "4.1.2",
     "@types/mark.js": "8.11.12",
     "@types/node": "22.7.7",

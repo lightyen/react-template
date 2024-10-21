@@ -1,4 +1,3 @@
-import eslint from "@nabla/vite-plugin-eslint"
 import yaml from "@rollup/plugin-yaml"
 import react from "@vitejs/plugin-react"
 import { exec } from "node:child_process"
@@ -79,7 +78,6 @@ export default defineConfig({
 		visualizer(),
 		yaml(),
 		svg({ include: "**/*.svg" }),
-		eslint(),
 		tsConfigPaths(),
 		react({
 			jsxImportSource: "@emotion/react",

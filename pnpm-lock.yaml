@@ -108,9 +108,6 @@ importers:
       '@eslint/js':
         specifier: 9.13.0
         version: 9.13.0
-      '@nabla/vite-plugin-eslint':
-        specifier: 2.0.4
-        version: 2.0.4(eslint@9.13.0)(vite@5.4.9(@types/node@22.7.7))
       '@rollup/plugin-yaml':
         specifier: 4.1.2
         version: 4.1.2(rollup@4.24.0)
@@ -658,12 +655,6 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@nabla/vite-plugin-eslint@2.0.4':
-    resolution: {integrity: sha512-hXLv7XPZLKP54AHLI6JzlCRYptf34rBmT1FyRBi++iN5ucjO7CEf5etV3DfQ2rfTpgMbY+3hoCAfwilA6lyWdw==}
-    peerDependencies:
-      eslint: ^8.45 || ^9
-      vite: ^4 || ^5
-
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -1090,14 +1081,8 @@ packages:
   '@types/babel__traverse@7.20.3':
     resolution: {integrity: sha512-Lsh766rGEFbaxMIDH7Qa+Yha8cMVI3qAK6CHt3OR0YfxOIn5Z54iHiyDRycHrBqeIiqGa20Kpsv1cavfBKkRSw==}
 
-  '@types/eslint@8.44.6':
-    resolution: {integrity: sha512-P6bY56TVmX8y9J87jHNgQh43h6VVU+6H7oN7hgvivV81K2XY8qJZ5vqPy/HdUoVIelii2kChYVzQanlswPWVFw==}
-
   '@types/estree@1.0.3':
     resolution: {integrity: sha512-CS2rOaoQ/eAgAfcTfq6amKG7bsN+EMcgGY4FAFQdvSj2y1ixvOZTUA9mOtCai7E1SYu283XNw7urKK30nP3wkQ==}
-
-  '@types/estree@1.0.5':
-    resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
@@ -1110,9 +1095,6 @@ packages:
 
   '@types/jquery@3.5.30':
     resolution: {integrity: sha512-nbWKkkyb919DOUxjmRVk8vwtDb0/k8FKncmUKFi+NY+QXqWltooxTrswvz4LspQwxvLdvzBN1TImr6cw3aQx2A==}
-
-  '@types/json-schema@7.0.14':
-    resolution: {integrity: sha512-U3PUjAudAdJBeC2pgN8uTIKgxrb4nlDF3SF0++EldXQvQBGkpFZMSnwQiIoDU77tv45VgNkl/L4ouD+rEomujw==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -3182,16 +3164,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  '@nabla/vite-plugin-eslint@2.0.4(eslint@9.13.0)(vite@5.4.9(@types/node@22.7.7))':
-    dependencies:
-      '@types/eslint': 8.44.6
-      chalk: 4.1.2
-      debug: 4.3.4
-      eslint: 9.13.0
-      vite: 5.4.9(@types/node@22.7.7)
-    transitivePeerDependencies:
-      - supports-color
-
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -3591,14 +3563,7 @@ snapshots:
     dependencies:
       '@babel/types': 7.25.8
 
-  '@types/eslint@8.44.6':
-    dependencies:
-      '@types/estree': 1.0.5
-      '@types/json-schema': 7.0.14
-
   '@types/estree@1.0.3': {}
-
-  '@types/estree@1.0.5': {}
 
   '@types/estree@1.0.6': {}
 
@@ -3612,8 +3577,6 @@ snapshots:
   '@types/jquery@3.5.30':
     dependencies:
       '@types/sizzle': 2.3.8
-
-  '@types/json-schema@7.0.14': {}
 
   '@types/json-schema@7.0.15': {}
 
