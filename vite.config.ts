@@ -70,7 +70,6 @@ export default defineConfig({
 	base: "",
 	build: {
 		sourcemap: true,
-		outDir: "build",
 		chunkSizeWarningLimit: 4 << 10,
 	},
 	plugins: [
@@ -87,7 +86,7 @@ export default defineConfig({
 		}),
 		license({
 			thirdParty: {
-				output: "build/assets/vendor.LICENSE.txt",
+				output: "dist/assets/vendor.LICENSE.txt",
 			},
 		}),
 	],

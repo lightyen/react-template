@@ -5,14 +5,3 @@ export default defineConfig({
 		// ...
 	},
 })
-
-// const reactConfig = {
-// 	plugins: [react()],
-// 	test: {
-// 		browser: {
-// 			enabled: true,
-// 			name: "chromium",
-// 			provider: "playwright",
-// 		},
-// 	},
-// }
