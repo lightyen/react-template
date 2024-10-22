@@ -36,6 +36,7 @@ export default tseslint.config(
 		},
 		rules: {
 			"@typescript-eslint/array-type": "off",
+			"@typescript-eslint/consistent-indexed-object-style": "off",
 			"@typescript-eslint/dot-notation": "off",
 			"@typescript-eslint/explicit-function-return-type": "off",
 			"@typescript-eslint/explicit-module-boundary-types": "off",
@@ -53,6 +54,8 @@ export default tseslint.config(
 			"@typescript-eslint/no-redundant-type-constituents": "off",
 			"@typescript-eslint/no-unsafe-argument": "off",
 			"@typescript-eslint/no-unsafe-assignment": "off",
+			"@typescript-eslint/no-unsafe-call": "off",
+			"@typescript-eslint/no-unsafe-member-access": "off",
 			"@typescript-eslint/no-unsafe-return": "off",
 			"@typescript-eslint/no-unused-vars": [
 				"warn",
@@ -64,6 +67,7 @@ export default tseslint.config(
 				},
 			],
 			"@typescript-eslint/prefer-function-type": "off",
+			"@typescript-eslint/prefer-nullish-coalescing": "off",
 			"@typescript-eslint/unbound-method": "off",
 		},
 	},

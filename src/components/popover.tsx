@@ -104,9 +104,7 @@ export function PopoverTrigger({ children, mode = "click", ...props }: PropsWith
 			const inner = innerProps[k]
 			if (typeof ch === "function" && typeof inner === "function") {
 				innerProps[k] = (...args: unknown[]) => {
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 					ch(...args)
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 					inner(...args)
 				}
 			}

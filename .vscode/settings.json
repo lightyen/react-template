@@ -30,6 +30,7 @@
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "files.watcherExclude": {
     "**/.cache": true,
+    "**/dist": true,
     "**/build": true
   },
   "javascript.suggestionActions.enabled": false,

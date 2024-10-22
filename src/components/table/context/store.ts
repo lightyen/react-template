@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { createContext } from "react"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
