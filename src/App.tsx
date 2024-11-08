@@ -31,7 +31,7 @@ export function App() {
 		<StoreProvider>
 			<Global styles={[globalStyles, appStyle]} />
 			<LocaleProvider>
-				<RouterProvider router={router} />
+				<RouterProvider router={router} future={{ v7_startTransition: true }} />
 			</LocaleProvider>
 		</StoreProvider>
 		// </StrictMode>
