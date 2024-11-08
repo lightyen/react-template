@@ -1,8 +1,8 @@
-import { Button } from "@components/button"
-import { Command, CommandItem, CommandList } from "@components/command"
-import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@components/popover"
 import { Half2Icon, MoonIcon, SunIcon } from "@radix-ui/react-icons"
 import { useState } from "react"
+import { Button } from "~/components/button"
+import { Command, CommandItem, CommandList } from "~/components/command"
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/components/popover"
 import { setTheme } from "./theme"
 
 export function SwitchTheme() {

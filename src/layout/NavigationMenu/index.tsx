@@ -1,7 +1,7 @@
-import { Button, buttonVariants } from "@components/button"
 import { HamburgerMenuIcon } from "@radix-ui/react-icons"
 import { NavLink } from "react-router-dom"
 import { tw } from "twobj"
+import { Button, buttonVariants } from "~/components/button"
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./sheet"
 
 const navlink = tw`justify-start text-muted-foreground hover:bg-muted [&.active]:(bg-accent text-foreground font-medium)`

@@ -1,14 +1,14 @@
+import { animated, useSpringRef, useTransition } from "@react-spring/web"
+import { useEffect, useRef, type HTMLAttributes, type PointerEvent, type PropsWithChildren } from "react"
+import { createPortal } from "react-dom"
+import { tw } from "twobj"
 import {
 	addDialogCount,
 	getDialogCount,
 	getViewportElement,
 	setScroll,
 	subtractDialogCount,
-} from "@components/lib/scrollbar"
-import { animated, useSpringRef, useTransition } from "@react-spring/web"
-import { useEffect, useRef, type HTMLAttributes, type PointerEvent, type PropsWithChildren } from "react"
-import { createPortal } from "react-dom"
-import { tw } from "twobj"
+} from "~/components/lib/scrollbar"
 
 interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
 	visible: boolean

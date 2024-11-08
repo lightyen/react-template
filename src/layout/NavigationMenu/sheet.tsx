@@ -1,7 +1,3 @@
-import { Button } from "@components/button"
-import { getElementWidth, isElement, zs } from "@components/lib"
-import { dialogContext } from "@components/lib/dialogContext"
-import { Overlay } from "@components/overlay"
 import { animated, useSpringRef, useTransition } from "@react-spring/web"
 import { useDrag } from "@use-gesture/react"
 import {
@@ -23,6 +19,10 @@ import {
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
+import { Button } from "~/components/button"
+import { getElementWidth, isElement, zs } from "~/components/lib"
+import { dialogContext } from "~/components/lib/dialogContext"
+import { Overlay } from "~/components/overlay"
 
 export function SheetTrigger({
 	children,

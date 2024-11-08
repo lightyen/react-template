@@ -1,6 +1,3 @@
-import { commandScore } from "@components/command-score"
-import { Input } from "@components/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@components/popover"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import {
 	forwardRef,
@@ -12,7 +9,10 @@ import {
 	type InputHTMLAttributes,
 	type Key,
 } from "react"
+import { commandScore } from "~/components/command-score"
+import { Input } from "~/components/input"
 import { composeRefs } from "~/components/lib/compose"
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
 
 export interface Candidate {
 	value: string

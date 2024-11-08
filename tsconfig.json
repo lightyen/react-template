@@ -17,7 +17,6 @@
       "~/*": ["./src/*"],
       "@context": ["./src/context"],
       "@context/*": ["./src/context/*"],
-      "@components/*": ["./src/components/*"],
       "@concepts/*": ["./src/concepts/*"],
       "shadcn/*": ["./shadcn/*"]
     }

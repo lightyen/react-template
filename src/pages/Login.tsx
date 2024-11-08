@@ -1,9 +1,9 @@
-import { Button } from "@components/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@components/card"
-import { Input, Password } from "@components/input"
-import { Label } from "@components/label"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
+import { Button } from "~/components/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/card"
+import { Input, Password } from "~/components/input"
+import { Label } from "~/components/label"
 
 export function Login() {
 	return (

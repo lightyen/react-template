@@ -1,7 +1,13 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@components/accordion"
-import { Badge } from "@components/badage"
-import { Button } from "@components/button"
-import { Command, CommandItem, CommandList } from "@components/command"
+import { RouteTab, RouterTabs } from "@concepts/RouteTabs"
+import { useToast } from "@context"
+import { InfoCircledIcon, PlusIcon } from "@radix-ui/react-icons"
+import { Fragment, useEffect, useState } from "react"
+import { FormattedMessage } from "react-intl"
+import { Outlet, useNavigate } from "react-router-dom"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/accordion"
+import { Badge } from "~/components/badage"
+import { Button } from "~/components/button"
+import { Command, CommandItem, CommandList } from "~/components/command"
 import {
 	Dialog,
 	DialogClose,
@@ -11,11 +17,11 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@components/dialog"
-import { Input } from "@components/input"
-import { Label } from "@components/label"
-import { Overlay } from "@components/overlay"
-import { Popover, PopoverContent, PopoverTrigger } from "@components/popover"
+} from "~/components/dialog"
+import { Input } from "~/components/input"
+import { Label } from "~/components/label"
+import { Overlay } from "~/components/overlay"
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
 import {
 	Sheet,
 	SheetClose,
@@ -25,14 +31,8 @@ import {
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-} from "@components/sheet"
-import { CircleLoading } from "@components/spin"
-import { RouteTab, RouterTabs } from "@concepts/RouteTabs"
-import { useToast } from "@context"
-import { InfoCircledIcon, PlusIcon } from "@radix-ui/react-icons"
-import { Fragment, useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
-import { Outlet, useNavigate } from "react-router-dom"
+} from "~/components/sheet"
+import { CircleLoading } from "~/components/spin"
 import { format } from "~/context/intl"
 import { Header, Separator } from "~/pages/common"
 

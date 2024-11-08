@@ -1,6 +1,6 @@
-import { setScroll } from "@components/lib/scrollbar"
 import { useEffect } from "react"
 import { Outlet, Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
+import { setScroll } from "~/components/lib/scrollbar"
 import { FormRoutes } from "~/pages/Form"
 import { Layout } from "./layout"
 import { ColorsRoutes } from "./pages/Colors"

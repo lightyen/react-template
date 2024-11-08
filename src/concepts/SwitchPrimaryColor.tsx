@@ -1,6 +1,6 @@
-import { Button } from "@components/button"
-import { Command, CommandItem, CommandList } from "@components/command"
-import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@components/popover"
+import { Button } from "~/components/button"
+import { Command, CommandItem, CommandList } from "~/components/command"
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/components/popover"
 import { setTheme } from "./theme"
 
 import { useState } from "react"

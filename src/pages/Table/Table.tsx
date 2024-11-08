@@ -1,6 +1,6 @@
-import { Checkbox } from "@components/checkbox"
-import { Provider, TablePagination, TableToolbar, TableView, useTable } from "@components/table"
 import { useEffect, useState } from "react"
+import { Checkbox } from "~/components/checkbox"
+import { Provider, TablePagination, TableToolbar, TableView, useTable } from "~/components/table"
 import { MockRecord, data } from "~/data/data"
 
 export function Component() {

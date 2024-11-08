@@ -1,6 +1,6 @@
-import { isMobile } from "@components/lib"
 import { Action, createAction } from "@reduxjs/toolkit"
 import { type ReactElement } from "react"
+import { isMobile } from "~/components/lib"
 import { genToastId } from "./toast"
 
 export const ismobile = createAction("ismobile", (payload: boolean) => ({ payload }))

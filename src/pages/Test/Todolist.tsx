@@ -1,12 +1,12 @@
-import { Button } from "@components/button"
-import { FormArrayProvider, useFormArrayContext } from "@components/form/context"
-import { isNormalIPv4 } from "@components/form/validate"
-import { Input } from "@components/input"
 import { PlusIcon, TrashIcon } from "@radix-ui/react-icons"
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
 import { useEffect, useRef } from "react"
 import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form"
 import { FormattedMessage, useIntl } from "react-intl"
+import { Button } from "~/components/button"
+import { FormArrayProvider, useFormArrayContext } from "~/components/form/context"
+import { isNormalIPv4 } from "~/components/form/validate"
+import { Input } from "~/components/input"
 
 interface TodolistFormData {
 	list: { value: string }[]
