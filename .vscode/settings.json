@@ -18,7 +18,8 @@
   "search.exclude": {
     "**/build": true,
     "**/dist": true,
-    "**/node_modules": true
+    "**/node_modules": true,
+    "pnpm-lock.yaml": true
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "npm.autoDetect": "off",

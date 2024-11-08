@@ -151,7 +151,7 @@ export function SheetContent({
 	const api = useSpringRef()
 	const [transitions] = useTransition(visible, () => ({
 		ref: api,
-		config: { duration: 250, easing: easings.easeOutCubic },
+		config: { duration: 120, easing: easings.easeOutCubic },
 		...animationVariants(side),
 	}))
 

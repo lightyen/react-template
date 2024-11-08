@@ -13,7 +13,7 @@ function DragExample() {
 	const [springs, springApi] = useSprings(1, () => ({
 		x: 0,
 		y: 0,
-		config: { duration: 250, easing: easings.easeOutExpo },
+		config: { duration: 120, easing: easings.easeOutExpo },
 	}))
 
 	// Set the drag hook and define component movement based on gesture data.

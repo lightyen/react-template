@@ -33,7 +33,7 @@ export const Switch = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInput
 						border-2 border-transparent shadow-sm transition-colors
 						bg-input
 						focus-visible:(outline-none ring-2 ring-ring ring-offset-2 ring-offset-background)
-						after:(pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform)
+						after:(pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform duration-150)
 					"
 					css={effects}
 					className={className}

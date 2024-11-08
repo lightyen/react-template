@@ -107,7 +107,7 @@ export function DialogContent({
 		from: { opacity: 0.5, transform: "scale(0.98) translateX(-50%) translateY(-50%)" },
 		enter: { opacity: 1, transform: "scale(1) translateX(-50%) translateY(-50%)" },
 		leave: { opacity: 0, transform: "scale(0.98) translateX(-50%) translateY(-50%)" },
-		config: { duration: 250, easing: easings.easeOutCubic },
+		config: { duration: 120, easing: easings.easeOutCubic },
 	}))
 
 	useEffect(() => {
