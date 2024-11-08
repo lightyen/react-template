@@ -1,4 +1,3 @@
-import { Cross2Icon } from "@radix-ui/react-icons"
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
 import {
 	Children,
@@ -19,7 +18,7 @@ import {
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
-import { Button, type ButtonProps } from "./button"
+import { Button, CloseButton, type ButtonProps } from "./button"
 import { useDialog, type DialogProps } from "./dialog"
 import { isElement, zs } from "./lib"
 import { dialogContext } from "./lib/dialogContext"
@@ -98,25 +97,6 @@ export function SheetTrigger({ children, ...props }: PropsWithChildren<Omit<Butt
 }
 SheetTrigger["$id"] = Symbol.for("com.SheetTrigger")
 
-function CloseButton() {
-	return (
-		<SheetClose>
-			<button
-				type="button"
-				tw="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity
-					hover:opacity-100
-					focus:(outline-none ring-2 ring-ring ring-offset-2)
-					disabled:pointer-events-none"
-			>
-				<Cross2Icon tw="h-4 w-4" />
-				<span tw="sr-only">
-					<FormattedMessage id="off" />
-				</span>
-			</button>
-		</SheetClose>
-	)
-}
-
 interface SheetContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
 	side?: "top" | "right" | "bottom" | "left"
 	children?: ReactNode | ((args: { close(): void }) => ReactNode)
@@ -190,7 +170,9 @@ export function SheetContent({
 					}}
 				>
 					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
-					<CloseButton />
+					<SheetClose>
+						<CloseButton tw="absolute right-4 top-4" />
+					</SheetClose>
 				</animated.div>
 			)
 		)

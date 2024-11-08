@@ -93,7 +93,7 @@ export function Overlay({
 				item && (
 					<animated.div
 						data-type="overlay"
-						tw="fixed inset-0 z-50 bg-background/75 [:nth-last-of-type(-n+2)]:pointer-events-auto"
+						tw="fixed inset-0 z-50 bg-background/75 [:nth-last-of-type(-n+2)]:pointer-events-auto select-none [> *]:select-text"
 						css={blur && tw`backdrop-blur-sm`}
 						style={s}
 						onPointerDown={event => {

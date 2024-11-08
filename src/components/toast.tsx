@@ -12,7 +12,7 @@ import {
 	type HTMLAttributes,
 	type PropsWithChildren,
 } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import { tw } from "twobj"
 import { type InnerToasterToast } from "~/context/app/action"
 import { isElement, zs } from "./lib"
@@ -71,20 +71,26 @@ function ToastDescription({ children, ...props }: PropsWithChildren<HTMLAttribut
 	)
 }
 
-function CloseButton({ onClick }: { onClick?(): void }) {
+function CloseButton({ onClick, className }: { onClick?(): void; className?: string }) {
+	const intl = useIntl()
 	return (
 		<button
 			type="button"
-			tw="absolute right-0.5 top-0.5 rounded-md p-0.5 text-foreground/50 not-mobile:opacity-0 transition-opacity
-		hover:text-foreground
-		focus:(opacity-100 outline-none ring-1 ring-ring/30)
-		group-hover:opacity-100
-		group-[.destructive]:(text-red-300 hover:text-red-50 focus:(ring-red-400 ring-offset-red-600))
-		"
+			tw="p-0.5 rounded-sm opacity-70 ring-offset-background transition duration-150
+			hover:(opacity-100 bg-accent text-accent-foreground)
+			focus:outline-none
+			disabled:pointer-events-none
+			group-hover:opacity-100
+			group-[.destructive]:(text-red-300 hover:(text-accent bg-accent-foreground) focus:(ring-red-400 ring-offset-red-600))
+			"
 			onClick={onClick}
+			className={className}
+			title={intl.formatMessage({ id: "close" })}
 		>
-			<Cross2Icon tw="h-4 w-4" />
-			<span tw="sr-only">Close</span>
+			<Cross2Icon tw="h-5 w-5" />
+			<span tw="sr-only">
+				<FormattedMessage id="close" />
+			</span>
 		</button>
 	)
 }
@@ -99,17 +105,18 @@ function ToastAction({ children, id }: PropsWithChildren<{ id: string }>) {
 		return (
 			<button
 				type="button"
-				tw="inline-flex shrink-0 items-center justify-center rounded-md border bg-transparent
-			px-3 h-[34px] text-sm font-medium transition-colors
+				tw="inline-flex shrink-0 items-center justify-center rounded-md bg-transparent
+			px-3 h-[34px] font-semibold transition-colors
 			hover:bg-secondary focus:(outline-none ring-1 ring-ring) disabled:(pointer-events-none opacity-50)
 			group-[.destructive]:(
-				border-muted
-				hover:(border-muted/30 bg-destructive text-destructive-foreground)
+				border border-muted/30
+				hover:(border-accent-foreground text-accent bg-accent-foreground)
 				focus:ring-destructive
 			)
 			group-[.primary]:(
-				border-muted
-				hover:(border-muted/30 bg-primary text-primary-foreground)
+				// border-muted
+				hover:(bg-accent text-accent-foreground)
+				// hover:(border-muted/30 bg-primary text-primary-foreground)
 				focus:ring-primary
 			)"
 				onClick={() => dismissToast(id)}
@@ -188,7 +195,7 @@ function Toasts() {
 						)}
 					</div>
 					{item.action && <ToastAction id={item.id}>{item.action}</ToastAction>}
-					<CloseButton onClick={() => dismissToast(item.id)} />
+					<CloseButton tw="absolute right-0.5 top-0.5" onClick={() => dismissToast(item.id)} />
 				</div>
 			</div>
 		</animated.div>
