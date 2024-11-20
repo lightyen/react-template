@@ -66,6 +66,20 @@ function gitcommit(): PluginOption {
 	}
 }
 
+function enableCrossOriginIsolated(): PluginOption {
+	return {
+		name: "configure-server",
+
+		configureServer(server) {
+			server.middlewares.use((_req, res, next) => {
+				res.setHeader("Cross-Origin-Opener-Policy", "same-origin")
+				res.setHeader("Cross-Origin-Embedder-Policy", "require-corp")
+				next()
+			})
+		},
+	}
+}
+
 export default defineConfig({
 	base: "",
 	build: {
@@ -73,6 +87,7 @@ export default defineConfig({
 		chunkSizeWarningLimit: 4 << 10,
 	},
 	plugins: [
+		enableCrossOriginIsolated(),
 		gitcommit(),
 		visualizer(),
 		yaml(),
