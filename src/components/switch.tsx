@@ -19,10 +19,12 @@ const effects = css`
 
 export const Switch = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
 	({ id, className, onFocus, onBlur, onKeyDown, ...props }, forwardedRef) => {
-		const innerId = useId()
+		const defaultId = useId()
+		if (!id) {
+			id = defaultId
+		}
 		const inputRef = useRef<HTMLInputElement | null>(null)
 		const isFocus = useRef(false)
-		if (!id) id = innerId
 		return (
 			<>
 				<InputControl ref={composeRefs(forwardedRef, inputRef)} id={id} type="checkbox" {...props} />

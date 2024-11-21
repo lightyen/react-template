@@ -7,7 +7,6 @@ import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
 import { Button } from "~/components/button"
 import { addresses } from "~/data/macaddr"
-import { CheckMemoryLeak } from "./CheckMemoryLeak"
 import { TodoList } from "./Todolist"
 
 function DragExample() {
@@ -56,7 +55,6 @@ export function Component() {
 		<article tw="relative">
 			<div>
 				<h1 tw="border-b mb-4">Test</h1>
-				<CheckMemoryLeak />
 				<div tw="bg-accent/50 p-2 max-w-[600px] flex gap-5 justify-end">
 					<Button variant="outline" size="sm" tw="flex-1 sm:max-w-[130px]">
 						Cancel

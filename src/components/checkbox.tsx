@@ -36,11 +36,13 @@ interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 	({ id, className, intermediate, onFocus, onBlur, onKeyDown, ...props }, forwardedRef) => {
-		const innerId = useId()
+		const defaultId = useId()
+		if (!id) {
+			id = defaultId
+		}
 		const inputRef = useRef<HTMLInputElement | null>(null)
 		const ref = useComposedRefs(forwardedRef, inputRef)
 		const isFocus = useRef(false)
-		if (!id) id = innerId
 		useEffect(() => {
 			if (intermediate != undefined) {
 				if (inputRef.current) {

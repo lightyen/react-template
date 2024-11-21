@@ -53,8 +53,10 @@ SearchInput.displayName = "SearchInput"
 
 export const Password = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
 	({ id, "aria-invalid": invalid, disabled, type: _, className, ...props }, ref) => {
-		const innerId = useId()
-		if (!id) id = innerId
+		const defaultId = useId()
+		if (!id) {
+			id = defaultId
+		}
 		const [reveal, setReveal] = useState(false)
 		return (
 			<div css={input} aria-invalid={invalid}>

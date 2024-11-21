@@ -32,13 +32,13 @@ interface RouterTabsProps {
 }
 
 export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: RouterTabsProps) {
-	const id = useId()
+	const name = useId()
 
 	const [stateTo, setTo] = useState(() => propTo)
 
 	const labels = Children.toArray(children).filter((e): e is ReactElement<RouteTabProps> => isElement(e, RouteTab))
 
-	const [indices, setIndices] = useState(() => labels.map((_, i) => id + String(i)))
+	const [indices, setIndices] = useState(() => labels.map((_, i) => name + String(i)))
 
 	useEffect(() => {
 		if (propTo) {
@@ -48,9 +48,9 @@ export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: 
 
 	useEffect(() => {
 		if (labels.length !== indices.length) {
-			setIndices(labels.map((_, i) => id + String(i)))
+			setIndices(labels.map((_, i) => name + String(i)))
 		}
-	}, [labels, id, indices, setIndices])
+	}, [labels, name, indices, setIndices])
 
 	const notMatched = labels.findIndex(({ props: { to } }) => to === stateTo) === -1
 
@@ -97,7 +97,7 @@ export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: 
 					<li key={indices[i]} tw="-mb-px">
 						<InputControl
 							type="radio"
-							name={id}
+							name={name}
 							id={indices[i]}
 							checked={to === stateTo || (i === 0 && notMatched)}
 							onChange={() => {
