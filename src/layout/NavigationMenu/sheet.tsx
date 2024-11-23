@@ -22,7 +22,7 @@ import { tw } from "twobj"
 import { Button } from "~/components/button"
 import { getElementWidth, isElement, zs } from "~/components/lib"
 import { dialogContext } from "~/components/lib/dialogContext"
-import { Overlay } from "~/components/overlay"
+import { Overlay } from "~/components/lib/overlay"
 
 export function SheetTrigger({
 	children,

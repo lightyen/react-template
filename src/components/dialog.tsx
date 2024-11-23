@@ -20,7 +20,7 @@ import { tw } from "twobj"
 import { Button, CloseButton, type ButtonProps } from "./button"
 import { isElement } from "./lib"
 import { dialogContext } from "./lib/dialogContext"
-import { Overlay } from "./overlay"
+import { Overlay } from "./lib/overlay"
 
 export function useDialog(initialState: boolean | (() => boolean) = false) {
 	const [visible, setVisible] = useState(initialState)
