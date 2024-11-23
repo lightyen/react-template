@@ -170,15 +170,15 @@ function Toasts() {
 		api.start()
 	}, [api, items])
 
-	return transitions((s, item) => (
+	return transitions((s, { variant, ...item }) => (
 		<animated.div tw="relative" style={s}>
 			<div
 				tw="pb-2 first-of-type:(absolute inset-0 top-auto) sm:(pt-3 first-of-type:relative)"
-				className={cx("group", item.variant)}
+				className={cx("group", variant)}
 				ref={(ref: HTMLDivElement) => ref && refMap.set(item, ref)}
 			>
 				<div
-					css={toastVariants(item)}
+					css={toastVariants({ variant })}
 					onPointerEnter={() => {
 						cancelDismissToast(item.id)
 					}}

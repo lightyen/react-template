@@ -516,7 +516,7 @@ export const SliderRange = forwardRef<HTMLSpanElement>((props, forwardedRef) => 
 			return { left, right }
 		}),
 	)
-	return <span ref={forwardedRef} data-orientation={orientation} css={style} {...props} />
+	return <span ref={forwardedRef} data-orientation={orientation} style={style} {...props} />
 })
 SliderRange.displayName = "SliderRange"
 SliderRange["$id"] = Symbol.for("com.SliderRange")
@@ -588,7 +588,7 @@ export const SliderThumb = forwardRef<HTMLSpanElement, { index?: number }>(({ in
 	}, [slideDirection])
 
 	return (
-		<span tw="absolute" css={style(percent)}>
+		<span tw="absolute" style={style(percent)}>
 			<span ref={composeRefs(forwardedRef, ref)} tabIndex={0} {...props} />
 		</span>
 	)

@@ -33,8 +33,8 @@ export const buttonVariants = zs(
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants>
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ type = "button", ...props }, ref) => {
-	return <button type={type} role="button" css={buttonVariants(props)} ref={ref} {...props} />
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ type = "button", variant, ...props }, ref) => {
+	return <button type={type} role="button" css={buttonVariants({ variant })} ref={ref} {...props} />
 })
 Button.displayName = "Button"
 

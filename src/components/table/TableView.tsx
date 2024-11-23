@@ -209,7 +209,7 @@ export function TableView<T extends {} = {}>({
 									<th
 										key={columnIndex}
 										tw="h-10 px-2 first-of-type:pl-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-2"
-										css={_style}
+										style={_style}
 										className={className}
 									>
 										{compare ? (
@@ -229,10 +229,10 @@ export function TableView<T extends {} = {}>({
 			<tbody id="table-view" tw="[& tr:last-of-type]:border-0 [mark]:(text-primary-foreground bg-primary)">
 				{result.map((data, i) => {
 					return data ? (
-						<Row key={keyFn ? keyFn(data) ?? i : i} data={data} columns={columns} />
+						<Row key={keyFn ? (keyFn(data) ?? i) : i} data={data} columns={columns} />
 					) : (
 						<tr
-							key={keyFn ? keyFn(data) ?? i : i}
+							key={keyFn ? (keyFn(data) ?? i) : i}
 							tw="border-b transition-colors duration-100 hover:bg-muted/50 data-[state=selected]:bg-muted"
 						>
 							<td
