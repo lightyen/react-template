@@ -1,6 +1,6 @@
 import { LocaleProvider, StoreProvider } from "@context/Provider"
 import { Global, css } from "@emotion/react"
-import { RouterProvider } from "react-router-dom"
+import { RouterProvider } from "react-router"
 import { globalStyles, tw } from "twobj"
 import { router } from "./Router"
 import "./global.css"
@@ -31,7 +31,7 @@ export function App() {
 		<StoreProvider>
 			<Global styles={[globalStyles, appStyle]} />
 			<LocaleProvider>
-				<RouterProvider router={router} future={{ v7_startTransition: true }} />
+				<RouterProvider router={router} />
 			</LocaleProvider>
 		</StoreProvider>
 		// </StrictMode>

@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router"
 import { Toaster } from "~/components/toast"
 import { HeaderMenu } from "./HeaderMenu"
 import { LeftNavigationMenu } from "./NavigationMenu"

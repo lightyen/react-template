@@ -1,5 +1,5 @@
 import { HamburgerMenuIcon } from "@radix-ui/react-icons"
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router"
 import { tw } from "twobj"
 import { Button, buttonVariants } from "~/components/button"
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./sheet"

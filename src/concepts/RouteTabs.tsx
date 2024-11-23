@@ -1,6 +1,6 @@
 import { css } from "@emotion/react"
 import { Children, useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactElement } from "react"
-import { type NavigateFunction } from "react-router-dom"
+import { type NavigateFunction } from "react-router"
 import { tw } from "twobj"
 import { isElement } from "~/components/lib"
 

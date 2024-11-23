@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Route } from "react-router-dom"
+import { Route } from "react-router"
 import { Button } from "~/components/button"
 import { Card, CardContent, CardTitle } from "~/components/card"
 import { Input } from "~/components/input"
