@@ -255,7 +255,7 @@ function ZonenameSelect({ id }: { id?: string }) {
 							<div
 								aria-label="items"
 								tw="relative w-full whitespace-nowrap"
-								css={{ height: `${rowVirtualizer.getTotalSize()}px` }}
+								style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
 							>
 								{rowVirtualizer.getVirtualItems().map(({ key, index, size, start }) => {
 									const data = suggestions[index]
@@ -267,7 +267,7 @@ function ZonenameSelect({ id }: { id?: string }) {
 												aria-selected:(bg-primary/10 text-primary/80 cursor-pointer)
 												"
 											aria-selected={index === selectedIndex}
-											css={{ height: `${size}px`, transform: `translateY(${start}px)` }}
+											style={{ height: `${size}px`, transform: `translateY(${start}px)` }}
 											onMouseOver={() => {
 												const now = new Date()
 												if (now.getTime() - keyboard.current.getTime() > 33) {

@@ -197,7 +197,7 @@ export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps
 							aria-label="candidates"
 							tw="overscroll-none h-[260px] w-[300px] overflow-auto"
 						>
-							<div tw="relative" css={{ height: `${rowVirtualizer.getTotalSize()}px` }}>
+							<div tw="relative" style={{ height: `${rowVirtualizer.getTotalSize()}px` }}>
 								{rowVirtualizer.getVirtualItems().map(({ start, index, key, size }) => {
 									const data = suggestions[index]
 									const k = data.key ?? key
@@ -209,7 +209,7 @@ export const SuggestionInput = forwardRef<HTMLInputElement, SuggestionInputProps
 											aria-selected:(bg-primary/10 text-primary/80 cursor-pointer)
 											focus-within:(bg-primary/15 outline-none)
 											px-1 flex items-center "
-											css={{ height: `${size}px`, transform: `translateY(${start}px)` }}
+											style={{ height: `${size}px`, transform: `translateY(${start}px)` }}
 											aria-selected={index === selectedIndex}
 											onMouseOver={() => {
 												const now = new Date()

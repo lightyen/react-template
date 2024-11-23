@@ -138,7 +138,7 @@ function LongList() {
 		<div
 			ref={listRef}
 			tw="relative"
-			css={{
+			style={{
 				height: `${virtualizer.getTotalSize()}px`,
 			}}
 		>
@@ -146,7 +146,7 @@ function LongList() {
 				<div
 					key={key}
 					tw="absolute top-0 left-0 w-full flex items-center"
-					css={{
+					style={{
 						height: `${size}px`,
 						transform: `translateY(${start - virtualizer.options.scrollMargin}px)`,
 					}}

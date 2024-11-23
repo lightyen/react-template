@@ -1,4 +1,4 @@
-import { css, keyframes } from "@emotion/react"
+import { keyframes } from "@emotion/react"
 import { SVGAttributes, useMemo } from "react"
 
 const spin = keyframes`
@@ -61,19 +61,19 @@ export function SpinArcLoading({ radius = 8, strokeWidth = 3, ...props }: SpinAr
 	return (
 		<svg height={2 * _r} width={2 * _r} tw="stroke-current" {...props}>
 			<g
-				css={css`
-					transform-origin: ${_r}px ${_r}px;
-					animation: ${spin} 1.2s linear infinite;
-				`}
+				style={{
+					transformOrigin: `${_r}px ${_r}px`,
+					animation: `${spin} 1.2s linear infinite`,
+				}}
 			>
 				<path
-					css={css`
-						stroke-width: ${strokeWidth}px;
-						fill: none;
-						stroke-dasharray: ${length};
-						stroke-dashoffset: 0;
-						animation: ${running} 2s linear reverse infinite;
-					`}
+					style={{
+						strokeWidth: strokeWidth,
+						fill: "none",
+						strokeDasharray: length,
+						strokeDashoffset: 0,
+						animation: `${running} 2s linear reverse infinite`,
+					}}
 					d={`M${2 * radius + _s} ${radius + _s} A${radius} ${radius} 0 ${largeArc} 1 ${x} ${y}`}
 				/>
 			</g>

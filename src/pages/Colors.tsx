@@ -9,7 +9,7 @@ export const ColorsRoutes = <Route path="colors" Component={Component} />
 export function Component() {
 	return (
 		<div tw="max-w-2xl grid gap-10">
-			<div tw="h-10" css={{ background: `hsl(0 50% 32%)` }}></div>
+			<div tw="h-10" style={{ background: `hsl(0 50% 32%)` }}></div>
 			<div tw="grid gap-2 rounded-lg">
 				<div tw="p-1 rounded-lg bg-background text-foreground">foreground</div>
 				<Card tw="p-3">
@@ -85,7 +85,7 @@ function DataSheet() {
 							<div key={k} tw="grid gap-2 items-center [grid-template-columns: 1fr 150px 200px]">
 								<div tw="text-right">{k}</div>
 								<div tw="">{value}</div>
-								<div tw="h-full" css={{ backgroundColor: `hsl(${value})` }} />
+								<div tw="h-full" style={{ backgroundColor: `hsl(${value})` }} />
 							</div>
 						)
 					})}

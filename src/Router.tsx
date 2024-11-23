@@ -7,6 +7,7 @@ import { ColorsRoutes } from "./pages/Colors"
 import { ComponentRoutes } from "./pages/Component"
 import { Home } from "./pages/Home"
 import { Login } from "./pages/Login"
+import { MemoryLeakTest } from "./pages/Memtest"
 import { NotFound } from "./pages/NotFound"
 import { TableRoutes } from "./pages/Table"
 import { TestRoutes } from "./pages/Test"
@@ -25,6 +26,7 @@ export const router = createBrowserRouter(
 		<Route path={root}>
 			<Route Component={FullPage}>
 				<Route path="login" Component={Login} />
+				<Route path="memtest" Component={MemoryLeakTest} />
 			</Route>
 			<Route Component={Layout}>
 				<Route index Component={Home} />
