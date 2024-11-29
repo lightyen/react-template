@@ -178,7 +178,7 @@ function Toasts() {
 				ref={(ref: HTMLDivElement) => ref && refMap.set(item, ref)}
 			>
 				<div
-					css={toastVariants(item)}
+					css={toastVariants({ variant: item.variant })}
 					onPointerEnter={() => {
 						cancelDismissToast(item.id)
 					}}

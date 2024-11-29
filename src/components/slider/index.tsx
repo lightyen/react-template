@@ -474,7 +474,6 @@ const SliderRootImpl = forwardRef<HTMLSpanElement, SliderPrivateProps>(
 					}
 				})}
 				onPointerUp={composeEventHandlers(onPointerUp, event => {
-					console.log("test")
 					const target = event.target
 					if (!(target instanceof Element)) {
 						return

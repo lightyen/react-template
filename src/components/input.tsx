@@ -36,8 +36,8 @@ export const inputVariants = zs(
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & VariantProps<typeof inputVariants>
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ type, ...props }, ref) => {
-	return <input type={type} css={inputVariants(props)} ref={ref} {...props} />
+export const Input = forwardRef<HTMLInputElement, InputProps>(({ type, variant, ...props }, ref) => {
+	return <input type={type} css={inputVariants({ variant })} ref={ref} {...props} />
 })
 Input.displayName = "Input"
 

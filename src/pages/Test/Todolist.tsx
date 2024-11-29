@@ -22,8 +22,8 @@ export function TodoList() {
 	return (
 		<form
 			tw="p-5"
-			onSubmit={methods.handleSubmit(data => {
-				console.log(data)
+			onSubmit={methods.handleSubmit(_ => {
+				// console.log(data)
 			})}
 		>
 			<div tw="flex items-center gap-6">

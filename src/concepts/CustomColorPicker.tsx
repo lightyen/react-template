@@ -59,8 +59,6 @@ export function CustomColorPicker() {
 		return parseHslColor(background)
 	})
 
-	console.log(selectedColor)
-
 	useEffect(() => {
 		const ob = new MutationObserver(mutations => {
 			const el = mutations[0]?.target as HTMLElement

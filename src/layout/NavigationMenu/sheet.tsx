@@ -147,8 +147,6 @@ export function SheetContent({
 		return null
 	}
 
-	console.log(gestures())
-
 	return transitions((style, item) => {
 		return (
 			item && (
