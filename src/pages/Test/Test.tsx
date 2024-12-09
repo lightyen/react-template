@@ -99,7 +99,7 @@ function createStore() {
 const StoreContext = createContext<Store>(null as unknown as Store)
 
 function StoreProvider({ children }) {
-	const storeRef = useRef<Store>()
+	const storeRef = useRef<Store>(undefined)
 	if (!storeRef.current) {
 		storeRef.current = createStore()
 	}

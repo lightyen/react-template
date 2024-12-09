@@ -10,7 +10,7 @@ export { TableToolbar } from "./TableToolbar"
 export { TableView } from "./TableView"
 
 export function useTable<T extends {}>(options: TableOptions<T>) {
-	const ref = useRef<ReturnType<typeof createStore<T>>>()
+	const ref = useRef<ReturnType<typeof createStore<T>>>(undefined)
 	if (!ref.current) {
 		ref.current = createStore(options)
 	}
