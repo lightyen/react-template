@@ -1,5 +1,5 @@
 import { EyeNoneIcon, EyeOpenIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
-import { forwardRef, useId, useState, type HTMLAttributes, type InputHTMLAttributes } from "react"
+import { useId, useState, type HTMLAttributes, type InputHTMLAttributes, type Ref } from "react"
 import { tw } from "twobj"
 import { zs, type VariantProps } from "./lib"
 
@@ -34,60 +34,63 @@ export const inputVariants = zs(
 	},
 )
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement> & VariantProps<typeof inputVariants>
+export type InputProps = InputHTMLAttributes<HTMLInputElement> &
+	VariantProps<typeof inputVariants> & { ref?: Ref<HTMLInputElement> }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(({ type, variant, ...props }, ref) => {
+export function Input({ ref, type, variant, ...props }: InputProps) {
 	return <input type={type} css={inputVariants({ variant })} ref={ref} {...props} />
-})
+}
 Input.displayName = "Input"
 
-export const SearchInput = forwardRef<HTMLInputElement, InputProps>(({ type, className, ...props }, ref) => {
+export function SearchInput({ ref, type, className, ...props }: InputProps) {
 	return (
 		<div css={input} tw="items-center" className={className}>
 			<MagnifyingGlassIcon tw="mr-2 h-4 w-4 shrink-0 opacity-50" />
 			<input type={type} ref={ref} tw="grow h-full bg-background outline-none" {...props} />
 		</div>
 	)
-})
+}
 SearchInput.displayName = "SearchInput"
 
-export const Password = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(
-	({ id, "aria-invalid": invalid, disabled, type: _, className, ...props }, ref) => {
-		const defaultId = useId()
-		if (!id) {
-			id = defaultId
-		}
-		const [reveal, setReveal] = useState(false)
-		return (
-			<div css={input} aria-invalid={invalid}>
-				<input
-					ref={ref}
-					id={id}
-					autoComplete="off"
-					autoCorrect="off"
-					spellCheck="false"
-					tabIndex={0}
-					tw="w-0 flex-1 focus-visible:outline-none bg-background [::-ms-reveal]:hidden disabled:(pointer-events-none opacity-50)"
-					type={reveal ? "text" : "password"}
-					disabled={disabled}
-					aria-invalid={invalid}
-					{...props}
-				/>
-				<button
-					type="button"
-					tabIndex={-1}
-					disabled={disabled}
-					tw="text-muted-foreground p-1 focus:outline-none transition rounded-lg disabled:(pointer-events-none text-muted)"
-					onClick={() => setReveal(t => !t)}
-				>
-					{reveal ? <EyeOpenIcon /> : <EyeNoneIcon />}
-				</button>
-			</div>
-		)
-	},
-)
+export function Password({ ref, id, "aria-invalid": invalid, disabled, type: _, className, ...props }: InputProps) {
+	const defaultId = useId()
+	if (!id) {
+		id = defaultId
+	}
+	const [reveal, setReveal] = useState(false)
+	return (
+		<div css={input} aria-invalid={invalid}>
+			<input
+				ref={ref}
+				id={id}
+				autoComplete="off"
+				autoCorrect="off"
+				spellCheck="false"
+				tabIndex={0}
+				tw="w-0 flex-1 focus-visible:outline-none bg-background [::-ms-reveal]:hidden disabled:(pointer-events-none opacity-50)"
+				type={reveal ? "text" : "password"}
+				disabled={disabled}
+				aria-invalid={invalid}
+				{...props}
+			/>
+			<button
+				type="button"
+				tabIndex={-1}
+				disabled={disabled}
+				tw="text-muted-foreground p-1 focus:outline-none transition rounded-lg disabled:(pointer-events-none text-muted)"
+				onClick={() => setReveal(t => !t)}
+			>
+				{reveal ? <EyeOpenIcon /> : <EyeNoneIcon />}
+			</button>
+		</div>
+	)
+}
+Password.displayName = "Password"
 
-export const ErrorFeedBack = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>((props, ref) => {
+export function ErrorFeedBack({
+	ref,
+	...props
+}: HTMLAttributes<HTMLParagraphElement> & { ref?: Ref<HTMLParagraphElement> }) {
 	return <p tw="text-[0.8rem] font-medium text-destructive" ref={ref} {...props} />
-})
+}
 ErrorFeedBack.displayName = "ErrorFeedBack"

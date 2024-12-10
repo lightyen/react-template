@@ -2,7 +2,6 @@ import { animated, easings, useSpringRef, useTransition } from "@react-spring/we
 import {
 	Children,
 	cloneElement,
-	forwardRef,
 	isValidElement,
 	useContext,
 	useEffect,
@@ -15,6 +14,7 @@ import {
 	type PropsWithChildren,
 	type ReactElement,
 	type ReactNode,
+	type Ref,
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
@@ -102,9 +102,9 @@ interface SheetContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "childr
 	children?: ReactNode | ((args: { close(): void }) => ReactNode)
 }
 
-export const Div = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
-	return <div ref={ref} {...props} />
-})
+export function Div(props: HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> }) {
+	return <div {...props} />
+}
 
 export function SheetContent({
 	side = "right",

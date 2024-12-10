@@ -1,13 +1,14 @@
-import { HTMLAttributes, forwardRef } from "react"
+import { type HTMLAttributes, type Ref } from "react"
 
 interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
 	/** 0 - 100 */
 	value: number
+	ref?: Ref<HTMLDivElement>
 }
 
-export const Progress = forwardRef<HTMLDivElement, ProgressProps>(({ value, ...props }, ref) => {
+export function Progress({ value, ...props }: ProgressProps) {
 	return (
-		<div tw="relative h-2 w-full overflow-hidden rounded-full bg-primary/20" ref={ref} {...props}>
+		<div tw="relative h-2 w-full overflow-hidden rounded-full bg-primary/20" {...props}>
 			<div
 				tw="h-full w-full flex-1 bg-primary transition-all"
 				style={{
@@ -16,5 +17,5 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(({ value, ...p
 			/>
 		</div>
 	)
-})
+}
 Progress.displayName = "Progress"
