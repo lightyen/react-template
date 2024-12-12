@@ -53,7 +53,7 @@ export function TodoList() {
 			</div>
 			<div tw="my-4">
 				<div tw="p-3 rounded-lg -mb-2">
-					<FormProvider {...methods}>
+					<FormProvider reset={reset} {...methods}>
 						<FormArrayProvider {...fieldArrayMethods}>
 							<TodolistAnimated />
 						</FormArrayProvider>
