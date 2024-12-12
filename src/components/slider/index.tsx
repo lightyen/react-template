@@ -1,21 +1,21 @@
 import {
 	Children,
+	cloneElement,
 	ComponentProps,
+	createContext,
+	isValidElement,
 	KeyboardEvent,
+	memo,
 	PointerEvent,
 	PropsWithChildren,
 	ReactElement,
-	cloneElement,
-	createContext,
-	forwardRef,
-	isValidElement,
-	memo,
 	useContext,
 	useEffect,
 	useMemo,
 	useRef,
 	useState,
 	type HTMLAttributes,
+	type Ref,
 } from "react"
 import { create } from "zustand"
 import { useShallow } from "zustand/react/shallow"
@@ -137,7 +137,7 @@ function createStore({ onValueChange = () => void 0, onValueCommit = () => void 
 
 function useSlider(options: SliderOptions) {
 	const { value, min, max, step, disabled, orientation, inverted, dir } = options
-	const ref = useRef<ReturnType<typeof createStore> | null>()
+	const ref = useRef<ReturnType<typeof createStore> | null>(null)
 	const mountedRef = useRef(false)
 	const [, setCounter] = useState(0)
 
@@ -159,7 +159,7 @@ function useSlider(options: SliderOptions) {
 const SliderContext = createContext(null as unknown as ReturnType<typeof createStore>)
 
 function Provider({ children, store }: PropsWithChildren<{ store: ReturnType<typeof useSlider> }>) {
-	return <SliderContext.Provider value={store}>{children}</SliderContext.Provider>
+	return <SliderContext value={store}>{children}</SliderContext>
 }
 
 function useSliderStore() {
@@ -230,7 +230,7 @@ export const SliderRoot = memo(
 		})
 
 		return (
-			<ThumbCollectionContext.Provider value={thumbs.current}>
+			<ThumbCollectionContext value={thumbs.current}>
 				<Provider store={useSelect}>
 					<SliderRootImpl
 						onSlideStart={(event, value, activeIndex) => {
@@ -281,7 +281,7 @@ export const SliderRoot = memo(
 						{thumbElements}
 					</SliderRootImpl>
 				</Provider>
-			</ThumbCollectionContext.Provider>
+			</ThumbCollectionContext>
 		)
 	},
 	({ value: prevValue, ...prevProps }, { value: nextValue, ...nextProps }) => {
@@ -381,127 +381,122 @@ interface SliderPrivateProps<T = HTMLSpanElement> extends Omit<HTMLAttributes<T>
 	onStepKeyDown(event: KeyboardEvent<T>, index: number): void
 }
 
-const SliderRootImpl = forwardRef<HTMLSpanElement, SliderPrivateProps>(
-	(
-		{
-			onKeyDown,
-			onPointerDown,
-			onPointerUp,
-			onPointerMove,
-			onSlideStart,
-			onSlideMove,
-			onSlideEnd,
-			onHomeKeyDown,
-			onEndKeyDown,
-			onStepKeyDown,
-			children,
-			...props
-		},
-		forwardedRef,
-	) => {
-		const useSelect = useSliderStore()
-		const disabled = useSelect(state => state.disabled)
-		const min = useSelect(state => state.min)
-		const max = useSelect(state => state.max)
-		const inverted = useSelect(state => state.inverted)
-		const orientation = useSelect(state => state.orientation)
-		const dir = useSelect(state => state.dir)
-		const activeIndex = useRef(-1)
+function SliderRootImpl({
+	ref,
+	onKeyDown,
+	onPointerDown,
+	onPointerUp,
+	onPointerMove,
+	onSlideStart,
+	onSlideMove,
+	onSlideEnd,
+	onHomeKeyDown,
+	onEndKeyDown,
+	onStepKeyDown,
+	children,
+	...props
+}: SliderPrivateProps & { ref?: Ref<HTMLSpanElement> }) {
+	const useSelect = useSliderStore()
+	const disabled = useSelect(state => state.disabled)
+	const min = useSelect(state => state.min)
+	const max = useSelect(state => state.max)
+	const inverted = useSelect(state => state.inverted)
+	const orientation = useSelect(state => state.orientation)
+	const dir = useSelect(state => state.dir)
+	const activeIndex = useRef(-1)
 
-		const sliderRef = useRef<HTMLButtonElement>(null)
-		const rectRef = useRef<DOMRect | undefined>()
+	const sliderRef = useRef<HTMLButtonElement>(null)
+	const rectRef = useRef<DOMRect | undefined>(undefined)
 
-		function handlePointer(event: PointerEvent<HTMLElement>) {
-			if (!sliderRef.current) {
-				return
-			}
-
-			let rect = rectRef.current
-			if (!rect) {
-				rect = sliderRef.current.getBoundingClientRect()
-				rectRef.current = rect
-			}
-
-			return getValueFromPointer(event, rect, min, max, inverted, orientation, dir)
+	function handlePointer(event: PointerEvent<HTMLElement>) {
+		if (!sliderRef.current) {
+			return
 		}
 
-		return (
-			<span
-				ref={composeRefs(forwardedRef, sliderRef)}
-				data-orientation={orientation}
-				aria-disabled={disabled}
-				css={disabled && { opacity: 0.5 }}
-				onKeyDown={composeEventHandlers(onKeyDown, event => {
-					if (event.key === "Home") {
-						event.preventDefault()
-						onHomeKeyDown(event, activeIndex.current)
-					} else if (event.key === "End") {
-						event.preventDefault()
-						onEndKeyDown(event, activeIndex.current)
-					} else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
-						event.preventDefault()
-						onStepKeyDown(event, activeIndex.current)
-					}
-				})}
-				onPointerDown={composeEventHandlers(onPointerDown, event => {
-					const target = event.target
-					if (!(target instanceof Element)) {
-						return
-					}
+		let rect = rectRef.current
+		if (!rect) {
+			rect = sliderRef.current.getBoundingClientRect()
+			rectRef.current = rect
+		}
+
+		return getValueFromPointer(event, rect, min, max, inverted, orientation, dir)
+	}
+
+	return (
+		<span
+			ref={composeRefs(ref, sliderRef)}
+			data-orientation={orientation}
+			aria-disabled={disabled}
+			css={disabled && { opacity: 0.5 }}
+			onKeyDown={composeEventHandlers(onKeyDown, event => {
+				if (event.key === "Home") {
 					event.preventDefault()
-					target.setPointerCapture(event.pointerId)
+					onHomeKeyDown(event, activeIndex.current)
+				} else if (event.key === "End") {
+					event.preventDefault()
+					onEndKeyDown(event, activeIndex.current)
+				} else if (PAGE_KEYS.concat(ARROW_KEYS).includes(event.key)) {
+					event.preventDefault()
+					onStepKeyDown(event, activeIndex.current)
+				}
+			})}
+			onPointerDown={composeEventHandlers(onPointerDown, event => {
+				const target = event.target
+				if (!(target instanceof Element)) {
+					return
+				}
+				event.preventDefault()
+				target.setPointerCapture(event.pointerId)
+				const value = handlePointer(event)
+				if (value == undefined) {
+					return
+				}
+				activeIndex.current = getClosestValueIndex(useSelect.getState().value, value)
+				onSlideStart(event, value, activeIndex.current)
+			})}
+			onPointerMove={composeEventHandlers(onPointerMove, event => {
+				if (event.pointerId === 0) {
+					return
+				}
+				const target = event.target
+				if (!(target instanceof Element)) {
+					return
+				}
+				if (target.hasPointerCapture(event.pointerId)) {
 					const value = handlePointer(event)
 					if (value == undefined) {
 						return
 					}
-					activeIndex.current = getClosestValueIndex(useSelect.getState().value, value)
-					onSlideStart(event, value, activeIndex.current)
-				})}
-				onPointerMove={composeEventHandlers(onPointerMove, event => {
-					if (event.pointerId === 0) {
-						return
-					}
-					const target = event.target
-					if (!(target instanceof Element)) {
-						return
-					}
-					if (target.hasPointerCapture(event.pointerId)) {
-						const value = handlePointer(event)
-						if (value == undefined) {
-							return
-						}
-						onSlideMove(event, value, activeIndex.current)
-					}
-				})}
-				onPointerUp={composeEventHandlers(onPointerUp, event => {
-					console.log("test")
-					const target = event.target
-					if (!(target instanceof Element)) {
-						return
-					}
-					if (target.hasPointerCapture(event.pointerId)) {
-						target.releasePointerCapture(event.pointerId)
-						rectRef.current = undefined
-						onSlideEnd(event, activeIndex.current)
-					}
-				})}
-				{...props}
-			>
-				{children}
-			</span>
-		)
-	},
-)
+					onSlideMove(event, value, activeIndex.current)
+				}
+			})}
+			onPointerUp={composeEventHandlers(onPointerUp, event => {
+				const target = event.target
+				if (!(target instanceof Element)) {
+					return
+				}
+				if (target.hasPointerCapture(event.pointerId)) {
+					target.releasePointerCapture(event.pointerId)
+					rectRef.current = undefined
+					onSlideEnd(event, activeIndex.current)
+				}
+			})}
+			{...props}
+		>
+			{children}
+		</span>
+	)
+}
 
-export const SliderTrack = forwardRef<HTMLSpanElement, PropsWithChildren<{}>>((props, forwardedRef) => {
+export function SliderTrack(props: PropsWithChildren<{ ref?: Ref<HTMLSpanElement> }>) {
 	const useSelect = useSliderStore()
 	const orientation = useSelect(state => state.orientation)
-	return <span ref={forwardedRef} data-orientation={orientation} tw="pointer-events-none" {...props} />
-})
+	return <span data-orientation={orientation} tw="pointer-events-none" {...props} />
+}
 SliderTrack.displayName = "SliderTrack"
 SliderTrack["$id"] = Symbol.for("com.SliderTrack")
 
-export const SliderRange = forwardRef<HTMLSpanElement>((props, forwardedRef) => {
+export function SliderRange(props: { ref?: Ref<HTMLSpanElement> }) {
 	const useSelect = useSliderStore()
 	const orientation = useSelect(state => state.orientation)
 	const style = useSelect(
@@ -516,13 +511,13 @@ export const SliderRange = forwardRef<HTMLSpanElement>((props, forwardedRef) => 
 			return { left, right }
 		}),
 	)
-	return <span ref={forwardedRef} data-orientation={orientation} style={style} {...props} />
-})
+	return <span data-orientation={orientation} css={style} {...props} />
+}
 SliderRange.displayName = "SliderRange"
 SliderRange["$id"] = Symbol.for("com.SliderRange")
 
-export const SliderThumb = forwardRef<HTMLSpanElement, { index?: number }>(({ index = -1, ...props }, forwardedRef) => {
-	const ref = useRef<HTMLSpanElement>(null)
+export function SliderThumb({ index = -1, ref, ...props }: { index?: number; ref?: Ref<HTMLSpanElement> }) {
+	const innerRef = useRef<HTMLSpanElement>(null)
 	const useSelect = useSliderStore()
 
 	const disabled = useSelect(state => state.disabled)
@@ -535,7 +530,7 @@ export const SliderThumb = forwardRef<HTMLSpanElement, { index?: number }>(({ in
 			mountedRef.current = true
 			return
 		}
-		const element = ref.current
+		const element = innerRef.current
 		if (element && !disabled) {
 			element.focus()
 		}
@@ -543,7 +538,7 @@ export const SliderThumb = forwardRef<HTMLSpanElement, { index?: number }>(({ in
 
 	const thumbs = useContext(ThumbCollectionContext)
 	useEffect(() => {
-		const element = ref.current
+		const element = innerRef.current
 		if (element) {
 			thumbs.set(index, element)
 		}
@@ -588,10 +583,10 @@ export const SliderThumb = forwardRef<HTMLSpanElement, { index?: number }>(({ in
 	}, [slideDirection])
 
 	return (
-		<span tw="absolute" style={style(percent)}>
-			<span ref={composeRefs(forwardedRef, ref)} tabIndex={0} {...props} />
+		<span tw="absolute" css={style(percent)}>
+			<span ref={composeRefs(ref, innerRef)} tabIndex={0} {...props} />
 		</span>
 	)
-})
+}
 SliderThumb.displayName = "SliderThumb"
 SliderThumb["$id"] = Symbol.for("com.SliderThumb")

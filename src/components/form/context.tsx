@@ -8,7 +8,7 @@ export function FormArrayProvider<
 	TFieldArrayName extends FieldArrayPath<TFieldValues> = FieldArrayPath<TFieldValues>,
 	TKeyName extends string = "id",
 >({ children, ...methods }: PropsWithChildren<UseFieldArrayReturn<TFieldValues, TFieldArrayName, TKeyName>>) {
-	return <FormArrayContext.Provider value={methods}>{children}</FormArrayContext.Provider>
+	return <FormArrayContext value={methods}>{children}</FormArrayContext>
 }
 
 export function useFormArrayContext<

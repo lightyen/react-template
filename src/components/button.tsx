@@ -1,5 +1,5 @@
 import { Cross2Icon } from "@radix-ui/react-icons"
-import { forwardRef, type ButtonHTMLAttributes } from "react"
+import { type ButtonHTMLAttributes, type Ref } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { tw } from "twobj"
 import { zs, type VariantProps } from "./lib"
@@ -31,14 +31,16 @@ export const buttonVariants = zs(
 	},
 )
 
-export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants>
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
+	VariantProps<typeof buttonVariants> & { ref?: Ref<HTMLButtonElement> }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ type = "button", variant, ...props }, ref) => {
-	return <button type={type} role="button" css={buttonVariants({ variant })} ref={ref} {...props} />
-})
+export function Button({ type = "button", variant, size, ...props }: ButtonProps) {
+	return <button type={type} role="button" css={buttonVariants({ variant, size })} {...props} />
+}
+
 Button.displayName = "Button"
 
-export const CloseButton = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+export function CloseButton(props: ButtonProps) {
 	const intl = useIntl()
 	return (
 		<button
@@ -49,7 +51,6 @@ export const CloseButton = forwardRef<HTMLButtonElement, ButtonProps>((props, re
 			focus:outline-none
 			disabled:pointer-events-none"
 			title={intl.formatMessage({ id: "close" })}
-			ref={ref}
 			{...props}
 		>
 			<Cross2Icon tw="h-5 w-5" />
@@ -58,5 +59,5 @@ export const CloseButton = forwardRef<HTMLButtonElement, ButtonProps>((props, re
 			</span>
 		</button>
 	)
-})
+}
 CloseButton.displayName = "CloseButton"

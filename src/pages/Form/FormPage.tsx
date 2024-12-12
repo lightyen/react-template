@@ -1,5 +1,5 @@
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { InputHTMLAttributes, forwardRef, startTransition, useEffect, useId, useMemo, useRef, useState } from "react"
+import { InputHTMLAttributes, type Ref, startTransition, useEffect, useId, useMemo, useRef, useState } from "react"
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import { tw } from "twobj"
 import { Button } from "~/components/button"
@@ -366,14 +366,14 @@ export function FormView() {
 	)
 }
 
-const PercentInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>((props, ref) => {
+export function PercentInput(props: InputHTMLAttributes<HTMLInputElement> & { ref?: Ref<HTMLInputElement> }) {
 	return (
 		<div tw="flex items-center relative">
-			<Input tw="pr-6" ref={ref} {...props} />
+			<Input tw="pr-6" {...props} />
 			<span tw="absolute top-1/2 -translate-y-1/2 right-2 pointer-events-none text-foreground/30">%</span>
 		</div>
 	)
-})
+}
 PercentInput.displayName = "PercentInput"
 
 function FormDetail() {

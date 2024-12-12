@@ -2,7 +2,6 @@ import { animated, easings, useSpringRef, useTransition } from "@react-spring/we
 import {
 	Children,
 	cloneElement,
-	forwardRef,
 	isValidElement,
 	useContext,
 	useEffect,
@@ -15,13 +14,14 @@ import {
 	type PropsWithChildren,
 	type ReactElement,
 	type ReactNode,
+	type Ref,
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button, CloseButton, type ButtonProps } from "./button"
 import { useDialog, type DialogProps } from "./dialog"
 import { isElement, zs } from "./lib"
-import { dialogContext } from "./lib/dialogContext"
+import { DialogContext } from "./lib/dialogContext"
 import { Overlay } from "./lib/overlay"
 
 export const sheetVariants = zs(tw`fixed gap-4 bg-background p-6 shadow-lg`, {
@@ -71,7 +71,7 @@ function animationVariants(side: "top" | "right" | "bottom" | "left") {
 export const useSheet = useDialog
 
 export function SheetTrigger({ children, ...props }: PropsWithChildren<Omit<ButtonProps, "onClick">>) {
-	const { setVisible } = useContext(dialogContext)
+	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <SheetTrigger>{c}</SheetTrigger>)
@@ -102,9 +102,9 @@ interface SheetContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "childr
 	children?: ReactNode | ((args: { close(): void }) => ReactNode)
 }
 
-export const Div = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>((props, ref) => {
-	return <div ref={ref} {...props} />
-})
+export function Div(props: HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> }) {
+	return <div {...props} />
+}
 
 export function SheetContent({
 	side = "right",
@@ -114,7 +114,7 @@ export function SheetContent({
 	children,
 	...props
 }: PropsWithChildren<SheetContentProps> & HTMLAttributes<HTMLDivElement>) {
-	const { visible, setVisible } = useContext(dialogContext)
+	const { visible, setVisible } = useContext(DialogContext)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -184,7 +184,7 @@ export function SheetClose({
 	children,
 	...props
 }: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = useContext(dialogContext)
+	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <SheetClose>{c}</SheetClose>)
@@ -266,7 +266,7 @@ export function Sheet({
 		(e): e is ReactElement<ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),
 	)
 	return (
-		<dialogContext.Provider value={ctx}>
+		<DialogContext value={ctx}>
 			{Children.map(children, child => {
 				if (isElement(child, SheetContent)) {
 					return null
@@ -285,6 +285,6 @@ export function Sheet({
 			>
 				{contentReactElement}
 			</Overlay>
-		</dialogContext.Provider>
+		</DialogContext>
 	)
 }

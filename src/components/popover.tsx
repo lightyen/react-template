@@ -15,6 +15,7 @@ import {
 	cloneElement,
 	createContext,
 	isValidElement,
+	Ref,
 	useContext,
 	useEffect,
 	useMemo,
@@ -24,7 +25,6 @@ import {
 	type CSSProperties,
 	type DetailedReactHTMLElement,
 	type HTMLAttributes,
-	type MutableRefObject,
 	type PropsWithChildren,
 	type ReactElement,
 	type ReactNode,
@@ -50,14 +50,14 @@ interface PopoverContext extends IPopover {
 	styles: CSSProperties
 }
 
-const popoverContext = createContext(null as unknown as PopoverContext)
+const PopoverContext = createContext(null as unknown as PopoverContext)
 
 interface PopoverTriggerProps extends Omit<ButtonProps, "onClick"> {
 	mode?: "click" | "none"
 }
 
 export function PopoverTrigger({ children, mode = "click", ...props }: PropsWithChildren<PopoverTriggerProps>) {
-	const { setVisible, refs, getReferenceProps } = useContext(popoverContext)
+	const { setVisible, refs, getReferenceProps } = useContext(PopoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <PopoverTrigger>{c}</PopoverTrigger>)
@@ -81,7 +81,7 @@ export function PopoverTrigger({ children, mode = "click", ...props }: PropsWith
 	}
 
 	const child = children as ReactElement<HTMLAttributes<Element>> & {
-		ref: ((instance: HTMLElement | null) => void) | MutableRefObject<HTMLElement | null> | null
+		ref?: Ref<Element>
 	}
 
 	const innerProps = getReferenceProps({
@@ -123,7 +123,7 @@ interface PopoverContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "chil
 
 export function PopoverContent({ children, ...props }: PopoverContentProps) {
 	const { isMounted, refs, floatingStyles, getFloatingProps, styles, setVisible, visible, onEnter, onLeave } =
-		useContext(popoverContext)
+		useContext(PopoverContext)
 	const onleave = useRef(onLeave)
 	useEffect(() => {
 		const onLeave = onleave.current
@@ -158,7 +158,7 @@ export function PopoverClose({
 	children,
 	...props
 }: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = useContext(popoverContext)
+	const { setVisible } = useContext(PopoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <PopoverClose>{c}</PopoverClose>)
@@ -250,7 +250,7 @@ export function Popover({
 		close: () => ({ opacity: 0 }),
 	})
 	return (
-		<popoverContext.Provider
+		<PopoverContext
 			value={{
 				...ctx,
 				isMounted,
@@ -262,6 +262,6 @@ export function Popover({
 			}}
 		>
 			{children}
-		</popoverContext.Provider>
+		</PopoverContext>
 	)
 }

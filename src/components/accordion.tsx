@@ -31,7 +31,7 @@ interface AccordionContext {
 	toggle(i: number): void
 }
 
-const accordionContext = createContext(null as unknown as AccordionContext)
+const AccordionContext = createContext(null as unknown as AccordionContext)
 
 interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
 	type?: "single" | "multiple"
@@ -55,7 +55,7 @@ export function Accordion({ type = "single", children, ...props }: PropsWithChil
 	}
 
 	return (
-		<accordionContext.Provider
+		<AccordionContext
 			value={{
 				toggle(index) {
 					if (type === "single") {
@@ -83,7 +83,7 @@ export function Accordion({ type = "single", children, ...props }: PropsWithChil
 			}}
 		>
 			<div {...props}>{result}</div>
-		</accordionContext.Provider>
+		</AccordionContext>
 	)
 }
 
@@ -93,7 +93,7 @@ interface AccordionItemProps extends IndexProp {
 
 export function AccordionItem({ children, index = -1, position = "relative" }: PropsWithChildren<AccordionItemProps>) {
 	const ref = useRef<HTMLElement>(null)
-	const { items } = useContext(accordionContext)
+	const { items } = useContext(AccordionContext)
 	useLayoutEffect(() => {
 		if (position === "absolute") {
 			if (ref.current) {
@@ -139,7 +139,7 @@ AccordionItem["$id"] = Symbol.for("com.AccordionItem")
 interface AccordionTriggerProps extends IndexProp {}
 
 export function AccordionTrigger({ index = -1, children }: PropsWithChildren<AccordionTriggerProps>) {
-	const { toggle, items } = useContext(accordionContext)
+	const { toggle, items } = useContext(AccordionContext)
 	return (
 		<button
 			type="button"

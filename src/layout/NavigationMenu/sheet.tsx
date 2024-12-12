@@ -21,14 +21,14 @@ import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button } from "~/components/button"
 import { getElementWidth, isElement, zs } from "~/components/lib"
-import { dialogContext } from "~/components/lib/dialogContext"
+import { DialogContext } from "~/components/lib/dialogContext"
 import { Overlay } from "~/components/lib/overlay"
 
 export function SheetTrigger({
 	children,
 	...props
 }: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = useContext(dialogContext)
+	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <SheetTrigger>{c}</SheetTrigger>)
@@ -77,7 +77,7 @@ export function SheetContent({
 	children,
 	...props
 }: SheetContentProps & HTMLAttributes<HTMLDivElement>) {
-	const { visible, setVisible } = useContext(dialogContext)
+	const { visible, setVisible } = useContext(DialogContext)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -178,7 +178,7 @@ export function SheetClose({
 	children,
 	...props
 }: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = useContext(dialogContext)
+	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <SheetClose>{c}</SheetClose>)
@@ -259,7 +259,7 @@ export function Sheet({
 	)
 
 	return (
-		<dialogContext.Provider value={{ visible, setVisible }}>
+		<DialogContext value={{ visible, setVisible }}>
 			{Children.map(children, c => {
 				if (isElement(c, SheetTrigger)) {
 					return c
@@ -278,6 +278,6 @@ export function Sheet({
 			>
 				{contentReactElement}
 			</Overlay>
-		</dialogContext.Provider>
+		</DialogContext>
 	)
 }

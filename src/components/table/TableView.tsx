@@ -1,14 +1,6 @@
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from "@radix-ui/react-icons"
 import Mark from "mark.js"
-import {
-	forwardRef,
-	memo,
-	useEffect,
-	useRef,
-	type ForwardedRef,
-	type PropsWithChildren,
-	type TableHTMLAttributes,
-} from "react"
+import { useEffect, useRef, type PropsWithChildren, type Ref, type TableHTMLAttributes } from "react"
 import { useTableStore } from "."
 import { Button } from "../button"
 import { Command, CommandItem, CommandList } from "../command"
@@ -58,22 +50,21 @@ function SortButton({
 	)
 }
 
-const TableWrapper = memo(
-	forwardRef(function TableWrapper(
-		{ children, ...props }: TableHTMLAttributes<HTMLTableElement>,
-		ref: ForwardedRef<HTMLTableElement>,
-	) {
-		return (
-			<div aria-label="table-view" tw="rounded-md border overflow-x-auto">
-				<div tw="relative w-full">
-					<table ref={ref} tw="w-full caption-bottom text-sm whitespace-nowrap" {...props}>
-						{children}
-					</table>
-				</div>
+function TableWrapper({
+	ref,
+	children,
+	...props
+}: TableHTMLAttributes<HTMLTableElement> & { ref?: Ref<HTMLTableElement> }) {
+	return (
+		<div aria-label="table-view" tw="rounded-md border overflow-x-auto">
+			<div tw="relative w-full">
+				<table ref={ref} tw="w-full caption-bottom text-sm whitespace-nowrap" {...props}>
+					{children}
+				</table>
 			</div>
-		)
-	}),
-)
+		</div>
+	)
+}
 
 function ThLabel({ Label }: { Label: Label }) {
 	const useSelect = useTableStore()

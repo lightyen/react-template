@@ -10,7 +10,7 @@ export { TableToolbar } from "./TableToolbar"
 export { TableView } from "./TableView"
 
 export function useTable<T extends {}>(options: TableOptions<T>) {
-	const ref = useRef<ReturnType<typeof createStore<T>>>()
+	const ref = useRef<ReturnType<typeof createStore<T>>>(undefined)
 	if (!ref.current) {
 		ref.current = createStore(options)
 	}
@@ -21,7 +21,7 @@ export function Provider<T extends {}>({
 	children,
 	store,
 }: PropsWithChildren<{ store: ReturnType<typeof useTable<T>> }>) {
-	return <TableContext.Provider value={store}>{children}</TableContext.Provider>
+	return <TableContext value={store}>{children}</TableContext>
 }
 
 export function useTableStore() {

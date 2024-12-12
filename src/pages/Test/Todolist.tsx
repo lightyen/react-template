@@ -1,6 +1,6 @@
 import { PlusIcon, TrashIcon } from "@radix-ui/react-icons"
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form"
 import { FormattedMessage, useIntl } from "react-intl"
 import { Button } from "~/components/button"
@@ -12,12 +12,26 @@ interface TodolistFormData {
 	list: { value: string }[]
 }
 
+function useData(): { value: string }[] {
+	const [data] = useState<Array<{ value: string }>>([])
+	return data
+}
+
 export function TodoList() {
-	const methods = useForm<TodolistFormData>({ defaultValues: { list: [] } })
+	const { reset, ...methods } = useForm<TodolistFormData>({ defaultValues: { list: [] } })
 	const fieldArrayMethods = useFieldArray({
 		control: methods.control,
 		name: "list",
 	})
+
+	const data = useData()
+
+	useEffect(() => {
+		console.log("test")
+		reset({
+			list: data,
+		})
+	}, [reset, data])
 
 	return (
 		<form

@@ -19,7 +19,7 @@ import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button, CloseButton, type ButtonProps } from "./button"
 import { isElement } from "./lib"
-import { dialogContext } from "./lib/dialogContext"
+import { DialogContext } from "./lib/dialogContext"
 import { Overlay } from "./lib/overlay"
 
 export function useDialog(initialState: boolean | (() => boolean) = false) {
@@ -28,7 +28,7 @@ export function useDialog(initialState: boolean | (() => boolean) = false) {
 }
 
 export function DialogTrigger({ children, ...props }: PropsWithChildren<Omit<ButtonProps, "onClick">>) {
-	const { setVisible } = useContext(dialogContext)
+	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <DialogTrigger>{c}</DialogTrigger>)
@@ -66,7 +66,7 @@ export function DialogContent({
 	children,
 	...props
 }: DialogContentProps) {
-	const { visible, setVisible } = useContext(dialogContext)
+	const { visible, setVisible } = useContext(DialogContext)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -141,7 +141,7 @@ export function DialogClose({
 	children,
 	...props
 }: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = useContext(dialogContext)
+	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <DialogClose>{c}</DialogClose>)
@@ -244,7 +244,7 @@ export function Dialog({
 	)
 
 	return (
-		<dialogContext.Provider value={ctx}>
+		<DialogContext value={ctx}>
 			{Children.map(children, child => {
 				if (isElement(child, DialogContent)) {
 					return null
@@ -263,6 +263,6 @@ export function Dialog({
 			>
 				{contentReactElement}
 			</Overlay>
-		</dialogContext.Provider>
+		</DialogContext>
 	)
 }

@@ -99,11 +99,11 @@ function createStore() {
 const StoreContext = createContext<Store>(null as unknown as Store)
 
 function StoreProvider({ children }) {
-	const storeRef = useRef<Store>()
+	const storeRef = useRef<Store>(undefined)
 	if (!storeRef.current) {
 		storeRef.current = createStore()
 	}
-	return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>
+	return <StoreContext value={storeRef.current}>{children}</StoreContext>
 }
 
 function Demo() {

@@ -1,4 +1,4 @@
-import { useCallback, type MutableRefObject, type Ref, type SyntheticEvent } from "react"
+import { useCallback, type Ref, type RefObject, type SyntheticEvent } from "react"
 
 export type NullableRef<T> = Ref<T> | null | undefined
 
@@ -6,7 +6,7 @@ export function setRef<T extends Element>(ref: NullableRef<T>, node: T) {
 	if (typeof ref === "function") {
 		ref(node)
 	} else if (ref != null) {
-		const o = ref as MutableRefObject<T>
+		const o = ref as RefObject<T>
 		o.current = node
 	}
 }

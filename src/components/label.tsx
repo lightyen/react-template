@@ -1,8 +1,10 @@
-import { forwardRef, type LabelHTMLAttributes } from "react"
+import { type LabelHTMLAttributes, type Ref } from "react"
 
-export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {}
+export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+	ref?: Ref<HTMLLabelElement>
+}
 
-export const Label = forwardRef<HTMLLabelElement, LabelProps>(({ ...props }, ref) => (
-	<label ref={ref} tw="text-sm font-medium leading-none" {...props} />
-))
+export function Label(props) {
+	return <label tw="text-sm font-medium leading-none" {...props} />
+}
 Label.displayName = "Label"
