@@ -123,13 +123,13 @@ export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: 
 }
 
 interface TabProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onClick"> {
-	ref?: Ref<HTMLLabelElement>
 	onClick?: MouseEventHandler<HTMLLabelElement>
+	ref?: Ref<HTMLSpanElement>
 }
 
 function Tab({ className, children, ref, name, onClick, ...props }: TabProps) {
 	return (
-		<label className={className} ref={ref} onClick={onClick}>
+		<label className={className} onClick={onClick}>
 			<input
 				type="radio"
 				tw="absolute left-0 top-0 w-0 h-0
@@ -146,6 +146,7 @@ function Tab({ className, children, ref, name, onClick, ...props }: TabProps) {
 					after:(translate-y-px h-[2px] absolute left-0 bottom-0 w-full transition-all duration-200 scale-0 opacity-0)
 					hover:text-foreground
 					"
+				ref={ref}
 			>
 				{children}
 			</span>
