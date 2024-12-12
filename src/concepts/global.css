@@ -341,7 +341,7 @@
 .rose.dark {
 	--background: 20 14.3% 4.1%;
 	--foreground: 0 0% 95%;
-	--card: 24 9.8% 10%;
+	--card: 20 14.3% 4.1%;
 	--card-foreground: 0 0% 95%;
 	--popover: 0 0% 9%;
 	--popover-foreground: 0 0% 95%;
@@ -429,7 +429,7 @@
 .green.dark {
 	--background: 20 14.3% 4.1%;
 	--foreground: 0 0% 95%;
-	--card: 24 9.8% 10%;
+	--card: 20 14.3% 4.1%;
 	--card-foreground: 0 0% 95%;
 	--popover: 0 0% 9%;
 	--popover-foreground: 0 0% 95%;
@@ -578,4 +578,11 @@
 	--border: 215 27.9% 16.9%;
 	--input: 215 27.9% 16.9%;
 	--ring: 263.4 70% 50.4%;
+}
+
+.switch-control {
+	--primary: var(--switch-control-light);
+	&:is(.dark &) {
+		--primary: var(--switch-control-dark);
+	}
 }

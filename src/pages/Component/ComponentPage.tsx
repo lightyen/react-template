@@ -59,6 +59,7 @@ export function Component() {
 			<Separator />
 			<Header>Accordion</Header>
 			<AccordionView />
+			<div tw="h-80"></div>
 		</article>
 	)
 }

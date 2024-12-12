@@ -3,7 +3,7 @@ import { Command, CommandItem, CommandList } from "~/components/command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/components/popover"
 import { setTheme } from "./theme"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import "./global.css"
 
 function ColorIcon() {
@@ -81,16 +81,26 @@ function variables({ light, dark }: PrimaryColor) {
 
 export function SwitchPrimaryColor() {
 	const [color, setColor] = useState(localStorage.getItem("theme.color"))
+	const ref = useRef<HTMLButtonElement>(null)
+	useEffect(() => {
+		const el = ref.current
+		if (el && color) {
+			const v = primaryColors[color]
+			el.style.setProperty("--switch-control-light", v.light)
+			el.style.setProperty("--switch-control-dark", v.dark)
+		}
+	}, [color])
 	return (
 		<Popover placement="bottom-end">
 			<PopoverTrigger>
 				<Button
+					ref={ref}
 					type="button"
 					variant="ghost"
 					size="icon"
 					aria-label="Switch Theme Color"
 					tw="rounded-none"
-					css={color && primaryColors[color] && variables(primaryColors[color])}
+					className="switch-control"
 				>
 					<ColorIcon />
 				</Button>
@@ -100,11 +110,11 @@ export function SwitchPrimaryColor() {
 					<PopoverClose>
 						<CommandList>
 							<CommandItem value="-" tw="hidden" />
-							{Object.entries(primaryColors).map(([color, p]) => (
+							{Object.keys(primaryColors).map(color => (
 								<CommandItem
 									key={color}
 									tw="flex items-center gap-2"
-									css={variables(p)}
+									css={variables(primaryColors[color])}
 									onSelect={() => {
 										localStorage.setItem("theme.color", color)
 										setTheme({ color })
