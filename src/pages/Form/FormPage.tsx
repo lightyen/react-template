@@ -65,8 +65,7 @@ function SwitchView() {
 	const id = useId()
 	return (
 		<div tw="flex items-center gap-2">
-			<Switch id={id} />
-			<Label htmlFor={id}>on/off</Label>
+			<Switch id={id}>on/off</Switch>
 		</div>
 	)
 }
@@ -75,8 +74,7 @@ function CheckboxView() {
 	const id = useId()
 	return (
 		<div tw="flex items-center gap-2">
-			<Checkbox id={id} />
-			<Label htmlFor={id}>Enable</Label>
+			<Checkbox id={id}>Enable</Checkbox>
 		</div>
 	)
 }

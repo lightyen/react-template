@@ -1,4 +1,6 @@
 import { useSelect } from "@context"
+import { useId } from "react"
+import { Checkbox } from "~/components/checkbox"
 
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
@@ -40,6 +42,63 @@ export function Home() {
 					</a>
 				</div>
 			</div>
+			<CheckboxTree data={nodes} />
 		</article>
+	)
+}
+
+interface Item {
+	label: string
+	value: string
+	children?: Item[]
+}
+
+const nodes: Item[] = [
+	{
+		label: "Mars",
+		value: "mars",
+		children: [
+			{ value: "deimos", label: "Deimos" },
+			{ value: "phobos", label: "Phobos" },
+		],
+	},
+]
+
+function CheckboxTree({ data = [] }: { data: Item[] }) {
+	return data.map((v, i) => (
+		<li key={i} tw="list-none">
+			<CheckboxTreeItem data={v} />
+			{v.children && <CheckboxTreeNested data={v.children} />}
+		</li>
+	))
+}
+
+function CheckboxTreeNested({ data = [] }: { data: Item[] }) {
+	return (
+		<ol tw="pl-[25px]">
+			{data.map((v, i) => (
+				<li key={i} tw="list-none">
+					<CheckboxTreeItem data={v} />
+					{v.children && <CheckboxTreeNested data={v.children} />}
+				</li>
+			))}
+		</ol>
+	)
+}
+
+function CheckboxTreeItem({ data }: { data: Item }) {
+	const id = useId()
+	return (
+		<div tw="flex">
+			<button tw="inline-block w-[25px] h-[25px]">B</button>
+			<label htmlFor={id} tw="inline-block cursor-pointer hover:bg-gray-700">
+				<span tw="flex items-center">
+					<div tw="w-[25px] h-[25px] flex items-center justify-center">
+						<Checkbox id={id} />
+					</div>
+					<span tw="px-[5px]">{data.label}</span>
+				</span>
+			</label>
+		</div>
 	)
 }

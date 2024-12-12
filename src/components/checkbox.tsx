@@ -1,47 +1,14 @@
-import { css } from "@emotion/react"
 import { CheckIcon, DividerHorizontalIcon } from "@radix-ui/react-icons"
-import { InputHTMLAttributes, type Ref, useEffect, useId, useRef } from "react"
-import { tw } from "twobj"
+import { InputHTMLAttributes, type Ref, useEffect, useRef } from "react"
 import { composeRefs } from "./lib/compose"
-
-const InputControl = tw.input`hidden`
-
-const effects = css`
-	${InputControl}:focus-visible + & {
-		${tw`outline-none ring-1 ring-ring`}
-	}
-	${InputControl}:disabled + & {
-		${tw`pointer-events-none opacity-50`}
-	}
-	${InputControl}:checked + &, ${InputControl}:indeterminate + & {
-		${tw`bg-primary text-primary-foreground`}
-	}
-	${InputControl}:not(:checked) + & .checked_icon {
-		${tw`hidden`}
-	}
-	${InputControl}:indeterminate + & .checked_icon {
-		${tw`hidden`}
-	}
-	${InputControl}:not(:indeterminate) + & .indeterminated_icon {
-		${tw`hidden`}
-	}
-	${InputControl}:indeterminate + & .indeterminated_icon {
-		${tw`visible`}
-	}
-`
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 	intermediate?: boolean | undefined
 	ref?: Ref<HTMLInputElement>
 }
 
-export function Checkbox({ id, className, intermediate, onFocus, onBlur, onKeyDown, ref, ...props }: CheckboxProps) {
-	const defaultId = useId()
-	if (!id) {
-		id = defaultId
-	}
+export function Checkbox({ type: _, intermediate, className, ref, children, ...props }: CheckboxProps) {
 	const inputRef = useRef<HTMLInputElement | null>(null)
-	const isFocus = useRef(false)
 	useEffect(() => {
 		if (intermediate != undefined) {
 			if (inputRef.current) {
@@ -49,39 +16,38 @@ export function Checkbox({ id, className, intermediate, onFocus, onBlur, onKeyDo
 			}
 		}
 	}, [intermediate])
+
 	return (
-		<>
-			<InputControl ref={composeRefs(ref, inputRef)} id={id} type="checkbox" {...props} />
-			<label
-				htmlFor={id}
-				tabIndex={0}
-				tw="h-[18px] w-[18px] shrink-0 rounded-full border-2 border-primary shadow select-none cursor-pointer
-					focus-visible:(outline-none ring-1 ring-ring)
-					flex items-center text-current
+		<label
+			tw="flex items-center relative select-none cursor-pointer text-current
+			(hover:):[input:not(:checked):not(:indeterminate) ~ .checkmark]:bg-primary/20
+			focus-within:outline-none
+			"
+			className={className}
+		>
+			<input
+				type="checkbox"
+				ref={composeRefs(ref, inputRef)}
+				tw="absolute w-0 h-0
+				[&:checked ~ .checkmark]:(bg-primary text-primary-foreground)
+				[&:not(:checked) ~ .checkmark .checked_icon]:hidden
+				[&:indeterminate ~ .checkmark]:(bg-primary text-primary-foreground)
+				[&:indeterminate ~ .checkmark .checked_icon]:hidden
+				[&:not(:indeterminate) ~ .checkmark .indeterminated_icon]:hidden
+				[&:indeterminate ~ .checkmark .indeterminated_icon]:visible
+				focus-visible:[& ~ .checkmark]:(shadow-primary/30 shadow-[0 0 0 3px var(--tw-shadow-color)])
 				"
-				css={effects}
-				className={className}
-				onFocus={_ => {
-					isFocus.current = true
-				}}
-				onBlur={_ => {
-					isFocus.current = false
-				}}
-				onKeyDown={e => {
-					if (!isFocus.current || !inputRef.current) {
-						return
-					}
-					const isSpace = e.key == " " || e.code == "Space"
-					if (isSpace || e.key == "Enter") {
-						e.preventDefault()
-						inputRef.current.checked = !inputRef.current.checked
-					}
-				}}
+				{...props}
+			/>
+			<span
+				className="checkmark"
+				tw="rounded-full flex items-center justify-center w-[18px] h-[18px] border-2 border-primary transition-[ box-shadow] duration-150"
 			>
 				<CheckIcon className="checked_icon" />
 				<DividerHorizontalIcon className="indeterminated_icon" />
-			</label>
-		</>
+			</span>
+			{children && <span tw="ml-2 text-sm font-medium leading-none">{children}</span>}
+		</label>
 	)
 }
 Checkbox.displayName = "Checkbox"
