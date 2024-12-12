@@ -175,7 +175,11 @@ function Toasts() {
 			<div
 				tw="pb-2 first-of-type:(absolute inset-0 top-auto) sm:(pt-3 first-of-type:relative)"
 				className={cx("group", variant)}
-				ref={(ref: HTMLDivElement) => ref && refMap.set(item, ref)}
+				ref={ref => {
+					if (ref) {
+						refMap.set(item, ref)
+					}
+				}}
 			>
 				<div
 					css={toastVariants({ variant })}

@@ -1,19 +1,18 @@
-import { css } from "@emotion/react"
-import { Children, useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactElement } from "react"
+import {
+	Children,
+	InputHTMLAttributes,
+	MouseEventHandler,
+	Ref,
+	useCallback,
+	useEffect,
+	useId,
+	useLayoutEffect,
+	useRef,
+	useState,
+	type ReactElement,
+} from "react"
 import { type NavigateFunction } from "react-router"
-import { tw } from "twobj"
 import { isElement } from "~/components/lib"
-
-const InputControl = tw.input`hidden`
-
-const effects = css`
-	${InputControl}:checked + & {
-		${tw`text-foreground`}
-	}
-	${InputControl}:checked + &::after {
-		${tw`bg-primary translate-y-px scale-100 opacity-100`}
-	}
-`
 
 interface RouteTabProps {
 	title: ReactElement | string | number
@@ -95,8 +94,7 @@ export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: 
 			<ul tw="text-sm leading-none font-semibold flex whitespace-nowrap bg-transparent -mb-1 border-b">
 				{labels.map(({ props: { to, title } }, i) => (
 					<li key={indices[i]} tw="-mb-px">
-						<InputControl
-							type="radio"
+						<Tab
 							name={name}
 							id={indices[i]}
 							checked={to === stateTo || (i === 0 && notMatched)}
@@ -106,16 +104,6 @@ export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: 
 								}
 								onNavigate(to, undefined)
 							}}
-						/>
-						<label
-							htmlFor={indices[i]}
-							tw="select-none text-muted-foreground inline-block relative whitespace-nowrap capitalize transition cursor-pointer
-								border-b
-								px-4 pt-2 pb-3
-								after:(translate-y-px h-[2px] absolute left-0 bottom-0 w-full transition-all duration-200 scale-0 opacity-0)
-								hover:text-foreground
-							"
-							css={effects}
 							ref={node => {
 								if (node) {
 									rect.current[i] = { offsetLeft: node.offsetLeft, clientWidth: node.clientWidth }
@@ -126,10 +114,41 @@ export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: 
 							}}
 						>
 							{title}
-						</label>
+						</Tab>
 					</li>
 				))}
 			</ul>
 		</div>
+	)
+}
+
+interface TabProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onClick"> {
+	ref?: Ref<HTMLLabelElement>
+	onClick?: MouseEventHandler<HTMLLabelElement>
+}
+
+function Tab({ className, children, ref, name, onClick, ...props }: TabProps) {
+	return (
+		<label className={className} ref={ref} onClick={onClick}>
+			<input
+				type="radio"
+				tw="absolute left-0 top-0 w-0 h-0
+					checked:[& ~ .tab]:text-foreground
+					checked:[& ~ .tab::after]:(bg-primary translate-y-px scale-100 opacity-100)
+					"
+				{...props}
+			/>
+			<span
+				className="tab"
+				tw="select-none text-muted-foreground inline-block relative whitespace-nowrap capitalize transition cursor-pointer
+					border-b
+					px-4 pt-2 pb-3
+					after:(translate-y-px h-[2px] absolute left-0 bottom-0 w-full transition-all duration-200 scale-0 opacity-0)
+					hover:text-foreground
+					"
+			>
+				{children}
+			</span>
+		</label>
 	)
 }

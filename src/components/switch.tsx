@@ -32,7 +32,7 @@ export function Switch({ type: _, className, children, ...props }: SwitchProps) 
 					focus-visible:(outline-none ring-2 ring-ring ring-offset-2 ring-offset-background)
 					after:(pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform duration-150)
 				"
-			></span>
+			/>
 			{children && <span tw="ml-2 text-sm font-medium leading-none">{children}</span>}
 		</label>
 	)

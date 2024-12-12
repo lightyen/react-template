@@ -32,7 +32,6 @@ import {
 import { FormattedMessage } from "react-intl"
 import { Button, type ButtonProps } from "./button"
 import { isElement } from "./lib"
-import { composeRefs } from "./lib/compose"
 
 interface IPopover {
 	visible: boolean
@@ -85,7 +84,7 @@ export function PopoverTrigger({ children, mode = "click", ...props }: PropsWith
 	}
 
 	const innerProps = getReferenceProps({
-		ref: composeRefs(child.ref, refs.setReference),
+		ref: refs.setReference,
 		onClick(e) {
 			if (mode === "click") {
 				setVisible(true)

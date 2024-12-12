@@ -111,7 +111,7 @@ function TodolistAnimated() {
 			<animated.div style={style}>
 				<div
 					tw="pb-2"
-					ref={(ref: HTMLDivElement) => {
+					ref={ref => {
 						if (ref) {
 							heightMap.current[item.id] = ref.offsetHeight
 						}
