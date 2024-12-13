@@ -151,6 +151,7 @@ function TabView() {
 	const navigate = useNavigate()
 	return (
 		<Fragment>
+			<Button>B</Button>
 			<RouterTabs onNavigate={navigate}>
 				<RouteTab title="Preview" to="preview" />
 				<RouteTab title="Tab 2" to="tab2" />

@@ -11,12 +11,12 @@ import {
 	useState,
 	type ReactElement,
 } from "react"
-import { type NavigateFunction } from "react-router"
+import { To, type NavigateFunction } from "react-router"
 import { isElement } from "~/components/lib"
 
 interface RouteTabProps {
 	title: ReactElement | string | number
-	to: string
+	to: To
 }
 
 export function RouteTab(_props: RouteTabProps) {
@@ -26,30 +26,22 @@ RouteTab["$id"] = Symbol.for("com.RouteTab")
 
 interface RouterTabsProps {
 	children: ReactElement<RouteTabProps> | ReactElement<RouteTabProps>[]
-	to?: string
+	to?: To
 	onNavigate?: NavigateFunction
 }
 
-export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: RouterTabsProps) {
+export function RouterTabs({ children, to: defaultTo, onNavigate }: RouterTabsProps) {
 	const name = useId()
 
-	const [stateTo, setTo] = useState(() => propTo)
+	const [stateTo, setTo] = useState(() => defaultTo)
 
 	const labels = Children.toArray(children).filter((e): e is ReactElement<RouteTabProps> => isElement(e, RouteTab))
 
-	const [indices, setIndices] = useState(() => labels.map((_, i) => name + String(i)))
-
 	useEffect(() => {
-		if (propTo) {
-			setTo(propTo)
+		if (defaultTo) {
+			setTo(defaultTo)
 		}
-	}, [propTo])
-
-	useEffect(() => {
-		if (labels.length !== indices.length) {
-			setIndices(labels.map((_, i) => name + String(i)))
-		}
-	}, [labels, name, indices, setIndices])
+	}, [defaultTo])
 
 	const notMatched = labels.findIndex(({ props: { to } }) => to === stateTo) === -1
 
@@ -91,62 +83,60 @@ export function RouterTabs({ children, to: propTo, onNavigate = () => void 0 }: 
 
 	return (
 		<div ref={parentRef} tw="pb-3 -mb-3 overflow-auto scroll-smooth">
-			<ul tw="text-sm leading-none font-semibold flex whitespace-nowrap bg-transparent -mb-1 border-b">
+			<div tw="text-sm leading-none font-semibold flex whitespace-nowrap bg-transparent -mb-1 border-b">
 				{labels.map(({ props: { to, title } }, i) => (
-					<li key={indices[i]} tw="-mb-px">
-						<Tab
-							name={name}
-							id={indices[i]}
-							checked={to === stateTo || (i === 0 && notMatched)}
-							onChange={() => {
-								if (!propTo) {
-									setTo(to)
-								}
-								onNavigate(to, undefined)
-							}}
-							ref={node => {
-								if (node) {
-									rect.current[i] = { offsetLeft: node.offsetLeft, clientWidth: node.clientWidth }
-								}
-							}}
-							onClick={() => {
-								scrollInto(i)
-							}}
-						>
-							{title}
-						</Tab>
-					</li>
+					<Tab
+						key={i}
+						tw="-mb-px"
+						name={name}
+						checked={to === stateTo || (i === 0 && notMatched)}
+						onChange={() => {
+							if (!defaultTo) {
+								setTo(to)
+							}
+							onNavigate?.(to)
+						}}
+						ref={node => {
+							if (node) {
+								rect.current[i] = { offsetLeft: node.offsetLeft, clientWidth: node.clientWidth }
+							}
+						}}
+						onClick={() => {
+							scrollInto(i)
+						}}
+					>
+						{title}
+					</Tab>
 				))}
-			</ul>
+			</div>
 		</div>
 	)
 }
 
 interface TabProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onClick"> {
 	onClick?: MouseEventHandler<HTMLLabelElement>
-	ref?: Ref<HTMLSpanElement>
+	ref?: Ref<HTMLLabelElement>
 }
 
 function Tab({ className, children, ref, name, onClick, ...props }: TabProps) {
 	return (
-		<label className={className} onClick={onClick}>
+		<label className={className} onClick={onClick} ref={ref}>
 			<input
-				type="radio"
+				type="checkbox"
 				tw="absolute left-0 top-0 w-0 h-0
 					checked:[& ~ .tab]:text-foreground
 					checked:[& ~ .tab::after]:(bg-primary translate-y-px scale-100 opacity-100)
+					focus-visible:[& ~ .tab]:(bg-foreground/10)
 					"
 				{...props}
 			/>
 			<span
 				className="tab"
 				tw="select-none text-muted-foreground inline-block relative whitespace-nowrap capitalize transition cursor-pointer
-					border-b
-					px-4 pt-2 pb-3
+					px-4 pt-2.5 pb-3 border-b
 					after:(translate-y-px h-[2px] absolute left-0 bottom-0 w-full transition-all duration-200 scale-0 opacity-0)
 					hover:text-foreground
 					"
-				ref={ref}
 			>
 				{children}
 			</span>

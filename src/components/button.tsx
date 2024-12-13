@@ -6,12 +6,12 @@ import { zs, type VariantProps } from "./lib"
 
 export const buttonVariants = zs(
 	tw`line-height-3 inline-flex gap-2 items-center justify-center whitespace-nowrap rounded-md font-medium transition-colors select-none
-	focus-visible:(outline-none ring-1 ring-ring) disabled:(pointer-events-none opacity-50)`,
+	focus-visible:(outline-none ring-1 ring-offset-2 ring-offset-background ring-ring) disabled:(pointer-events-none opacity-50)`,
 	{
 		variants: {
 			variant: {
 				default: tw`bg-primary text-primary-foreground hover:bg-primary/90`,
-				destructive: tw`bg-destructive text-destructive-foreground hover:bg-destructive/90`,
+				destructive: tw`bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive`,
 				outline: tw`border border-input bg-background hover:(bg-accent text-accent-foreground)`,
 				secondary: tw`bg-secondary text-secondary-foreground hover:bg-secondary/80`,
 				ghost: tw`hover:(bg-accent text-accent-foreground)`,

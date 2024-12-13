@@ -71,10 +71,10 @@ function SwitchView() {
 }
 
 function CheckboxView() {
-	const id = useId()
 	return (
 		<div tw="flex items-center gap-2">
-			<Checkbox id={id}>Enable</Checkbox>
+			<Checkbox>Enable</Checkbox>
+			<Checkbox>XXX</Checkbox>
 		</div>
 	)
 }
