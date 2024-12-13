@@ -1,11 +1,8 @@
 import { useSelect } from "@context"
-import { CaretDownIcon } from "@radix-ui/react-icons"
-import { useMemo, useState } from "react"
-import { FormProvider, useForm, useFormContext } from "react-hook-form"
+import { FormProvider, useForm } from "react-hook-form"
 import { FormattedMessage } from "react-intl"
-import { tw } from "twobj"
 import { Button } from "~/components/button"
-import { Checkbox } from "~/components/checkbox"
+import { CheckboxTree, CheckboxTreeNode } from "~/components/checkbox"
 
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
@@ -59,7 +56,35 @@ interface FormData {
 	v4: boolean
 	v5: boolean
 	v6: boolean
+	v7: boolean
+	v8: boolean
 }
+
+const nodes: CheckboxTreeNode<FormData>[] = [
+	{
+		label: "AAA",
+		children: [
+			{ id: "v1", value: "mars", label: "Mars" },
+			{ id: "v2", value: "deimos", label: "Deimos" },
+			{ id: "v3", value: "phobos", label: "Phobos" },
+		],
+	},
+	{
+		label: "BBB",
+		children: [
+			{ id: "v4", value: "mars", label: "Mars" },
+			{ id: "v5", value: "deimos", label: "Deimos" },
+			{
+				label: "CCC",
+				children: [
+					{ id: "v6", value: "mars", label: "Mars" },
+					{ id: "v7", value: "deimos", label: "Deimos" },
+					{ id: "v8", value: "phobos", label: "Phobos" },
+				],
+			},
+		],
+	},
+]
 
 function TreeDemo() {
 	const methods = useForm<FormData>({
@@ -70,6 +95,8 @@ function TreeDemo() {
 			v4: false,
 			v5: false,
 			v6: false,
+			// v7: false,
+			// v8: false,
 		},
 	})
 	return (
@@ -80,171 +107,11 @@ function TreeDemo() {
 			})}
 		>
 			<FormProvider {...methods}>
-				<CheckboxTree items={nodes} />
+				<CheckboxTree nodes={nodes} />
 				<Button type="submit" tw="mt-5">
 					<FormattedMessage id="apply" />
 				</Button>
 			</FormProvider>
 		</form>
-	)
-}
-
-interface TreeItem {
-	label: string
-	children?: (TreeItem | LeafItem)[]
-}
-
-interface LeafItem {
-	label: string
-	value: string
-	id: keyof FormData
-}
-
-function isLeaf(item: TreeItem | LeafItem): item is LeafItem {
-	if (item["id"]) {
-		return true
-	}
-	return false
-}
-
-const nodes: TreeItem[] = [
-	{
-		label: "AAA",
-		children: [
-			{ id: "v1", value: "mars", label: "Mars" },
-			{ id: "v2", value: "deimos", label: "Deimos" },
-			{ id: "v3", value: "phobos", label: "Phobos", children: [] },
-		],
-	},
-	{
-		label: "BBB",
-		children: [
-			{ id: "v4", value: "mars", label: "Mars" },
-			{ id: "v5", value: "deimos", label: "Deimos" },
-			{ id: "v6", value: "phobos", label: "Phobos", children: [] },
-		],
-	},
-]
-
-function CheckboxTree({ items = [] }: { items: TreeItem[] }) {
-	const [show, setShow] = useState(false)
-	return items.map((v, i) => (
-		<li key={i} tw="list-none">
-			<div tw="flex">
-				<button
-					type="button"
-					tw="inline-flex justify-center items-center w-[25px] h-[25px] text-foreground/50 hover:text-foreground"
-					onClick={() => {
-						setShow(v => !v)
-					}}
-				>
-					<CaretDownIcon css={!show && tw`-rotate-90`} />
-				</button>
-				<CheckboxTreeItem item={v} />
-			</div>
-			{v.children && v.children.length > 0 && show && (
-				<ol tw="pl-[50px]">
-					<CheckboxTreeNested items={v.children} />
-				</ol>
-			)}
-		</li>
-	))
-}
-
-function CheckboxTreeNested({ items = [] }: { items: (TreeItem | LeafItem)[] }) {
-	return items.map((v, i) => {
-		return (
-			<li key={i} tw="list-none">
-				{isLeaf(v) ? (
-					<div>
-						<CheckboxLeafItem item={v} />
-					</div>
-				) : (
-					<>
-						<div tw="flex">
-							<CheckboxTreeItem item={v} />
-						</div>
-						{v.children && <CheckboxTreeNested items={v.children} />}
-					</>
-				)}
-			</li>
-		)
-	})
-}
-
-function watchedArray(item: TreeItem): (keyof FormData)[] {
-	const watched = new Set<keyof FormData>()
-	for (const c of item.children ?? []) {
-		if (isLeaf(c)) {
-			watched.add(c.id)
-			continue
-		}
-		if (c.children) {
-			c.children.forEach(v => {
-				const arr = watchedArray(v)
-				arr.forEach(v => {
-					watched.add(v)
-				})
-			})
-		}
-	}
-	return Array.from(watched)
-}
-
-function CheckboxTreeItem({ item }: { item: TreeItem }) {
-	const { setValue, watch } = useFormContext<FormData>()
-	const names = watchedArray(item)
-	const values = watch(names)
-
-	const intermediate = useMemo(() => {
-		let cur: boolean | null = null
-		let int = false
-		for (const v of values) {
-			if (cur == null) {
-				cur = v
-				continue
-			}
-			if (v !== cur) {
-				int = true
-				break
-			}
-		}
-		return int
-	}, [values])
-
-	const checked = values.reduce((prev, cur) => prev && cur)
-
-	return (
-		<label tw="flex-initial cursor-pointer">
-			<span tw="flex items-center">
-				<div tw="w-[25px] h-[25px] flex items-center justify-center">
-					<Checkbox
-						squared
-						checked={checked}
-						intermediate={intermediate}
-						onChange={e => {
-							for (const name of names) {
-								setValue(name, e.target.checked)
-							}
-						}}
-					/>
-				</div>
-				<span tw="px-[5px]">{item.label}</span>
-			</span>
-		</label>
-	)
-}
-
-function CheckboxLeafItem({ item }: { item: LeafItem }) {
-	const { register } = useFormContext<FormData>()
-	return (
-		<label tw="flex-initial cursor-pointer">
-			<span tw="flex items-center">
-				<div tw="w-[25px] h-[25px] flex items-center justify-center">
-					<Checkbox squared {...register(item.id)} />
-				</div>
-				<span tw="px-[5px]">{item.label}</span>
-			</span>
-		</label>
 	)
 }
