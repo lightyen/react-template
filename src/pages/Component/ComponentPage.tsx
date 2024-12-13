@@ -1,9 +1,8 @@
-import { RouteTab, RouterTabs } from "@concepts/RouteTabs"
 import { useToast } from "@context"
 import { InfoCircledIcon, PlusIcon } from "@radix-ui/react-icons"
 import { Fragment, useEffect, useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { Outlet, useNavigate } from "react-router"
+import { Outlet } from "react-router"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/accordion"
 import { Badge } from "~/components/badage"
 import { Button } from "~/components/button"
@@ -33,6 +32,7 @@ import {
 	SheetTrigger,
 } from "~/components/sheet"
 import { CircleLoading } from "~/components/spin"
+import { RouteTabs } from "~/components/tabs"
 import { format } from "~/context/intl"
 import { Header, Separator } from "~/pages/common"
 
@@ -148,18 +148,18 @@ function ToastDemo() {
 }
 
 function TabView() {
-	const navigate = useNavigate()
 	return (
 		<Fragment>
-			<Button>B</Button>
-			<RouterTabs onNavigate={navigate}>
-				<RouteTab title="Preview" to="preview" />
-				<RouteTab title="Tab 2" to="tab2" />
-				<RouteTab title="Tab 3" to="tab3" />
-				<RouteTab title="Tab 4" to="tab4" />
-				<RouteTab title="Tab 5" to="tab5" />
-				<RouteTab title="Tab 6" to="tab6" />
-			</RouterTabs>
+			<RouteTabs
+				labels={[
+					{ index: true, title: "Preivew", to: "preview" },
+					{ title: "Tab 2", to: "tab2" },
+					{ title: "Tab 3", to: "tab3" },
+					{ title: "Tab 4", to: "tab4" },
+					{ title: "Tab 5", to: "tab5" },
+					{ title: "Tab 6", to: "tab6" },
+				]}
+			/>
 			<Outlet />
 		</Fragment>
 	)

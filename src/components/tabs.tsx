@@ -1,49 +1,43 @@
 import {
-	Children,
-	InputHTMLAttributes,
-	MouseEventHandler,
-	Ref,
 	useCallback,
-	useEffect,
-	useId,
 	useLayoutEffect,
+	useMemo,
 	useRef,
-	useState,
-	type ReactElement,
+	type InputHTMLAttributes,
+	type MouseEventHandler,
+	type ReactNode,
+	type Ref,
 } from "react"
-import { To, type NavigateFunction } from "react-router"
-import { isElement } from "~/components/lib"
+import { resolvePath, useLocation, useNavigate, type Location, type To } from "react-router"
 
-interface RouteTabProps {
-	title: ReactElement | string | number
+export interface RouteTabItem {
 	to: To
+	title: ReactNode
+	index?: boolean
 }
 
-export function RouteTab(_props: RouteTabProps) {
-	return null
-}
-RouteTab["$id"] = Symbol.for("com.RouteTab")
-
-interface RouterTabsProps {
-	children: ReactElement<RouteTabProps> | ReactElement<RouteTabProps>[]
-	to?: To
-	onNavigate?: NavigateFunction
+export interface RouteTabsProps {
+	labels: RouteTabItem[]
 }
 
-export function RouterTabs({ children, to: defaultTo, onNavigate }: RouterTabsProps) {
-	const name = useId()
+export function RouteTabs({ labels }: RouteTabsProps) {
+	const location = useLocation()
 
-	const [stateTo, setTo] = useState(() => defaultTo)
+	const navigate = useNavigate()
 
-	const labels = Children.toArray(children).filter((e): e is ReactElement<RouteTabProps> => isElement(e, RouteTab))
+	function equalPath(location: Location, to: To): boolean {
+		const { pathname } = location
+		const p = pathname.slice(pathname.lastIndexOf("/"))
+		return resolvePath(to).pathname === p
+	}
 
-	useEffect(() => {
-		if (defaultTo) {
-			setTo(defaultTo)
+	const index = useMemo(() => {
+		const i = labels.findIndex(({ to }) => equalPath(location, to))
+		if (i !== -1) {
+			return i
 		}
-	}, [defaultTo])
-
-	const notMatched = labels.findIndex(({ props: { to } }) => to === stateTo) === -1
+		return labels.findIndex(({ index }) => index)
+	}, [location, labels])
 
 	interface Rect {
 		offsetLeft: number
@@ -77,24 +71,19 @@ export function RouterTabs({ children, to: defaultTo, onNavigate }: RouterTabsPr
 	}, [])
 
 	useLayoutEffect(() => {
-		const index = labels.findIndex(({ props: { to } }) => to === stateTo)
 		scrollInto(index)
-	}, [scrollInto, labels, stateTo])
+	}, [scrollInto, index])
 
 	return (
 		<div ref={parentRef} tw="pb-3 -mb-3 overflow-auto scroll-smooth">
 			<div tw="text-sm leading-none font-semibold flex whitespace-nowrap bg-transparent -mb-1 border-b">
-				{labels.map(({ props: { to, title } }, i) => (
+				{labels.map(({ to, title }, i) => (
 					<Tab
 						key={i}
 						tw="-mb-px"
-						name={name}
-						checked={to === stateTo || (i === 0 && notMatched)}
+						checked={index === i}
 						onChange={() => {
-							if (!defaultTo) {
-								setTo(to)
-							}
-							onNavigate?.(to)
+							navigate(to)
 						}}
 						ref={node => {
 							if (node) {
@@ -118,7 +107,7 @@ interface TabProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onClick"
 	ref?: Ref<HTMLLabelElement>
 }
 
-function Tab({ className, children, ref, name, onClick, ...props }: TabProps) {
+function Tab({ className, children, ref, onClick, ...props }: TabProps) {
 	return (
 		<label className={className} onClick={onClick} ref={ref}>
 			<input
