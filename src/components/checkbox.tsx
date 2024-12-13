@@ -1,13 +1,15 @@
 import { CheckIcon, DividerHorizontalIcon } from "@radix-ui/react-icons"
 import { InputHTMLAttributes, type Ref, useEffect, useRef } from "react"
+import { tw } from "twobj"
 import { composeRefs } from "./lib/compose"
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 	intermediate?: boolean | undefined
 	ref?: Ref<HTMLInputElement>
+	squared?: boolean
 }
 
-export function Checkbox({ type: _, intermediate, className, ref, children, ...props }: CheckboxProps) {
+export function Checkbox({ type: _, intermediate, squared, className, ref, children, ...props }: CheckboxProps) {
 	const inputRef = useRef<HTMLInputElement | null>(null)
 	useEffect(() => {
 		if (intermediate != undefined) {
@@ -41,7 +43,8 @@ export function Checkbox({ type: _, intermediate, className, ref, children, ...p
 			/>
 			<span
 				className="checkmark"
-				tw="rounded-full flex items-center justify-center w-[18px] h-[18px] border-2 border-primary transition-[ box-shadow] duration-150"
+				tw="flex items-center justify-center w-[18px] h-[18px] border-2 border-primary transition-[ box-shadow] duration-150"
+				css={!squared && tw`rounded-full`}
 			>
 				<CheckIcon className="checked_icon" />
 				<DividerHorizontalIcon className="indeterminated_icon" />
