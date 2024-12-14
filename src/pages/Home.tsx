@@ -1,8 +1,4 @@
 import { useSelect } from "@context"
-import { FormProvider, useForm } from "react-hook-form"
-import { FormattedMessage } from "react-intl"
-import { Button } from "~/components/button"
-import { CheckboxTree, CheckboxTreeNode } from "~/components/checkbox"
 
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
@@ -44,74 +40,6 @@ export function Home() {
 					</a>
 				</div>
 			</div>
-			<TreeDemo />
 		</article>
-	)
-}
-
-interface FormData {
-	v1: boolean
-	v2: boolean
-	v3: boolean
-	v4: boolean
-	v5: boolean
-	v6: boolean
-	v7: boolean
-	v8: boolean
-}
-
-const nodes: CheckboxTreeNode<FormData>[] = [
-	{
-		label: "AAA",
-		children: [
-			{ id: "v1", value: "mars", label: "Mars" },
-			{ id: "v2", value: "deimos", label: "Deimos" },
-			{ id: "v3", value: "phobos", label: "Phobos" },
-		],
-	},
-	{
-		label: "BBB",
-		children: [
-			{ id: "v4", value: "mars", label: "Mars" },
-			{ id: "v5", value: "deimos", label: "Deimos" },
-			{
-				label: "CCC",
-				children: [
-					{ id: "v6", value: "mars", label: "Mars" },
-					{ id: "v7", value: "deimos", label: "Deimos" },
-					{ id: "v8", value: "phobos", label: "Phobos" },
-				],
-			},
-		],
-	},
-]
-
-function TreeDemo() {
-	const methods = useForm<FormData>({
-		defaultValues: {
-			v1: false,
-			v2: false,
-			v3: false,
-			v4: false,
-			v5: false,
-			v6: false,
-			// v7: false,
-			// v8: false,
-		},
-	})
-	return (
-		<form
-			tw="h-[500px]"
-			onSubmit={methods.handleSubmit(data => {
-				console.log(data)
-			})}
-		>
-			<FormProvider {...methods}>
-				<CheckboxTree nodes={nodes} />
-				<Button type="submit" tw="mt-5">
-					<FormattedMessage id="apply" />
-				</Button>
-			</FormProvider>
-		</form>
 	)
 }

@@ -3,7 +3,7 @@ import { InputHTMLAttributes, type Ref, startTransition, useEffect, useId, useMe
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import { tw } from "twobj"
 import { Button } from "~/components/button"
-import { Checkbox } from "~/components/checkbox"
+import { Checkbox, CheckboxTree, type CheckboxTreeNode } from "~/components/checkbox"
 import { commandScore } from "~/components/command-score"
 import { isNormalIPv4, parseMAC } from "~/components/form/validate"
 import { Input, SearchInput } from "~/components/input"
@@ -29,6 +29,9 @@ export function Component() {
 				<Separator />
 				<Header>Checkbox</Header>
 				<CheckboxView />
+				<Separator />
+				<Header>Checkbox Tree</Header>
+				<DemoCheckboxTree />
 				<Separator />
 				<Header>Slider</Header>
 				<SliderView />
@@ -62,10 +65,10 @@ function InputView() {
 }
 
 function SwitchView() {
-	const id = useId()
 	return (
 		<div tw="flex items-center gap-2">
-			<Switch id={id}>on/off</Switch>
+			<Switch>on/off</Switch>
+			<Switch disabled>on/off</Switch>
 		</div>
 	)
 }
@@ -73,9 +76,74 @@ function SwitchView() {
 function CheckboxView() {
 	return (
 		<div tw="flex items-center gap-2">
-			<Checkbox>Enable</Checkbox>
-			<Checkbox>XXX</Checkbox>
+			<Checkbox>Enable A</Checkbox>
+			<Checkbox rounded>Enable B</Checkbox>
+			<Checkbox disabled>Enable A</Checkbox>
+			<Checkbox rounded disabled>
+				Enable B
+			</Checkbox>
 		</div>
+	)
+}
+
+function DemoCheckboxTree() {
+	interface CheckboxData {
+		v1: boolean
+		v2: boolean
+		v3: boolean
+		v4: boolean
+		v5: boolean
+		v6: boolean
+		v7: boolean
+		v8: boolean
+	}
+
+	const nodes: CheckboxTreeNode<CheckboxData>[] = [
+		{
+			label: "Group A",
+			children: [
+				{ id: "v1", label: "Mars" },
+				{ id: "v2", label: "Deimos" },
+				{ id: "v3", label: "Phobos" },
+			],
+		},
+		{
+			label: "Group B",
+			children: [
+				{ id: "v4", label: "Mars" },
+				{ id: "v5", label: "Deimos" },
+				{
+					label: "Group C",
+					children: [{ id: "v6", label: "Mars" }],
+				},
+			],
+		},
+		{ id: "v7", label: "Deimos" },
+		{ id: "v8", label: "Phobos" },
+	]
+
+	const methods = useForm<CheckboxData>({
+		defaultValues: {
+			v1: false,
+			v2: false,
+			v3: false,
+			v4: false,
+			v5: false,
+			v6: false,
+			// v7: false,
+			// v8: false,
+		},
+	})
+	return (
+		<form
+			onSubmit={methods.handleSubmit(data => {
+				console.log(data)
+			})}
+		>
+			<FormProvider {...methods}>
+				<CheckboxTree nodes={nodes} />
+			</FormProvider>
+		</form>
 	)
 }
 
