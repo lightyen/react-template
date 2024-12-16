@@ -31,22 +31,22 @@ export function Checkbox({
 
 	return (
 		<label
-			tw="flex items-center relative select-none cursor-pointer text-current focus-within:outline-none
+			tw="inline-flex items-center relative select-none cursor-pointer text-current focus-within:outline-none
 				hover:[input:not(:checked):not(:disabled):not(:indeterminate) ~ .check > .checkmark]:bg-primary/20
 			"
-			css={disabled && tw`cursor-not-allowed opacity-50`}
+			css={disabled && tw`pointer-events-none opacity-50`}
 			className={className}
 		>
 			<input
 				type="checkbox"
 				ref={composeRefs(ref, inputRef)}
 				tw="absolute w-0 h-0
-					[&:checked ~ .check > .checkmark]:(bg-primary text-primary-foreground)
+					checked:[& ~ .check > .checkmark]:(bg-primary text-primary-foreground)
 					[&:not(:checked) ~ .check > .checkmark .checked_icon]:hidden
-					[&:indeterminate ~ .check > .checkmark]:(bg-primary text-primary-foreground)
-					[&:indeterminate ~ .check > .checkmark .checked_icon]:hidden
+					indeterminate:[& ~ .check > .checkmark]:(bg-primary text-primary-foreground)
+					indeterminate:[& ~ .check > .checkmark .checked_icon]:hidden
+					indeterminate:[& ~ .check > .checkmark .indeterminated_icon]:visible
 					[&:not(:indeterminate) ~ .check > .checkmark .indeterminated_icon]:hidden
-					[&:indeterminate ~ .check > .checkmark .indeterminated_icon]:visible
 					focus-visible:[& ~ .check > .checkmark]:(shadow-primary/30 shadow-[0 0 0 3px var(--tw-shadow-color)])
 				"
 				disabled={disabled}
@@ -55,7 +55,7 @@ export function Checkbox({
 			<div className="check" tw="w-[25px] h-[25px] flex items-center justify-center">
 				<span
 					className="checkmark"
-					tw="w-[18px] h-[18px] flex items-center justify-center border-2 border-primary transition-[ box-shadow] duration-150"
+					tw="w-[18px] h-[18px] flex items-center justify-center border-2 border-primary transition-[box-shadow] duration-150"
 					css={rounded && tw`rounded-full`}
 				>
 					<CheckIcon className="checked_icon" />
@@ -107,11 +107,15 @@ function watchedArray<T extends FieldValues>(node: CheckboxInternalNode<T>) {
 }
 
 export function CheckboxTree<T extends FieldValues>({ nodes }: { nodes: CheckboxTreeNode<T>[] }) {
-	return nodes.map((v, i) => (
-		<li key={i} tw="list-none">
-			<CheckboxTreeNode node={v} />
-		</li>
-	))
+	return (
+		<ol>
+			{nodes.map((v, i) => (
+				<li key={i} tw="list-none">
+					<CheckboxTreeNode node={v} />
+				</li>
+			))}
+		</ol>
+	)
 }
 CheckboxTree.displayName = "CheckboxTree"
 
@@ -196,24 +200,18 @@ function CheckboxTreeHeader<T extends FieldValues>({
 					<ChevronDownIcon tw="stroke-2" css={!visible && tw`-rotate-90`} />
 				</button>
 			</div>
-			<label tw="flex-initial cursor-pointer">
-				<span tw="flex items-center">
-					<div tw="">
-						<Checkbox
-							checked={checked}
-							intermediate={intermediate}
-							onChange={e => {
-								for (const name of names) {
-									// eslint-disable-next-line @typescript-eslint/no-explicit-any
-									setValue(name, e.target.checked as any)
-								}
-							}}
-						>
-							{node.label}
-						</Checkbox>
-					</div>
-				</span>
-			</label>
+			<Checkbox
+				checked={checked}
+				intermediate={intermediate}
+				onChange={e => {
+					for (const name of names) {
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						setValue(name, e.target.checked as any)
+					}
+				}}
+			>
+				{node.label}
+			</Checkbox>
 		</div>
 	)
 }
