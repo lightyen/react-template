@@ -98,29 +98,32 @@ function DemoCheckboxTree() {
 		v8: boolean
 	}
 
-	const nodes: CheckboxTreeNode<CheckboxData>[] = [
-		{
-			label: "Group A",
-			children: [
-				{ id: "v1", label: "Mars" },
-				{ id: "v2", label: "Deimos" },
-				{ id: "v3", label: "Phobos" },
-			],
-		},
-		{
-			label: "Group B",
-			children: [
-				{ id: "v4", label: "Mars" },
-				{ id: "v5", label: "Deimos" },
-				{
-					label: "Group C",
-					children: [{ id: "v6", label: "Mars" }],
-				},
-			],
-		},
-		{ id: "v7", label: "Deimos" },
-		{ id: "v8", label: "Phobos" },
-	]
+	const nodes = useMemo<CheckboxTreeNode<CheckboxData>[]>(() => {
+		return [
+			{
+				label: "Group A",
+				children: [
+					{ id: "v1", label: "Mars" },
+					{ id: "v2", label: "Deimos" },
+					{ id: "v3", label: "Phobos" },
+				],
+			},
+			{
+				label: "Group B",
+				defaultCollapse: true,
+				children: [
+					{ id: "v4", label: "Mars" },
+					{ id: "v5", label: "Deimos" },
+					{
+						label: "Group C",
+						children: [{ id: "v6", label: "Mars" }],
+					},
+				],
+			},
+			{ id: "v7", label: "Deimos" },
+			{ id: "v8", label: "Phobos" },
+		]
+	}, [])
 
 	const methods = useForm<CheckboxData>({
 		defaultValues: {
@@ -135,15 +138,9 @@ function DemoCheckboxTree() {
 		},
 	})
 	return (
-		<form
-			onSubmit={methods.handleSubmit(data => {
-				console.log(data)
-			})}
-		>
-			<FormProvider {...methods}>
-				<CheckboxTree nodes={nodes} />
-			</FormProvider>
-		</form>
+		<FormProvider {...methods}>
+			<CheckboxTree nodes={nodes} />
+		</FormProvider>
 	)
 }
 

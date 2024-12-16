@@ -73,6 +73,7 @@ export type CheckboxTreeNode<T extends FieldValues = FieldValues> = CheckboxInte
 interface CheckboxInternalNode<T extends FieldValues = FieldValues> {
 	label: string
 	children: (CheckboxInternalNode<T> | LeafNode<T>)[]
+	defaultCollapse?: boolean
 }
 
 interface LeafNode<T extends FieldValues> {
@@ -108,7 +109,7 @@ function watchedArray<T extends FieldValues>(node: CheckboxInternalNode<T>) {
 
 export function CheckboxTree<T extends FieldValues>({ nodes }: { nodes: CheckboxTreeNode<T>[] }) {
 	return (
-		<ol>
+		<ol tw="leading-none">
 			{nodes.map((v, i) => (
 				<li key={i} tw="list-none">
 					<CheckboxTreeNode node={v} />
@@ -128,19 +129,11 @@ function CheckboxTreeNode<T extends FieldValues>({ node }: { node: CheckboxTreeN
 
 function CheckboxLeaf<T extends FieldValues>({ item }: { item: LeafNode<T> }) {
 	const { register } = useFormContext<T>()
-	return (
-		<label tw="flex-initial cursor-pointer">
-			<span tw="flex items-center">
-				<div tw="flex items-center">
-					<Checkbox {...register(item.id)}>{item.label}</Checkbox>
-				</div>
-			</span>
-		</label>
-	)
+	return <Checkbox {...register(item.id)}>{item.label}</Checkbox>
 }
 
 function CheckboxTreeGroup<T extends FieldValues>({ node }: { node: CheckboxInternalNode<T> }) {
-	const [visible, setVisible] = useState(false)
+	const [visible, setVisible] = useState(() => !node.defaultCollapse)
 	return (
 		<>
 			<CheckboxTreeHeader node={node} visible={visible} onToggle={setVisible} />
