@@ -95,7 +95,7 @@ function Row<T>({ data, columns }: { data: WithIndex<T>; columns: TableColumnIte
 				}
 				return (
 					<td
-						tw="p-2 first-of-type:pl-4 align-middle [&:has([role=checkbox])]:pr-2"
+						tw="p-2 first-of-type:pl-4 align-middle leading-none [&:has([role=checkbox])]:pr-2"
 						key={colIndex}
 						className={`col-${id}`}
 					>
@@ -199,7 +199,7 @@ export function TableView<T extends {} = {}>({
 								return (
 									<th
 										key={columnIndex}
-										tw="h-10 px-2 first-of-type:pl-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-2"
+										tw="h-10 px-2 first-of-type:pl-4 text-left align-middle leading-none font-medium text-muted-foreground [&:has([role=checkbox])]:pr-2"
 										style={_style}
 										className={className}
 									>

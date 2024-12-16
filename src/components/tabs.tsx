@@ -109,7 +109,7 @@ interface TabProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onClick"
 
 function Tab({ className, children, ref, onClick, ...props }: TabProps) {
 	return (
-		<label className={className} onClick={onClick} ref={ref}>
+		<label role="radio" className={className} onClick={onClick} ref={ref}>
 			<input
 				type="checkbox"
 				tw="absolute left-0 top-0 w-0 h-0

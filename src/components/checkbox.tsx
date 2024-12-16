@@ -31,6 +31,7 @@ export function Checkbox({
 
 	return (
 		<label
+			role="checkbox"
 			tw="inline-flex items-center relative select-none cursor-pointer text-current focus-within:outline-none
 				hover:[input:not(:checked):not(:disabled):not(:indeterminate) ~ .check > .checkmark]:bg-primary/20
 			"
@@ -52,13 +53,13 @@ export function Checkbox({
 				disabled={disabled}
 				{...props}
 			/>
-			<div className="check" tw="w-[25px] h-[25px] flex items-center justify-center">
+			<div className="check" tw="w-[25px] h-[25px] flex justify-center items-center">
 				<span
 					className="checkmark"
-					tw="w-[18px] h-[18px] flex items-center justify-center border-2 border-primary transition-[box-shadow] duration-150"
+					tw="w-[19px] h-[19px] flex leading-none items-center justify-center border-2 border-primary transition-[box-shadow] duration-150"
 					css={rounded && tw`rounded-full`}
 				>
-					<CheckIcon className="checked_icon" />
+					<CheckIcon tw="inline" className="checked_icon" />
 					<DividerHorizontalIcon className="indeterminated_icon" />
 				</span>
 			</div>
