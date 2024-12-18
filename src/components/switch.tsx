@@ -28,11 +28,11 @@ export function Switch({ type: _, disabled, className, children, ...props }: Swi
 			/>
 			<span
 				className="lever"
-				tw="
-					flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full bg-input
-					border-2 border-transparent shadow-sm transition-colors
-					after:(pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform duration-150)
+				tw="flex shrink-0 cursor-pointer items-center rounded-full bg-input
+					shadow-sm transition-colors
+					after:(h-full aspect-square pointer-events-none block rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform duration-150)
 				"
+				css={tw`h-6 w-11 p-[3px]`}
 			/>
 			{children && <span tw="px-[5px] font-medium">{children}</span>}
 		</label>

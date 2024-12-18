@@ -67,8 +67,11 @@ function InputView() {
 function SwitchView() {
 	return (
 		<div tw="flex items-center gap-2">
-			<Switch>on/off</Switch>
+			<Switch defaultChecked>on/off</Switch>
 			<Switch disabled>on/off</Switch>
+			<Switch defaultChecked disabled>
+				on/off
+			</Switch>
 		</div>
 	)
 }

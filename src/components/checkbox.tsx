@@ -1,8 +1,24 @@
-import { CheckIcon, ChevronDownIcon, DividerHorizontalIcon } from "@radix-ui/react-icons"
-import { useEffect, useMemo, useRef, useState, type InputHTMLAttributes, type Ref } from "react"
+import { ChevronDownIcon, DividerHorizontalIcon } from "@radix-ui/react-icons"
+import { useEffect, useMemo, useRef, useState, type InputHTMLAttributes, type Ref, type SVGProps } from "react"
 import { useFormContext, type FieldValues, type Path } from "react-hook-form"
 import { tw } from "twobj"
 import { composeRefs } from "./lib/compose"
+
+function CheckIcon(props: SVGProps<SVGSVGElement>) {
+	return (
+		<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" {...props}>
+			<path fill="currentColor" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
+		</svg>
+	)
+}
+
+function DashIcon(props: SVGProps<SVGSVGElement>) {
+	return (
+		<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" {...props}>
+			<path fill="currentColor" d="M6 13v-2h12v2z" />
+		</svg>
+	)
+}
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 	intermediate?: boolean | undefined
@@ -59,7 +75,7 @@ export function Checkbox({
 					tw="w-[19px] h-[19px] flex leading-none items-center justify-center border-2 border-primary transition-[box-shadow] duration-150"
 					css={rounded && tw`rounded-full`}
 				>
-					<CheckIcon tw="inline" className="checked_icon" />
+					<CheckIcon tw="h-[px] aspect-square" className="checked_icon" />
 					<DividerHorizontalIcon className="indeterminated_icon" />
 				</span>
 			</div>
@@ -185,8 +201,8 @@ function CheckboxTreeHeader<T extends FieldValues>({
 			<div tw="w-[25px] h-[25px] flex justify-center items-center">
 				<button
 					type="button"
-					tw="w-[18px] h-[18px] flex justify-center items-center text-foreground/40 stroke-foreground/40 focus-within:outline-none
-					hover:(text-foreground stroke-foreground)
+					tw="w-[18px] h-[18px] flex justify-center items-center stroke-muted-foreground focus-within:outline-none
+					hover:stroke-foreground
 					focus-visible:(shadow-primary/30 shadow-[0 0 0 3px var(--tw-shadow-color)])
 				"
 					onClick={() => onToggle(!visible)}
