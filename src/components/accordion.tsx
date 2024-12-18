@@ -10,10 +10,6 @@ import {
 	useMemo,
 	useRef,
 	useState,
-	type ComponentProps,
-	type HTMLAttributes,
-	type PropsWithChildren,
-	type ReactElement,
 } from "react"
 import { tw } from "twobj"
 import { getElementHeight, isElement } from "./lib"
@@ -33,14 +29,16 @@ interface AccordionContext {
 
 const AccordionContext = createContext(null as unknown as AccordionContext)
 
-interface AccordionProps extends HTMLAttributes<HTMLDivElement> {
+interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
 	type?: "single" | "multiple"
 }
 
-export function Accordion({ type = "single", children, ...props }: PropsWithChildren<AccordionProps>) {
+export function Accordion({ type = "single", children, ...props }: React.PropsWithChildren<AccordionProps>) {
 	const result = useMemo(() => {
 		return Children.toArray(children)
-			.filter((e): e is ReactElement<ComponentProps<typeof AccordionItem>> => isElement(e, AccordionItem))
+			.filter((e): e is React.ReactElement<React.ComponentProps<typeof AccordionItem>> =>
+				isElement(e, AccordionItem),
+			)
 			.map((e, index) => cloneElement(e, { index }))
 	}, [children])
 
@@ -91,7 +89,11 @@ interface AccordionItemProps extends IndexProp {
 	position?: "relative" | "absolute"
 }
 
-export function AccordionItem({ children, index = -1, position = "relative" }: PropsWithChildren<AccordionItemProps>) {
+export function AccordionItem({
+	children,
+	index = -1,
+	position = "relative",
+}: React.PropsWithChildren<AccordionItemProps>) {
 	const ref = useRef<HTMLElement>(null)
 	const { items } = useContext(AccordionContext)
 	useLayoutEffect(() => {
@@ -106,10 +108,10 @@ export function AccordionItem({ children, index = -1, position = "relative" }: P
 
 	const { trigger, content } = useMemo(() => {
 		const array = Children.toArray(children)
-		const triggerElement = array.find((e): e is ReactElement<ComponentProps<typeof AccordionTrigger>> =>
+		const triggerElement = array.find((e): e is React.ReactElement<React.ComponentProps<typeof AccordionTrigger>> =>
 			isElement(e, AccordionTrigger),
 		)
-		const contentElement = array.find((e): e is ReactElement<ComponentProps<typeof AccordionTrigger>> =>
+		const contentElement = array.find((e): e is React.ReactElement<React.ComponentProps<typeof AccordionTrigger>> =>
 			isElement(e, AccordionContent),
 		)
 		return {
@@ -138,7 +140,7 @@ AccordionItem["$id"] = Symbol.for("com.AccordionItem")
 
 interface AccordionTriggerProps extends IndexProp {}
 
-export function AccordionTrigger({ index = -1, children }: PropsWithChildren<AccordionTriggerProps>) {
+export function AccordionTrigger({ index = -1, children }: React.PropsWithChildren<AccordionTriggerProps>) {
 	const { toggle, items } = useContext(AccordionContext)
 	return (
 		<button
@@ -161,7 +163,7 @@ export function AccordionTrigger({ index = -1, children }: PropsWithChildren<Acc
 }
 AccordionTrigger["$id"] = Symbol.for("com.AccordionTrigger")
 
-export function AccordionContent({ children, ...props }: PropsWithChildren) {
+export function AccordionContent({ children, ...props }: React.PropsWithChildren) {
 	const ref = useRef<HTMLDivElement>(null)
 	useLayoutEffect(() => {
 		if (ref.current) {

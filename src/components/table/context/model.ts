@@ -1,5 +1,3 @@
-import type { ComponentType, CSSProperties, ReactElement } from "react"
-
 export type SortType = "" | "asc" | "desc"
 
 export interface FilterInput<T> {
@@ -22,14 +20,14 @@ interface LabelProps {
 	onChecked(checked: boolean): void
 }
 
-export type Label = string | ReactElement | ComponentType<GlobalLabelProps>
+export type Label = string | React.ReactElement | React.ComponentType<GlobalLabelProps>
 
 export interface TableBaseColumn<T> {
 	id: string
 	label: Label
-	Component?: ComponentType<{ record: T } & LabelProps>
+	Component?: React.ComponentType<{ record: T } & LabelProps>
 	className?: string
-	style?: CSSProperties
+	style?: React.CSSProperties
 	compare?(a: T, b: T): number
 	filter?: FilterInput<T> | Array<FilterSelectOptions<T>>
 }

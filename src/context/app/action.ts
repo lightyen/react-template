@@ -1,5 +1,4 @@
 import { Action, createAction } from "@reduxjs/toolkit"
-import { type ReactElement } from "react"
 import { isMobile } from "~/components/lib"
 import { genToastId } from "./toast"
 
@@ -12,9 +11,9 @@ export interface ToasterToast {
 	delay?: number
 
 	variant?: ToastVariant
-	title?: ReactElement | string
-	description?: ReactElement | string
-	action?: ReactElement | string
+	title?: React.ReactNode
+	description?: React.ReactNode
+	action?: React.ReactNode
 }
 
 export interface InnerToasterToast extends ToasterToast {

@@ -1,8 +1,7 @@
-import { type InputHTMLAttributes, type Ref } from "react"
 import { tw } from "twobj"
 
-interface SwitchProps extends InputHTMLAttributes<HTMLInputElement> {
-	ref?: Ref<HTMLInputElement>
+interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {
+	ref?: React.Ref<HTMLInputElement>
 }
 
 export function Switch({ type: _, disabled, className, children, ...props }: SwitchProps) {

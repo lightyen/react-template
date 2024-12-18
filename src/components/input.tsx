@@ -1,5 +1,5 @@
 import { EyeNoneIcon, EyeOpenIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
-import { useId, useState, type HTMLAttributes, type InputHTMLAttributes, type Ref } from "react"
+import { useId, useState } from "react"
 import { tw } from "twobj"
 import { zs, type VariantProps } from "./lib"
 
@@ -34,8 +34,8 @@ export const inputVariants = zs(
 	},
 )
 
-export type InputProps = InputHTMLAttributes<HTMLInputElement> &
-	VariantProps<typeof inputVariants> & { ref?: Ref<HTMLInputElement> }
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
+	VariantProps<typeof inputVariants> & { ref?: React.Ref<HTMLInputElement> }
 
 export function Input({ ref, type, variant, ...props }: InputProps) {
 	return <input type={type} css={inputVariants({ variant })} ref={ref} {...props} />
@@ -90,7 +90,7 @@ Password.displayName = "Password"
 export function ErrorFeedBack({
 	ref,
 	...props
-}: HTMLAttributes<HTMLParagraphElement> & { ref?: Ref<HTMLParagraphElement> }) {
+}: React.HTMLAttributes<HTMLParagraphElement> & { ref?: React.Ref<HTMLParagraphElement> }) {
 	return <p tw="text-[0.8rem] font-medium text-destructive" ref={ref} {...props} />
 }
 ErrorFeedBack.displayName = "ErrorFeedBack"

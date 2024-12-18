@@ -1,4 +1,4 @@
-import { createContext, useContext, type PropsWithChildren } from "react"
+import { createContext, useContext } from "react"
 import type { FieldArrayPath, FieldValues, UseFieldArrayReturn } from "react-hook-form"
 
 const FormArrayContext = createContext<unknown>(null)
@@ -7,7 +7,7 @@ export function FormArrayProvider<
 	TFieldValues extends FieldValues = FieldValues,
 	TFieldArrayName extends FieldArrayPath<TFieldValues> = FieldArrayPath<TFieldValues>,
 	TKeyName extends string = "id",
->({ children, ...methods }: PropsWithChildren<UseFieldArrayReturn<TFieldValues, TFieldArrayName, TKeyName>>) {
+>({ children, ...methods }: React.PropsWithChildren<UseFieldArrayReturn<TFieldValues, TFieldArrayName, TKeyName>>) {
 	return <FormArrayContext value={methods}>{children}</FormArrayContext>
 }
 

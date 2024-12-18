@@ -1,9 +1,10 @@
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from "@radix-ui/react-icons"
 import Mark from "mark.js"
-import { useEffect, useRef, type PropsWithChildren, type Ref, type TableHTMLAttributes } from "react"
+import { useEffect, useRef } from "react"
 import { useTableStore } from "."
 import { Button } from "../button"
 import { Command, CommandItem, CommandList } from "../command"
+import { isReactNode } from "../lib"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover"
 import type { Label, SortType, TableColumnItem, WithIndex } from "./context/model"
 
@@ -11,7 +12,7 @@ function SortButton({
 	sortType,
 	onSort = () => void 0,
 	children,
-}: PropsWithChildren<{ sortType?: SortType; onSort?(t: SortType): void }>) {
+}: React.PropsWithChildren<{ sortType?: SortType; onSort?(t: SortType): void }>) {
 	return (
 		<Popover>
 			<PopoverTrigger>
@@ -54,7 +55,7 @@ function TableWrapper({
 	ref,
 	children,
 	...props
-}: TableHTMLAttributes<HTMLTableElement> & { ref?: Ref<HTMLTableElement> }) {
+}: React.TableHTMLAttributes<HTMLTableElement> & { ref?: React.Ref<HTMLTableElement> }) {
 	return (
 		<div aria-label="table-view" tw="rounded-md border overflow-x-auto">
 			<div tw="relative w-full">
@@ -71,10 +72,7 @@ function ThLabel({ Label }: { Label: Label }) {
 	const checked = useSelect(state => state.global.checked)
 	const intermediate = useSelect(state => state.global.intermediate)
 	const globalCheckbox = useSelect(state => state.globalCheckbox)
-	if (typeof Label === "string") {
-		return Label
-	}
-	if (typeof Label !== "function") {
+	if (isReactNode(Label)) {
 		return Label
 	}
 	return <Label checked={checked} intermediate={intermediate} onChecked={checked => globalCheckbox(checked)} />
@@ -175,7 +173,7 @@ export function TableView<T extends {} = {}>({
 	children,
 	keyFn,
 	...props
-}: PropsWithChildren<TableHTMLAttributes<HTMLTableElement> & Props<T>>) {
+}: React.PropsWithChildren<React.TableHTMLAttributes<HTMLTableElement> & Props<T>>) {
 	const useSelect = useTableStore()
 	const limit = useSelect(state => state.pagination.limit)
 	const columns = useSelect(state => state.columns)

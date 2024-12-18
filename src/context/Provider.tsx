@@ -1,11 +1,10 @@
-import { type PropsWithChildren } from "react"
 import { IntlProvider } from "react-intl"
 import { Provider as ReactReduxProvider } from "react-redux"
 import { AppStoreContext, useSelect } from "./hooks"
 import { getLocale } from "./intl"
 import { store } from "./store"
 
-export function StoreProvider({ children }: PropsWithChildren<{}>) {
+export function StoreProvider({ children }: React.PropsWithChildren<{}>) {
 	return (
 		<ReactReduxProvider context={AppStoreContext} store={store}>
 			{children}
@@ -13,7 +12,7 @@ export function StoreProvider({ children }: PropsWithChildren<{}>) {
 	)
 }
 
-export function LocaleProvider({ children }: PropsWithChildren<{}>) {
+export function LocaleProvider({ children }: React.PropsWithChildren<{}>) {
 	const locale = useSelect(state => state.intl.locale)
 	const [, messages] = getLocale()
 	return (

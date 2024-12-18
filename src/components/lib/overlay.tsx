@@ -1,14 +1,14 @@
 import { animated, useSpringRef, useTransition } from "@react-spring/web"
-import { useEffect, useRef, type HTMLAttributes, type PointerEvent, type PropsWithChildren } from "react"
+import { useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import { tw } from "twobj"
 import { addDialogCount, getDialogCount, getViewportElement, setScroll, subtractDialogCount } from "./scrollbar"
 
-interface OverlayProps extends HTMLAttributes<HTMLDivElement> {
+interface OverlayProps extends React.HTMLAttributes<HTMLDivElement> {
 	visible: boolean
 	blur?: boolean
 	duration?: number
-	onClickOverlay?(e: PointerEvent<HTMLDivElement>): void
+	onClickOverlay?(e: React.PointerEvent<HTMLDivElement>): void
 }
 
 export function Overlay({
@@ -20,7 +20,7 @@ export function Overlay({
 	onPointerUp = () => void 0,
 	onClick,
 	...props
-}: PropsWithChildren<OverlayProps>) {
+}: React.PropsWithChildren<OverlayProps>) {
 	const api = useSpringRef()
 
 	const pointerId = useRef(0)

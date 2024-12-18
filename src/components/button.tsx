@@ -1,5 +1,4 @@
 import { Cross2Icon } from "@radix-ui/react-icons"
-import { type ButtonHTMLAttributes, type Ref } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { tw } from "twobj"
 import { zs, type VariantProps } from "./lib"
@@ -31,8 +30,8 @@ export const buttonVariants = zs(
 	},
 )
 
-export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
-	VariantProps<typeof buttonVariants> & { ref?: Ref<HTMLButtonElement> }
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+	VariantProps<typeof buttonVariants> & { ref?: React.Ref<HTMLButtonElement> }
 
 export function Button({ type = "button", variant, size, ...props }: ButtonProps) {
 	return <button type={type} role="button" css={buttonVariants({ variant, size })} {...props} />

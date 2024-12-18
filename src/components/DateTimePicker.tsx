@@ -48,6 +48,7 @@ export function DateTimePickerForm({ value = new Date(), onSubmit, onCancel, cla
 								required
 								locale={getDateFnsLocale()}
 								fixedWeeks
+								weekStartsOn={0}
 								onSelect={next => {
 									onChange(set(next, { hours: getHours(value), minutes: getMinutes(value) }))
 								}}

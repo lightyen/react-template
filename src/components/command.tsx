@@ -1,9 +1,8 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons"
 import { Command as CommandPrimitive } from "cmdk"
-import { HTMLAttributes, PropsWithChildren, Ref, type ComponentProps } from "react"
 import { Dialog, DialogContent, type DialogProps } from "./dialog"
 
-export function Command(props: ComponentProps<typeof CommandPrimitive>) {
+export function Command(props: React.ComponentProps<typeof CommandPrimitive>) {
 	return (
 		<CommandPrimitive
 			tw="flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground border shadow-md"
@@ -13,7 +12,7 @@ export function Command(props: ComponentProps<typeof CommandPrimitive>) {
 }
 Command.displayName = CommandPrimitive.displayName
 
-export function CommandDialog({ children, ...props }: PropsWithChildren<DialogProps>) {
+export function CommandDialog({ children, ...props }: React.PropsWithChildren<DialogProps>) {
 	return (
 		<Dialog {...props}>
 			<DialogContent tw="overflow-hidden p-0">
@@ -35,7 +34,7 @@ export function CommandDialog({ children, ...props }: PropsWithChildren<DialogPr
 	)
 }
 
-export function CommandInput(props: ComponentProps<typeof CommandPrimitive.Input>) {
+export function CommandInput(props: React.ComponentProps<typeof CommandPrimitive.Input>) {
 	return (
 		<div tw="flex items-center border-b px-3">
 			<MagnifyingGlassIcon tw="mr-2 h-4 w-4 shrink-0 opacity-50" />
@@ -48,17 +47,17 @@ export function CommandInput(props: ComponentProps<typeof CommandPrimitive.Input
 }
 CommandInput.displayName = CommandPrimitive.Input.displayName
 
-export function CommandList(props: ComponentProps<typeof CommandPrimitive.List>) {
+export function CommandList(props: React.ComponentProps<typeof CommandPrimitive.List>) {
 	return <CommandPrimitive.List tw="overflow-y-auto overflow-x-hidden" {...props} />
 }
 CommandList.displayName = CommandPrimitive.List.displayName
 
-export function CommandEmpty(props: ComponentProps<typeof CommandPrimitive.Empty>) {
+export function CommandEmpty(props: React.ComponentProps<typeof CommandPrimitive.Empty>) {
 	return <CommandPrimitive.Empty tw="py-6 text-center text-sm" {...props} />
 }
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName
 
-export function CommandGroup(props: ComponentProps<typeof CommandPrimitive.Group>) {
+export function CommandGroup(props: React.ComponentProps<typeof CommandPrimitive.Group>) {
 	return (
 		<CommandPrimitive.Group
 			tw="overflow-hidden p-1 text-foreground [& [cmdk-group-heading]]:(px-2 py-1.5 text-xs font-medium text-muted-foreground)"
@@ -68,12 +67,12 @@ export function CommandGroup(props: ComponentProps<typeof CommandPrimitive.Group
 }
 CommandGroup.displayName = CommandPrimitive.Group.displayName
 
-export function CommandSeparator(props: ComponentProps<typeof CommandPrimitive.Separator>) {
+export function CommandSeparator(props: React.ComponentProps<typeof CommandPrimitive.Separator>) {
 	return <CommandPrimitive.Separator tw="-mx-1 h-px bg-border" {...props} />
 }
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 
-export function CommandItem(props: ComponentProps<typeof CommandPrimitive.Item>) {
+export function CommandItem(props: React.ComponentProps<typeof CommandPrimitive.Item>) {
 	return (
 		<CommandPrimitive.Item
 			tw="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none
@@ -85,7 +84,7 @@ export function CommandItem(props: ComponentProps<typeof CommandPrimitive.Item>)
 }
 CommandItem.displayName = CommandPrimitive.Item.displayName
 
-export function CommandShortcut(props: HTMLAttributes<HTMLSpanElement> & { ref?: Ref<HTMLSpanElement> }) {
+export function CommandShortcut(props: React.HTMLAttributes<HTMLSpanElement> & { ref?: React.Ref<HTMLSpanElement> }) {
 	return <span tw="ml-auto text-xs tracking-widest text-muted-foreground" {...props} />
 }
 CommandShortcut.displayName = "CommandShortcut"

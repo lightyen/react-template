@@ -1,21 +1,5 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import {
-	Children,
-	cloneElement,
-	isValidElement,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-	type ButtonHTMLAttributes,
-	type ComponentProps,
-	type DetailedReactHTMLElement,
-	type HTMLAttributes,
-	type PropsWithChildren,
-	type ReactElement,
-	type ReactNode,
-	type Ref,
-} from "react"
+import { Children, cloneElement, isValidElement, useContext, useEffect, useMemo, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button, CloseButton, type ButtonProps } from "./button"
@@ -70,7 +54,7 @@ function animationVariants(side: "top" | "right" | "bottom" | "left") {
 
 export const useSheet = useDialog
 
-export function SheetTrigger({ children, ...props }: PropsWithChildren<Omit<ButtonProps, "onClick">>) {
+export function SheetTrigger({ children, ...props }: React.PropsWithChildren<Omit<ButtonProps, "onClick">>) {
 	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -85,7 +69,7 @@ export function SheetTrigger({ children, ...props }: PropsWithChildren<Omit<Butt
 		)
 	}
 
-	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		...props,
@@ -97,12 +81,12 @@ export function SheetTrigger({ children, ...props }: PropsWithChildren<Omit<Butt
 }
 SheetTrigger["$id"] = Symbol.for("com.SheetTrigger")
 
-interface SheetContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+interface SheetContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
 	side?: "top" | "right" | "bottom" | "left"
-	children?: ReactNode | ((args: { close(): void }) => ReactNode)
+	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
-export function Div(props: HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> }) {
+export function Div(props: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
 	return <div {...props} />
 }
 
@@ -113,7 +97,7 @@ export function SheetContent({
 	onClick = () => void 0,
 	children,
 	...props
-}: PropsWithChildren<SheetContentProps> & HTMLAttributes<HTMLDivElement>) {
+}: React.PropsWithChildren<SheetContentProps> & React.HTMLAttributes<HTMLDivElement>) {
 	const { visible, setVisible } = useContext(DialogContext)
 
 	useEffect(() => {
@@ -183,7 +167,7 @@ SheetContent["$id"] = Symbol.for("com.SheetContent")
 export function SheetClose({
 	children,
 	...props
-}: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
+}: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
 	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -198,7 +182,7 @@ export function SheetClose({
 		)
 	}
 
-	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {
@@ -209,7 +193,7 @@ export function SheetClose({
 }
 SheetClose["$id"] = Symbol.for("com.SheetClose")
 
-export function SheetHeader({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function SheetHeader({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="flex flex-col space-y-2 text-center sm:text-left" {...props}>
 			{children}
@@ -218,7 +202,7 @@ export function SheetHeader({ children, ...props }: PropsWithChildren<HTMLAttrib
 }
 SheetHeader["$id"] = Symbol.for("com.SheetHeader")
 
-export function SheetTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function SheetTitle({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="text-lg font-semibold text-foreground" {...props}>
 			{children}
@@ -227,7 +211,10 @@ export function SheetTitle({ children, ...props }: PropsWithChildren<HTMLAttribu
 }
 SheetTitle["$id"] = Symbol.for("com.SheetTitle")
 
-export function SheetDescription({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function SheetDescription({
+	children,
+	...props
+}: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="text-sm text-muted-foreground" {...props}>
 			{children}
@@ -236,7 +223,7 @@ export function SheetDescription({ children, ...props }: PropsWithChildren<HTMLA
 }
 SheetDescription["$id"] = Symbol.for("com.SheetDescription")
 
-export function SheetFooter({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function SheetFooter({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2" {...props}>
 			{children}
@@ -252,7 +239,7 @@ export function Sheet({
 	overlayExit = true,
 	onClickOverlay = () => void 0,
 	children,
-}: PropsWithChildren<DialogProps>) {
+}: React.PropsWithChildren<DialogProps>) {
 	const [innerVisible, innerSetVisible] = useState(false)
 
 	const ctx = useMemo(() => {
@@ -263,7 +250,7 @@ export function Sheet({
 	}, [innerVisible, visible, setVisible])
 
 	const contentReactElement = Children.toArray(children).find(
-		(e): e is ReactElement<ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),
+		(e): e is React.ReactElement<React.ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),
 	)
 	return (
 		<DialogContext value={ctx}>

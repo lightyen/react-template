@@ -1,20 +1,5 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import {
-	Children,
-	cloneElement,
-	isValidElement,
-	useContext,
-	useEffect,
-	useMemo,
-	useState,
-	type ButtonHTMLAttributes,
-	type ComponentProps,
-	type DetailedReactHTMLElement,
-	type HTMLAttributes,
-	type PropsWithChildren,
-	type ReactElement,
-	type ReactNode,
-} from "react"
+import { Children, cloneElement, isValidElement, useContext, useEffect, useMemo, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button, CloseButton, type ButtonProps } from "./button"
@@ -27,7 +12,7 @@ export function useDialog(initialState: boolean | (() => boolean) = false) {
 	return { visible, setVisible }
 }
 
-export function DialogTrigger({ children, ...props }: PropsWithChildren<Omit<ButtonProps, "onClick">>) {
+export function DialogTrigger({ children, ...props }: React.PropsWithChildren<Omit<ButtonProps, "onClick">>) {
 	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -42,7 +27,7 @@ export function DialogTrigger({ children, ...props }: PropsWithChildren<Omit<But
 		)
 	}
 
-	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		...props,
@@ -53,9 +38,9 @@ export function DialogTrigger({ children, ...props }: PropsWithChildren<Omit<But
 	})
 }
 
-interface DialogContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
+interface DialogContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
 	layout?: boolean | "false"
-	children?: ReactNode | ((args: { close(): void }) => ReactNode)
+	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
 export function DialogContent({
@@ -140,7 +125,7 @@ DialogContent["$id"] = Symbol.for("com.DialogContent")
 export function DialogClose({
 	children,
 	...props
-}: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
+}: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
 	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -163,7 +148,7 @@ export function DialogClose({
 		)
 	}
 
-	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {
@@ -174,7 +159,7 @@ export function DialogClose({
 }
 DialogClose["$id"] = Symbol.for("com.DialogClose")
 
-export function DialogHeader({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function DialogHeader({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="flex flex-col space-y-1.5 text-center sm:text-left" {...props}>
 			{children}
@@ -183,7 +168,7 @@ export function DialogHeader({ children, ...props }: PropsWithChildren<HTMLAttri
 }
 DialogHeader["$id"] = Symbol.for("com.DialogHeader")
 
-export function DialogTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function DialogTitle({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="text-lg font-semibold leading-none tracking-tight" {...props}>
 			{children}
@@ -192,7 +177,10 @@ export function DialogTitle({ children, ...props }: PropsWithChildren<HTMLAttrib
 }
 DialogTitle["$id"] = Symbol.for("com.DialogTitle")
 
-export function DialogDescription({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function DialogDescription({
+	children,
+	...props
+}: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="text-sm text-muted-foreground" {...props}>
 			{children}
@@ -201,7 +189,7 @@ export function DialogDescription({ children, ...props }: PropsWithChildren<HTML
 }
 DialogDescription["$id"] = Symbol.for("com.DialogDescription")
 
-export function DialogFooter({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function DialogFooter({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2" {...props}>
 			{children}
@@ -229,7 +217,7 @@ export function Dialog({
 	overlayExit = true,
 	onClickOverlay = () => void 0,
 	children,
-}: PropsWithChildren<DialogProps>) {
+}: React.PropsWithChildren<DialogProps>) {
 	const [innerVisible, innerSetVisible] = useState(false)
 
 	const ctx = useMemo(() => {
@@ -240,7 +228,7 @@ export function Dialog({
 	}, [innerVisible, visible, setVisible])
 
 	const contentReactElement = Children.toArray(children).find(
-		(e): e is ReactElement<ComponentProps<typeof DialogContent>> => isElement(e, DialogContent),
+		(e): e is React.ReactElement<React.ComponentProps<typeof DialogContent>> => isElement(e, DialogContent),
 	)
 
 	return (

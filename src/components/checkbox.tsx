@@ -1,10 +1,10 @@
 import { ChevronDownIcon, DividerHorizontalIcon } from "@radix-ui/react-icons"
-import { useEffect, useMemo, useRef, useState, type InputHTMLAttributes, type Ref, type SVGProps } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useFormContext, type FieldValues, type Path } from "react-hook-form"
 import { tw } from "twobj"
 import { composeRefs } from "./lib/compose"
 
-function CheckIcon(props: SVGProps<SVGSVGElement>) {
+function CheckIcon(props: React.SVGProps<SVGSVGElement>) {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" {...props}>
 			<path fill="currentColor" d="m9.55 18l-5.7-5.7l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4z" />
@@ -12,9 +12,9 @@ function CheckIcon(props: SVGProps<SVGSVGElement>) {
 	)
 }
 
-interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	intermediate?: boolean | undefined
-	ref?: Ref<HTMLInputElement>
+	ref?: React.Ref<HTMLInputElement>
 	rounded?: boolean
 }
 

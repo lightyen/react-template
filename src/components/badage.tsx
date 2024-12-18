@@ -1,4 +1,3 @@
-import { type HTMLAttributes, type Ref } from "react"
 import { tw } from "twobj"
 import { zs, type VariantProps } from "./lib"
 
@@ -23,7 +22,7 @@ export const badgeVariants = zs(
 export function Badge({
 	variant,
 	...props
-}: HTMLAttributes<HTMLDivElement> & VariantProps<typeof badgeVariants> & { ref?: Ref<HTMLDivElement> }) {
+}: React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof badgeVariants> & { ref?: React.Ref<HTMLDivElement> }) {
 	return <div css={badgeVariants({ variant })} {...props} />
 }
 

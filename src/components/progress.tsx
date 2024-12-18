@@ -1,9 +1,7 @@
-import { type HTMLAttributes, type Ref } from "react"
-
-interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
+interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** 0 - 100 */
 	value: number
-	ref?: Ref<HTMLDivElement>
+	ref?: React.Ref<HTMLDivElement>
 }
 
 export function Progress({ value, ...props }: ProgressProps) {

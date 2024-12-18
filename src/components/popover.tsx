@@ -15,19 +15,11 @@ import {
 	cloneElement,
 	createContext,
 	isValidElement,
-	Ref,
 	useContext,
 	useEffect,
 	useMemo,
 	useRef,
 	useState,
-	type ButtonHTMLAttributes,
-	type CSSProperties,
-	type DetailedReactHTMLElement,
-	type HTMLAttributes,
-	type PropsWithChildren,
-	type ReactElement,
-	type ReactNode,
 } from "react"
 import { FormattedMessage } from "react-intl"
 import { Button, type ButtonProps } from "./button"
@@ -47,7 +39,7 @@ interface PopoverContext extends IPopover {
 	floatingStyles: UseFloatingReturn["floatingStyles"]
 	getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"]
 	getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"]
-	styles: CSSProperties
+	styles: React.CSSProperties
 }
 
 const PopoverContext = createContext(null as unknown as PopoverContext)
@@ -56,7 +48,7 @@ interface PopoverTriggerProps extends Omit<ButtonProps, "onClick"> {
 	mode?: "click" | "none"
 }
 
-export function PopoverTrigger({ children, mode = "click", ...props }: PropsWithChildren<PopoverTriggerProps>) {
+export function PopoverTrigger({ children, mode = "click", ...props }: React.PropsWithChildren<PopoverTriggerProps>) {
 	const { setVisible, refs, getReferenceProps } = useContext(PopoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -80,12 +72,14 @@ export function PopoverTrigger({ children, mode = "click", ...props }: PropsWith
 		)
 	}
 
-	const child = children as ReactElement<HTMLAttributes<Element>> & {
-		ref?: Ref<Element>
-	}
+	const child = children as React.ReactElement<
+		React.HTMLAttributes<Element> & {
+			ref?: React.Ref<Element>
+		}
+	>
 
 	const innerProps = getReferenceProps({
-		ref: composeRefs(refs.setReference, child.ref),
+		ref: composeRefs(refs.setReference, child.props.ref),
 		onClick(e) {
 			if (mode === "click") {
 				setVisible(true)
@@ -117,8 +111,8 @@ export function PopoverTrigger({ children, mode = "click", ...props }: PropsWith
 	})
 }
 
-interface PopoverContentProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-	children?: ReactNode | ((args: { close(): void }) => ReactNode)
+interface PopoverContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
 export function PopoverContent({ children, ...props }: PopoverContentProps) {
@@ -157,7 +151,7 @@ export function PopoverContent({ children, ...props }: PopoverContentProps) {
 export function PopoverClose({
 	children,
 	...props
-}: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
+}: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
 	const { setVisible } = useContext(PopoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -172,7 +166,7 @@ export function PopoverClose({
 		)
 	}
 
-	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {
@@ -202,7 +196,7 @@ export function Popover({
 	setVisible = () => void 0,
 	onEnter = () => void 0,
 	onLeave = () => void 0,
-}: PropsWithChildren<PopoverProps>) {
+}: React.PropsWithChildren<PopoverProps>) {
 	const [innerVisible, innerSetVisible] = useState(false)
 
 	const ctx = useMemo<IPopover>(() => {

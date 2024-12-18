@@ -14,7 +14,7 @@ enum NavItemKind {
 
 interface NavItemLinkType {
 	kind: NavItemKind.Link
-	label: React.ReactElement | string
+	label: React.ReactNode
 	pathname: string
 	hidden?: true
 }

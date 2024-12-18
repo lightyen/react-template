@@ -1,12 +1,12 @@
-import { useCallback, type Ref, type RefObject, type SyntheticEvent } from "react"
+import { useCallback } from "react"
 
-export type NullableRef<T> = Ref<T> | null | undefined
+export type NullableRef<T> = React.Ref<T> | null | undefined
 
 export function setRef<T extends Element>(ref: NullableRef<T>, node: T) {
 	if (typeof ref === "function") {
 		ref(node)
 	} else if (ref != null) {
-		const o = ref as RefObject<T>
+		const o = ref as React.RefObject<T>
 		o.current = node
 	}
 }
@@ -24,7 +24,7 @@ export function useComposedRefs<T extends Element>(...refs: NullableRef<T>[]) {
 	return useCallback(composeRefs(...refs), refs)
 }
 
-export function composeEventHandlers<E extends SyntheticEvent>(
+export function composeEventHandlers<E extends React.SyntheticEvent>(
 	originalEventHandler?: (event: E) => void,
 	innerEventHandler?: (event: E) => void,
 	{ checkForDefaultPrevented = true } = {},

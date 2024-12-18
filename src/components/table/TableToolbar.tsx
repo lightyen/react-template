@@ -1,25 +1,22 @@
 import { CheckIcon, Cross2Icon, MixerHorizontalIcon, ResetIcon } from "@radix-ui/react-icons"
-import { type PropsWithChildren, type SVGProps } from "react"
 import { useTableStore } from "."
 import { Badge } from "../badage"
 import { Button } from "../button"
 import { Checkbox } from "../checkbox"
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../command"
 import { Input } from "../input"
+import { isReactNode } from "../lib"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover"
 import type { Label, SelectFilterState, TextFilterState } from "./context/model"
 
 function CommandLabel({ Label }: { Label: Label }) {
-	if (typeof Label === "string") {
-		return Label
-	}
-	if (typeof Label !== "function") {
+	if (isReactNode(Label)) {
 		return Label
 	}
 	return null
 }
 
-function MdiFilterPlusOutlineIcon(props: SVGProps<SVGSVGElement>) {
+function MdiFilterPlusOutlineIcon(props: React.SVGProps<SVGSVGElement>) {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" {...props}>
 			<path
@@ -67,7 +64,7 @@ function TableToolbarAddFilters() {
 	)
 }
 
-function FilterText<T extends {}>({ children, filter }: PropsWithChildren<{ filter: TextFilterState<T> }>) {
+function FilterText<T extends {}>({ children, filter }: React.PropsWithChildren<{ filter: TextFilterState<T> }>) {
 	const useSelect = useTableStore()
 	const setFilterText = useSelect(state => state.setFilterText)
 	const clearFilter = useSelect(state => state.clearFilter)
@@ -130,7 +127,7 @@ function FilterText<T extends {}>({ children, filter }: PropsWithChildren<{ filt
 	)
 }
 
-function FilterOptions<T extends {}>({ children, filter }: PropsWithChildren<{ filter: SelectFilterState<T> }>) {
+function FilterOptions<T extends {}>({ children, filter }: React.PropsWithChildren<{ filter: SelectFilterState<T> }>) {
 	const useSelect = useTableStore()
 	const clearFilter = useSelect(state => state.clearFilter)
 	const removeFilter = useSelect(state => state.removeFilter)
