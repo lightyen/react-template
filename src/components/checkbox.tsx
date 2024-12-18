@@ -12,14 +12,6 @@ function CheckIcon(props: SVGProps<SVGSVGElement>) {
 	)
 }
 
-function DashIcon(props: SVGProps<SVGSVGElement>) {
-	return (
-		<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" {...props}>
-			<path fill="currentColor" d="M6 13v-2h12v2z" />
-		</svg>
-	)
-}
-
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
 	intermediate?: boolean | undefined
 	ref?: Ref<HTMLInputElement>
@@ -75,7 +67,7 @@ export function Checkbox({
 					tw="w-[19px] h-[19px] flex leading-none items-center justify-center border-2 border-primary transition-[box-shadow] duration-150"
 					css={rounded && tw`rounded-full`}
 				>
-					<CheckIcon tw="h-[px] aspect-square" className="checked_icon" />
+					<CheckIcon tw="h-full aspect-square" className="checked_icon" />
 					<DividerHorizontalIcon className="indeterminated_icon" />
 				</span>
 			</div>
