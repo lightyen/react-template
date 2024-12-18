@@ -4,7 +4,7 @@ interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	ref?: React.Ref<HTMLInputElement>
 }
 
-export function Switch({ type: _, disabled, className, children, ...props }: SwitchProps) {
+export function Switch({ type: _, disabled, className, style, children, ...props }: SwitchProps) {
 	return (
 		<label
 			role="checkbox"
@@ -13,6 +13,7 @@ export function Switch({ type: _, disabled, className, children, ...props }: Swi
 			"
 			css={disabled && tw`pointer-events-none opacity-50`}
 			className={className}
+			style={style}
 		>
 			<input
 				type="checkbox"

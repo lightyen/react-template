@@ -1,5 +1,5 @@
 import { EyeNoneIcon, EyeOpenIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
-import { useId, useState } from "react"
+import { useState } from "react"
 import { tw } from "twobj"
 import { zs, type VariantProps } from "./lib"
 
@@ -37,32 +37,26 @@ export const inputVariants = zs(
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> &
 	VariantProps<typeof inputVariants> & { ref?: React.Ref<HTMLInputElement> }
 
-export function Input({ ref, type, variant, ...props }: InputProps) {
-	return <input type={type} css={inputVariants({ variant })} ref={ref} {...props} />
+export function Input({ type = "text", variant, ...props }: InputProps) {
+	return <input type={type} css={inputVariants({ variant })} {...props} />
 }
 Input.displayName = "Input"
 
-export function SearchInput({ ref, type, className, ...props }: InputProps) {
+export function SearchInput({ type: _, className, style, ...props }: InputProps) {
 	return (
-		<div css={input} tw="items-center" className={className}>
+		<div css={input} tw="items-center" className={className} style={style}>
 			<MagnifyingGlassIcon tw="mr-2 h-4 w-4 shrink-0 opacity-50" />
-			<input type={type} ref={ref} tw="grow h-full bg-background outline-none" {...props} />
+			<input type="text" tw="grow h-full bg-background outline-none" {...props} />
 		</div>
 	)
 }
 SearchInput.displayName = "SearchInput"
 
-export function Password({ ref, id, "aria-invalid": invalid, disabled, type: _, className, ...props }: InputProps) {
-	const defaultId = useId()
-	if (!id) {
-		id = defaultId
-	}
+export function Password({ type: _, "aria-invalid": invalid, disabled, className, style, ...props }: InputProps) {
 	const [reveal, setReveal] = useState(false)
 	return (
-		<div css={input} aria-invalid={invalid}>
+		<div css={input} aria-invalid={invalid} className={className} style={style}>
 			<input
-				ref={ref}
-				id={id}
 				autoComplete="off"
 				autoCorrect="off"
 				spellCheck="false"
@@ -87,10 +81,9 @@ export function Password({ ref, id, "aria-invalid": invalid, disabled, type: _, 
 }
 Password.displayName = "Password"
 
-export function ErrorFeedBack({
-	ref,
-	...props
-}: React.HTMLAttributes<HTMLParagraphElement> & { ref?: React.Ref<HTMLParagraphElement> }) {
-	return <p tw="text-[0.8rem] font-medium text-destructive" ref={ref} {...props} />
+export function ErrorFeedBack(
+	props: React.HTMLAttributes<HTMLParagraphElement> & { ref?: React.Ref<HTMLParagraphElement> },
+) {
+	return <p tw="text-[0.8rem] font-medium text-destructive" {...props} />
 }
 ErrorFeedBack.displayName = "ErrorFeedBack"

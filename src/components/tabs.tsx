@@ -98,9 +98,9 @@ interface TabProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "on
 	ref?: React.Ref<HTMLLabelElement>
 }
 
-function Tab({ className, children, ref, onClick, ...props }: TabProps) {
+function Tab({ className, style, children, ref, onClick, ...props }: TabProps) {
 	return (
-		<label role="radio" className={className} onClick={onClick} ref={ref}>
+		<label role="radio" className={className} style={style} onClick={onClick} ref={ref}>
 			<input
 				type="checkbox"
 				tw="absolute left-0 top-0 w-0 h-0
