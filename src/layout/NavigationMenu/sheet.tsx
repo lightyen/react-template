@@ -1,22 +1,6 @@
 import { animated, useSpringRef, useTransition } from "@react-spring/web"
 import { useDrag } from "@use-gesture/react"
-import {
-	Children,
-	cloneElement,
-	isValidElement,
-	useContext,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-	type ButtonHTMLAttributes,
-	type ComponentProps,
-	type DetailedReactHTMLElement,
-	type HTMLAttributes,
-	type PropsWithChildren,
-	type ReactElement,
-	type ReactNode,
-} from "react"
+import { Children, cloneElement, isValidElement, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button } from "~/components/button"
@@ -27,7 +11,7 @@ import { Overlay } from "~/components/lib/overlay"
 export function SheetTrigger({
 	children,
 	...props
-}: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
+}: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
 	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -42,7 +26,7 @@ export function SheetTrigger({
 		)
 	}
 
-	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		...props,
@@ -69,14 +53,14 @@ export const sheetVariants = zs(tw`fixed gap-4 bg-background p-6 shadow-lg`, {
 })
 
 interface SheetContentProps {
-	children?: ReactNode | ((args: { close(): void }) => ReactNode)
+	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
 export function SheetContent({
 	onClick = () => void 0,
 	children,
 	...props
-}: SheetContentProps & HTMLAttributes<HTMLDivElement>) {
+}: SheetContentProps & React.HTMLAttributes<HTMLDivElement>) {
 	const { visible, setVisible } = useContext(DialogContext)
 
 	useEffect(() => {
@@ -177,7 +161,7 @@ SheetContent["$id"] = Symbol.for("nav.SheetContent")
 export function SheetClose({
 	children,
 	...props
-}: PropsWithChildren<Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
+}: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
 	const { setVisible } = useContext(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -192,7 +176,7 @@ export function SheetClose({
 		)
 	}
 
-	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {
@@ -203,7 +187,7 @@ export function SheetClose({
 }
 SheetClose["$id"] = Symbol.for("nav.SheetClose")
 
-export function SheetHeader({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function SheetHeader({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="flex flex-col space-y-2 text-center sm:text-left" {...props}>
 			{children}
@@ -212,7 +196,7 @@ export function SheetHeader({ children, ...props }: PropsWithChildren<HTMLAttrib
 }
 SheetHeader["$id"] = Symbol.for("nav.SheetHeader")
 
-export function SheetTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function SheetTitle({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="text-lg font-semibold text-foreground" {...props}>
 			{children}
@@ -221,7 +205,10 @@ export function SheetTitle({ children, ...props }: PropsWithChildren<HTMLAttribu
 }
 SheetTitle["$id"] = Symbol.for("nav.SheetTitle")
 
-export function SheetDescription({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function SheetDescription({
+	children,
+	...props
+}: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="text-sm text-muted-foreground" {...props}>
 			{children}
@@ -230,7 +217,7 @@ export function SheetDescription({ children, ...props }: PropsWithChildren<HTMLA
 }
 SheetDescription["$id"] = Symbol.for("nav.SheetDescription")
 
-export function SheetFooter({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+export function SheetFooter({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2" {...props}>
 			{children}
@@ -252,10 +239,10 @@ export function Sheet({
 	overlayExit = true,
 	onClickOverlay = () => void 0,
 	children,
-}: PropsWithChildren<SheetProps>) {
+}: React.PropsWithChildren<SheetProps>) {
 	const [visible, setVisible] = useState(false)
 	const contentReactElement = Children.toArray(children).find(
-		(e): e is ReactElement<ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),
+		(e): e is React.ReactElement<React.ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),
 	)
 
 	return (

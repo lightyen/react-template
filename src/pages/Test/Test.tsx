@@ -1,7 +1,7 @@
 import { animated, easings, useSprings } from "@react-spring/web"
 import { useWindowVirtualizer } from "@tanstack/react-virtual"
 import { useDrag } from "@use-gesture/react"
-import { HTMLAttributes, createContext, useContext, useRef, useState } from "react"
+import { createContext, useContext, useRef, useState } from "react"
 import "react-day-picker/style.css"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
@@ -42,7 +42,7 @@ function DragExample() {
 	))
 }
 
-function AnimatedItem({ children, ...props }: HTMLAttributes<HTMLDivElement>) {
+function AnimatedItem({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<animated.div tw="bg-primary" {...props}>
 			{children}

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { isValidElement, ReactNode } from "react"
+import { isValidElement } from "react"
 
 export function isElement<C extends React.JSXElementConstructor<any> = React.JSXElementConstructor<any>>(
 	element: React.ReactNode,
@@ -15,7 +15,7 @@ export function isElement<C extends React.JSXElementConstructor<any> = React.JSX
 	return assertElement((element.props as any)["__EMOTION_TYPE_PLEASE_DO_NOT_USE__"], component)
 }
 
-export function isReactNode<P>(e: React.ReactNode | React.ComponentType<P>): e is ReactNode {
+export function isReactNode<P>(e: React.ReactNode | React.ComponentType<P>): e is React.ReactNode {
 	if (typeof e === "function") {
 		return false
 	}

@@ -1,14 +1,5 @@
 import { useVirtualizer } from "@tanstack/react-virtual"
-import {
-	startTransition,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-	type InputHTMLAttributes,
-	type Key,
-	type Ref,
-} from "react"
+import { startTransition, useEffect, useMemo, useRef, useState } from "react"
 import { commandScore } from "~/components/command-score"
 import { Input } from "~/components/input"
 import { composeRefs } from "~/components/lib/compose"
@@ -17,13 +8,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
 export interface Candidate {
 	value: string
 	alias?: string[]
-	key?: Key
+	key?: React.Key
 }
 
-export interface SuggestionInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onSelect"> {
+export interface SuggestionInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onSelect"> {
 	candidates: Candidate[]
 	onSelect?(v: Candidate): void
-	ref?: Ref<HTMLInputElement>
+	ref?: React.Ref<HTMLInputElement>
 }
 
 export function SuggestionInput({

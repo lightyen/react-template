@@ -1,6 +1,6 @@
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { set } from "date-fns"
-import { PropsWithChildren, useState } from "react"
+import { useState } from "react"
 import "react-day-picker/style.css"
 import { Button } from "~/components/button"
 import { DateTimeFormProps, DateTimePickerForm } from "~/components/DateTimePicker"
@@ -65,7 +65,7 @@ function DateTimePickerDialog({
 	onSubmit,
 	onCancel,
 	children,
-}: PropsWithChildren<DateTimeFormProps>) {
+}: React.PropsWithChildren<DateTimeFormProps>) {
 	const dialog = useDialog()
 	return (
 		<Dialog {...dialog}>
@@ -92,7 +92,7 @@ function DateTimePickerPopover({
 	onSubmit,
 	onCancel,
 	children,
-}: PropsWithChildren<DateTimeFormProps>) {
+}: React.PropsWithChildren<DateTimeFormProps>) {
 	const popover = usePopover()
 	return (
 		<Popover placement="bottom-start" {...popover}>

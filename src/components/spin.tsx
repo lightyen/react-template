@@ -1,5 +1,5 @@
 import { keyframes } from "@emotion/react"
-import { SVGAttributes, useMemo } from "react"
+import { useMemo } from "react"
 
 const spin = keyframes`
 from {
@@ -9,7 +9,7 @@ to {
 	transform: rotate(359deg);
 }`
 
-interface SpinArcProps extends SVGAttributes<SVGSVGElement> {
+interface SpinArcProps extends React.SVGAttributes<SVGSVGElement> {
 	radius?: number
 	strokeWidth?: number
 }

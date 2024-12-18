@@ -1,21 +1,14 @@
 import {
 	Children,
 	cloneElement,
-	ComponentProps,
 	createContext,
 	isValidElement,
-	KeyboardEvent,
 	memo,
-	PointerEvent,
-	PropsWithChildren,
-	ReactElement,
 	useContext,
 	useEffect,
 	useMemo,
 	useRef,
 	useState,
-	type HTMLAttributes,
-	type Ref,
 } from "react"
 import { create } from "zustand"
 import { useShallow } from "zustand/react/shallow"
@@ -26,7 +19,7 @@ type Orientation = "horizontal" | "vertical"
 type Direction = "ltr" | "rtl"
 type SlideDirection = "from-left" | "from-right" | "from-bottom" | "from-top"
 
-interface SliderRootProps extends HTMLAttributes<HTMLSpanElement> {
+interface SliderRootProps extends React.HTMLAttributes<HTMLSpanElement> {
 	onValueChange?(value: number[]): void
 	onValueCommit?(value: number[]): void
 	disabled?: boolean
@@ -158,7 +151,7 @@ function useSlider(options: SliderOptions) {
 
 const SliderContext = createContext(null as unknown as ReturnType<typeof createStore>)
 
-function Provider({ children, store }: PropsWithChildren<{ store: ReturnType<typeof useSlider> }>) {
+function Provider({ children, store }: React.PropsWithChildren<{ store: ReturnType<typeof useSlider> }>) {
 	return <SliderContext value={store}>{children}</SliderContext>
 }
 
@@ -182,7 +175,7 @@ export const SliderRoot = memo(
 		step = 1,
 		children,
 		...props
-	}: PropsWithChildren<SliderRootProps>) {
+	}: React.PropsWithChildren<SliderRootProps>) {
 		if (!value) {
 			value = [min]
 		}
@@ -202,7 +195,7 @@ export const SliderRoot = memo(
 		const f = Children.toArray(children).filter(isValidElement)
 		const trackElements = f.filter(e => isElement(e, SliderTrack))
 		const thumbElements = f
-			.filter((e): e is ReactElement<ComponentProps<typeof SliderThumb>> => isElement(e, SliderThumb))
+			.filter((e): e is React.ReactElement<React.ComponentProps<typeof SliderThumb>> => isElement(e, SliderThumb))
 			.map((e, index) => cloneElement(e, { index }))
 			.slice(0, value.length)
 
@@ -351,7 +344,7 @@ function getClosestValueIndex(values: number[], nextValue: number) {
 }
 
 function getValueFromPointer(
-	event: PointerEvent<HTMLElement>,
+	event: React.PointerEvent<HTMLElement>,
 	rect: DOMRect,
 	min: number,
 	max: number,
@@ -372,13 +365,13 @@ function getValueFromPointer(
 	return linearScale(input, output)(value)
 }
 
-interface SliderPrivateProps<T = HTMLSpanElement> extends Omit<HTMLAttributes<T>, "defaultValue"> {
-	onSlideEnd(event: PointerEvent<T>, index: number): void
-	onSlideStart(event: PointerEvent<T>, value: number, index: number): void
-	onSlideMove(event: PointerEvent<T>, value: number, index: number): void
-	onHomeKeyDown(event: KeyboardEvent<T>, index: number): void
-	onEndKeyDown(event: KeyboardEvent<T>, index: number): void
-	onStepKeyDown(event: KeyboardEvent<T>, index: number): void
+interface SliderPrivateProps<T = HTMLSpanElement> extends Omit<React.HTMLAttributes<T>, "defaultValue"> {
+	onSlideEnd(event: React.PointerEvent<T>, index: number): void
+	onSlideStart(event: React.PointerEvent<T>, value: number, index: number): void
+	onSlideMove(event: React.PointerEvent<T>, value: number, index: number): void
+	onHomeKeyDown(event: React.KeyboardEvent<T>, index: number): void
+	onEndKeyDown(event: React.KeyboardEvent<T>, index: number): void
+	onStepKeyDown(event: React.KeyboardEvent<T>, index: number): void
 }
 
 function SliderRootImpl({
@@ -395,7 +388,7 @@ function SliderRootImpl({
 	onStepKeyDown,
 	children,
 	...props
-}: SliderPrivateProps & { ref?: Ref<HTMLSpanElement> }) {
+}: SliderPrivateProps & { ref?: React.Ref<HTMLSpanElement> }) {
 	const useSelect = useSliderStore()
 	const disabled = useSelect(state => state.disabled)
 	const min = useSelect(state => state.min)
@@ -408,7 +401,7 @@ function SliderRootImpl({
 	const sliderRef = useRef<HTMLButtonElement>(null)
 	const rectRef = useRef<DOMRect | undefined>(undefined)
 
-	function handlePointer(event: PointerEvent<HTMLElement>) {
+	function handlePointer(event: React.PointerEvent<HTMLElement>) {
 		if (!sliderRef.current) {
 			return
 		}
@@ -488,7 +481,7 @@ function SliderRootImpl({
 	)
 }
 
-export function SliderTrack(props: PropsWithChildren<{ ref?: Ref<HTMLSpanElement> }>) {
+export function SliderTrack(props: React.PropsWithChildren<{ ref?: React.Ref<HTMLSpanElement> }>) {
 	const useSelect = useSliderStore()
 	const orientation = useSelect(state => state.orientation)
 	return <span data-orientation={orientation} tw="pointer-events-none" {...props} />
@@ -496,7 +489,7 @@ export function SliderTrack(props: PropsWithChildren<{ ref?: Ref<HTMLSpanElement
 SliderTrack.displayName = "SliderTrack"
 SliderTrack["$id"] = Symbol.for("com.SliderTrack")
 
-export function SliderRange(props: { ref?: Ref<HTMLSpanElement> }) {
+export function SliderRange(props: { ref?: React.Ref<HTMLSpanElement> }) {
 	const useSelect = useSliderStore()
 	const orientation = useSelect(state => state.orientation)
 	const style = useSelect(
@@ -516,7 +509,7 @@ export function SliderRange(props: { ref?: Ref<HTMLSpanElement> }) {
 SliderRange.displayName = "SliderRange"
 SliderRange["$id"] = Symbol.for("com.SliderRange")
 
-export function SliderThumb({ index = -1, ref, ...props }: { index?: number; ref?: Ref<HTMLSpanElement> }) {
+export function SliderThumb({ index = -1, ref, ...props }: { index?: number; ref?: React.Ref<HTMLSpanElement> }) {
 	const innerRef = useRef<HTMLSpanElement>(null)
 	const useSelect = useSliderStore()
 

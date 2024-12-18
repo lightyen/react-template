@@ -1,18 +1,9 @@
-import {
-	useCallback,
-	useLayoutEffect,
-	useMemo,
-	useRef,
-	type InputHTMLAttributes,
-	type MouseEventHandler,
-	type ReactNode,
-	type Ref,
-} from "react"
+import { useCallback, useLayoutEffect, useMemo, useRef } from "react"
 import { resolvePath, useLocation, useNavigate, type Location, type To } from "react-router"
 
 export interface RouteTabItem {
 	to: To
-	title: ReactNode
+	title: React.ReactNode
 	index?: boolean
 }
 
@@ -102,9 +93,9 @@ export function RouteTabs({ labels }: RouteTabsProps) {
 	)
 }
 
-interface TabProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "onClick"> {
-	onClick?: MouseEventHandler<HTMLLabelElement>
-	ref?: Ref<HTMLLabelElement>
+interface TabProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onClick"> {
+	onClick?: React.MouseEventHandler<HTMLLabelElement>
+	ref?: React.Ref<HTMLLabelElement>
 }
 
 function Tab({ className, children, ref, onClick, ...props }: TabProps) {

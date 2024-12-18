@@ -2,16 +2,7 @@ import { useAction, useSelect } from "@context"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
 import cx from "clsx"
-import {
-	Children,
-	cloneElement,
-	isValidElement,
-	useEffect,
-	useMemo,
-	type DetailedReactHTMLElement,
-	type HTMLAttributes,
-	type PropsWithChildren,
-} from "react"
+import { Children, cloneElement, isValidElement, useEffect, useMemo } from "react"
 import { FormattedMessage, useIntl } from "react-intl"
 import { tw } from "twobj"
 import { type InnerToasterToast } from "~/context/app/action"
@@ -55,7 +46,7 @@ export function Toaster() {
 	)
 }
 
-function ToastTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+function ToastTitle({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="text-base font-semibold [&+div]:text-sm" {...props}>
 			{children}
@@ -63,7 +54,7 @@ function ToastTitle({ children, ...props }: PropsWithChildren<HTMLAttributes<HTM
 	)
 }
 
-function ToastDescription({ children, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
+function ToastDescription({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
 		<div tw="text-sm opacity-90" {...props}>
 			{children}
@@ -95,7 +86,7 @@ function CloseButton({ onClick, className }: { onClick?(): void; className?: str
 	)
 }
 
-function ToastAction({ children, id }: PropsWithChildren<{ id: string }>) {
+function ToastAction({ children, id }: React.PropsWithChildren<{ id: string }>) {
 	const { dismissToast } = useAction().app
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, child => <ToastAction id={id}>{child}</ToastAction>)
@@ -126,7 +117,7 @@ function ToastAction({ children, id }: PropsWithChildren<{ id: string }>) {
 		)
 	}
 
-	const child = children as DetailedReactHTMLElement<HTMLAttributes<HTMLElement>, HTMLElement>
+	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
 
 	return cloneElement(child, {
 		onClick: e => {
