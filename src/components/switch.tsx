@@ -7,7 +7,7 @@ interface SwitchProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export function Switch({ type: _, disabled, className, style, children, ...props }: SwitchProps) {
 	return (
 		<label
-			role="checkbox"
+			role="switch"
 			tw="inline-flex items-center relative select-none cursor-pointer text-current focus-within:outline-none
 				hover:[input:not(:disabled):not(:checked) ~ .lever]:bg-foreground/20
 			"
