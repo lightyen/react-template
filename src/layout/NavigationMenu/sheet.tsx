@@ -4,9 +4,9 @@ import { Children, cloneElement, isValidElement, useContext, useEffect, useLayou
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button } from "~/components/button"
+import { DialogContext } from "~/components/internal/dialogContext"
+import { Overlay } from "~/components/internal/overlay"
 import { getElementWidth, isElement, zs } from "~/components/lib"
-import { DialogContext } from "~/components/lib/dialogContext"
-import { Overlay } from "~/components/lib/overlay"
 
 export function SheetTrigger({
 	children,

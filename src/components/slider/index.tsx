@@ -12,8 +12,7 @@ import {
 } from "react"
 import { create } from "zustand"
 import { useShallow } from "zustand/react/shallow"
-import { isElement } from "../lib"
-import { composeEventHandlers, composeRefs } from "../lib/compose"
+import { composeEventHandlers, composeRefs, isElement } from "../lib"
 
 type Orientation = "horizontal" | "vertical"
 type Direction = "ltr" | "rtl"

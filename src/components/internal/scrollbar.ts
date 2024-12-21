@@ -1,4 +1,4 @@
-import { isFirefox, isMobile } from "."
+import { isFirefox, isMobile } from "./utils"
 
 export function getViewportElement() {
 	return document.body

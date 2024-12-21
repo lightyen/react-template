@@ -2,7 +2,7 @@ import { useVirtualizer } from "@tanstack/react-virtual"
 import { startTransition, useEffect, useMemo, useRef, useState } from "react"
 import { commandScore } from "~/components/command-score"
 import { Input } from "~/components/input"
-import { composeRefs } from "~/components/lib/compose"
+import { composeRefs } from "~/components/lib"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
 
 export interface Candidate {

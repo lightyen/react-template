@@ -2,7 +2,7 @@ import { ChevronDownIcon, DividerHorizontalIcon } from "@radix-ui/react-icons"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useFormContext, type FieldValues, type Path } from "react-hook-form"
 import { tw } from "twobj"
-import { composeRefs } from "./lib/compose"
+import { composeRefs } from "./lib"
 
 function CheckIcon(props: React.SVGProps<SVGSVGElement>) {
 	return (

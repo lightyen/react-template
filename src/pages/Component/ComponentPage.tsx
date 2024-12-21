@@ -18,8 +18,8 @@ import {
 	DialogTrigger,
 } from "~/components/dialog"
 import { Input } from "~/components/input"
+import { Overlay } from "~/components/internal/overlay"
 import { Label } from "~/components/label"
-import { Overlay } from "~/components/lib/overlay"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
 import {
 	Sheet,

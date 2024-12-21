@@ -4,9 +4,9 @@ import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button, CloseButton, type ButtonProps } from "./button"
 import { useDialog, type DialogProps } from "./dialog"
+import { DialogContext } from "./internal/dialogContext"
+import { Overlay } from "./internal/overlay"
 import { isElement, zs } from "./lib"
-import { DialogContext } from "./lib/dialogContext"
-import { Overlay } from "./lib/overlay"
 
 export const sheetVariants = zs(tw`fixed gap-4 bg-background p-6 shadow-lg`, {
 	variants: {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { HslColorPicker } from "react-colorful"
 import { Button } from "~/components/button"
-import { HslColor, ensureContrastRatio, hsl2Css, hsl2rgb, parseHslColor, rgb2hsl } from "~/components/lib/color"
+import { HslColor, ensureContrastRatio, hsl2Css, hsl2rgb, parseHslColor, rgb2hsl } from "~/components/lib"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
 import { isDark } from "./theme"
 

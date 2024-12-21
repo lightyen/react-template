@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit"
-import { isMobile } from "~/components/lib"
+import { isMobile } from "~/components/internal/utils"
 import * as ac from "./action"
 
 export interface AppStore {

@@ -1,46 +1,40 @@
 import { UploadIcon } from "@radix-ui/react-icons"
 import { useCallback, useRef, useState } from "react"
-import { composeRefs } from "./lib/compose"
+import { composeRefs } from "./lib"
 
 interface UploadProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	ref?: React.Ref<HTMLInputElement>
-	onFileList?(files: FileList | null): void
 }
 
-export function Upload({ type: _, onChange, onFileList, className, style, ref, ...props }: UploadProps) {
+export function Upload({ type: _, onChange, className, style, ref, ...props }: UploadProps) {
 	const labelRef = useRef<HTMLLabelElement>(null)
 	const inputRef = useRef<HTMLInputElement>(null)
 	const [name, setName] = useState("")
-	const onFiles = useCallback(
-		(files: FileList | null) => {
-			if (!labelRef.current || !inputRef.current) {
-				return
+	const onFiles = useCallback((files: FileList | null) => {
+		if (!labelRef.current || !inputRef.current) {
+			return
+		}
+
+		const length = files?.length ?? 0
+
+		if (inputRef.current.files?.length != length) {
+			inputRef.current.files = files
+		}
+
+		let str = ""
+		if (files) {
+			for (const f of files) {
+				str += `${f.name} `
 			}
+		}
 
-			const length = files?.length ?? 0
-
-			if (inputRef.current.files?.length != length) {
-				inputRef.current.files = files
-			}
-
-			onFileList?.(files)
-
-			let str = ""
-			if (files) {
-				for (const f of files) {
-					str += `${f.name} `
-				}
-			}
-
-			if (str) {
-				labelRef.current.setAttribute("data-file", "")
-			} else {
-				labelRef.current.removeAttribute("data-file")
-			}
-			setName(str)
-		},
-		[onFileList],
-	)
+		if (str) {
+			labelRef.current.setAttribute("data-file", "")
+		} else {
+			labelRef.current.removeAttribute("data-file")
+		}
+		setName(str)
+	}, [])
 	return (
 		<label
 			tw="relative select-none box-border flex items-center justify-center rounded-lg

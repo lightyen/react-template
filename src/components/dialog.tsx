@@ -3,9 +3,9 @@ import { Children, cloneElement, isValidElement, useContext, useEffect, useMemo,
 import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button, CloseButton, type ButtonProps } from "./button"
+import { DialogContext } from "./internal/dialogContext"
+import { Overlay } from "./internal/overlay"
 import { isElement } from "./lib"
-import { DialogContext } from "./lib/dialogContext"
-import { Overlay } from "./lib/overlay"
 
 export function useDialog(initialState: boolean | (() => boolean) = false) {
 	const [visible, setVisible] = useState(initialState)
