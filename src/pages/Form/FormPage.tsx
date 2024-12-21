@@ -11,6 +11,7 @@ import { Label } from "~/components/label"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/components/popover"
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from "~/components/slider"
 import { Switch } from "~/components/switch"
+import { Upload } from "~/components/upload"
 import { addresses } from "~/data/macaddr"
 import { zonenames } from "~/data/zonename"
 import { Header, Separator } from "~/pages/common"
@@ -41,6 +42,9 @@ export function Component() {
 				<Separator />
 				<Header>Datetime</Header>
 				<DemoDatePicker />
+				<Separator />
+				<Header>Upload</Header>
+				<DemoUpload />
 				<Separator />
 				<Header>Suggestion</Header>
 				<SuggestionView />
@@ -358,6 +362,14 @@ function ZonenameSelect({ id }: { id?: string }) {
 				</div>
 			</PopoverContent>
 		</Popover>
+	)
+}
+
+function DemoUpload() {
+	return (
+		<div>
+			<Upload />
+		</div>
 	)
 }
 
