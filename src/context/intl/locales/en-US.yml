@@ -8,3 +8,5 @@ confirm: "Yes"
 apply_success: Configuration changes are applied.
 invalid_message_000: invalid value
 close: Close
+upload_file: Upload File
+download_file: Download

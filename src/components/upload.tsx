@@ -1,9 +1,31 @@
-import { UploadIcon } from "@radix-ui/react-icons"
 import { useCallback, useRef, useState } from "react"
+import { FormattedMessage } from "react-intl"
 import { composeRefs } from "./lib"
 
 interface UploadProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	ref?: React.Ref<HTMLInputElement>
+}
+
+export function MdiCloudUpload(props: React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+			<path
+				fill="currentColor"
+				d="M11 20H6.5q-2.28 0-3.89-1.57Q1 16.85 1 14.58q0-1.95 1.17-3.48q1.18-1.53 3.08-1.95q.63-2.3 2.5-3.72Q9.63 4 12 4q2.93 0 4.96 2.04Q19 8.07 19 11q1.73.2 2.86 1.5q1.14 1.28 1.14 3q0 1.88-1.31 3.19T18.5 20H13v-7.15l1.6 1.55L16 13l-4-4l-4 4l1.4 1.4l1.6-1.55Z"
+			></path>
+		</svg>
+	)
+}
+
+export function MdiFile(props: React.SVGProps<SVGSVGElement>) {
+	return (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
+			<path
+				fill="currentColor"
+				d="M13 9V3.5L18.5 9M6 2c-1.11 0-2 .89-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"
+			></path>
+		</svg>
+	)
 }
 
 export function Upload({ type: _, onChange, className, style, ref, ...props }: UploadProps) {
@@ -21,29 +43,30 @@ export function Upload({ type: _, onChange, className, style, ref, ...props }: U
 			inputRef.current.files = files
 		}
 
-		let str = ""
+		const s: string[] = []
 		if (files) {
 			for (const f of files) {
-				str += `${f.name} `
+				s.push(f.name)
 			}
 		}
 
-		if (str) {
+		if (s.length) {
 			labelRef.current.setAttribute("data-file", "")
 		} else {
 			labelRef.current.removeAttribute("data-file")
 		}
-		setName(str)
+		setName(s.join("\n"))
 	}, [])
 	return (
 		<label
-			tw="relative select-none box-border flex items-center justify-center rounded-lg
-			border-2 border-solid border-input transition
-			data-[over]:(border-primary bg-primary/20 border-dashed)
+			tw="relative select-none box-border flex items-center justify-center rounded-xl
+			border-2 border-solid border-input transition-colors
+			[&[data-file]]:bg-primary/20
 			hover:(
-				[&:not([data-file])]:(border-primary bg-primary/20)
-				[&[data-file]]:(border-input bg-input/20)
+				bg-input/20
+				[&[data-file]]:(border-primary bg-primary/15)
 			)
+			[&[data-over]]:(border-primary bg-primary/15 border-dashed)
 			"
 			ref={labelRef}
 			className={className}
@@ -64,6 +87,7 @@ export function Upload({ type: _, onChange, className, style, ref, ...props }: U
 				onFiles(e.dataTransfer.files)
 			}}
 			onDragLeave={e => {
+				e.preventDefault()
 				e.stopPropagation()
 				if (labelRef.current) {
 					labelRef.current.removeAttribute("data-over")
@@ -80,17 +104,13 @@ export function Upload({ type: _, onChange, className, style, ref, ...props }: U
 				}}
 				{...props}
 			/>
-			<div tw="w-full flex items-center justify-center text-lg gap-2 h-20 px-2">
-				{name ? (
-					<p tw="break-all">
-						<span>{name}</span>
-					</p>
-				) : (
-					<>
-						<UploadIcon width={20} height={20} />
-						<span>Upload files</span>
-					</>
-				)}
+			<div tw="h-28 w-full flex flex-col items-center justify-center gap-0.5 px-2">
+				<div tw="flex justify-center">
+					{name ? <MdiFile width={32} height={32} /> : <MdiCloudUpload width={32} height={32} />}
+				</div>
+				<div tw="text-xl text-center text-balance">
+					<p>{name || <FormattedMessage id="upload_file" />}</p>
+				</div>
 			</div>
 		</label>
 	)
