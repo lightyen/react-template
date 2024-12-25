@@ -161,38 +161,42 @@ function Toasts() {
 		api.start()
 	}, [api, items])
 
-	return transitions((s, { variant, ...item }) => (
-		<animated.div tw="relative" style={s}>
-			<div
-				tw="pb-2 first-of-type:(absolute inset-0 top-auto) sm:(pt-3 first-of-type:relative)"
-				className={cx("group", variant)}
-				ref={ref => {
-					if (ref) {
-						refMap.set(item, ref)
-					}
-				}}
-			>
+	return transitions((style, item) => {
+		const { variant, id, title, description, action } = item
+		return (
+			<animated.div tw="relative" style={style}>
 				<div
-					css={toastVariants({ variant })}
-					onPointerEnter={() => {
-						cancelDismissToast(item.id)
-					}}
-					onPointerLeave={() => {
-						restartDismissToast(item.id)
+					aria-label="xxxyyy"
+					tw="pb-2 first-of-type:(absolute inset-0 top-auto) sm:(pt-3 first-of-type:relative)"
+					className={cx("group", variant)}
+					ref={ref => {
+						if (ref) {
+							refMap.set(item, ref)
+						}
 					}}
 				>
-					<div tw="grid gap-1">
-						{item.title && <ToastTitle>{item.title}</ToastTitle>}
-						{item.description && (
-							<ToastDescription>
-								{item.description} {item.id}
-							</ToastDescription>
-						)}
+					<div
+						css={toastVariants({ variant })}
+						onPointerEnter={() => {
+							cancelDismissToast(id)
+						}}
+						onPointerLeave={() => {
+							restartDismissToast(id)
+						}}
+					>
+						<div tw="grid gap-1">
+							{title && <ToastTitle>{item.title}</ToastTitle>}
+							{description && (
+								<ToastDescription>
+									{description} {id}
+								</ToastDescription>
+							)}
+						</div>
+						{action && <ToastAction id={id}>{action}</ToastAction>}
+						<CloseButton tw="absolute right-0.5 top-0.5" onClick={() => dismissToast(item.id)} />
 					</div>
-					{item.action && <ToastAction id={item.id}>{item.action}</ToastAction>}
-					<CloseButton tw="absolute right-0.5 top-0.5" onClick={() => dismissToast(item.id)} />
 				</div>
-			</div>
-		</animated.div>
-	))
+			</animated.div>
+		)
+	})
 }

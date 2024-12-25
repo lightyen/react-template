@@ -66,8 +66,9 @@ export function Component() {
 
 function ButtonView() {
 	return (
-		<div tw="flex flex-wrap gap-4">
-			<Button size="default">Apply</Button>
+		<div tw="flex items-center flex-wrap gap-4">
+			<Button variant="secondary">Apply</Button>
+			<Button>Apply</Button>
 			<Button size="sm">Apply</Button>
 			<Button size="lg">Apply</Button>
 			<Button variant="outline">Detail</Button>
