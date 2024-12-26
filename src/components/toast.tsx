@@ -97,19 +97,18 @@ function ToastAction({ children, id }: React.PropsWithChildren<{ id: string }>) 
 			<button
 				type="button"
 				tw="inline-flex shrink-0 items-center justify-center rounded-md bg-transparent
-			px-3 h-[34px] font-semibold transition-colors
-			hover:bg-secondary focus:(outline-none ring-1 ring-ring) disabled:(pointer-events-none opacity-50)
-			group-[.destructive]:(
-				border border-muted/30
-				hover:(border-accent-foreground text-accent bg-accent-foreground)
-				focus:ring-destructive
-			)
-			group-[.primary]:(
-				// border-muted
-				hover:(bg-accent text-accent-foreground)
-				// hover:(border-muted/30 bg-primary text-primary-foreground)
-				focus:ring-primary
-			)"
+					px-3 h-[34px] font-semibold transition-colors
+					hover:bg-secondary focus:(outline-none ring-1 ring-ring) disabled:(pointer-events-none opacity-50)
+					group-[.destructive]:(
+						border border-muted/30
+						hover:(border-accent-foreground text-accent bg-accent-foreground)
+						focus:ring-destructive
+					)
+					group-[.primary]:(
+						hover:(bg-accent text-accent-foreground)
+						focus:ring-primary
+					)
+				"
 				onClick={() => dismissToast(id)}
 			>
 				{children}
