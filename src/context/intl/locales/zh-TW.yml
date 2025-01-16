@@ -10,3 +10,4 @@ invalid_message_000: 不合法的數值
 close: 關閉
 upload_file: 選擇檔案
 download_file: 下載檔案
+test: 測試 {value}

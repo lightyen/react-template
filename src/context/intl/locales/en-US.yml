@@ -10,3 +10,4 @@ invalid_message_000: invalid value
 close: Close
 upload_file: Upload File
 download_file: Download
+test: Test {value}
