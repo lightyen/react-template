@@ -1,0 +1,13 @@
+diff --git a/dist/react-spring_web.modern.d.ts b/dist/react-spring_web.modern.d.ts
+index f647f1b3a0bb9ffe889771ded7323c2cd6072ea6..4303a86ee8c8268caa9a8c69bda2e45b2681e14b 100644
+--- a/dist/react-spring_web.modern.d.ts
++++ b/dist/react-spring_web.modern.d.ts
+@@ -5,7 +5,7 @@ export * from '@react-spring/core';
+ import * as csstype from 'csstype';
+ export { csstype as CSS };
+ 
+-type Primitives = keyof JSX.IntrinsicElements;
++type Primitives = keyof React.JSX.IntrinsicElements;
+ 
+ type AnimatedPrimitives = {
+     [Tag in Primitives]: AnimatedComponent<Tag>;
