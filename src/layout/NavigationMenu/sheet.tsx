@@ -61,7 +61,7 @@ export function SheetContent({
 	children,
 	...props
 }: SheetContentProps & React.HTMLAttributes<HTMLDivElement>) {
-	const { visible, setVisible } = useContext(DialogContext)
+	const { visible, setVisible, lightDismiss } = useContext(DialogContext)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -69,9 +69,13 @@ export function SheetContent({
 				setVisible(false)
 			}
 		}
-		window.addEventListener("keydown", handle)
+		if (lightDismiss) {
+			window.addEventListener("keydown", handle)
+		}
 		return () => {
-			window.removeEventListener("keydown", handle)
+			if (lightDismiss) {
+				window.removeEventListener("keydown", handle)
+			}
 		}
 	}, [setVisible])
 
@@ -230,14 +234,14 @@ export interface SheetProps {
 	/** @default true */
 	blur?: boolean
 	/** @default true */
-	overlayExit?: boolean
-	onClickOverlay?(): void
+	lightDismiss?: boolean
+	onClickOutside?(): void
 }
 
 export function Sheet({
 	blur,
-	overlayExit = true,
-	onClickOverlay = () => void 0,
+	lightDismiss = true,
+	onClickOutside = () => void 0,
 	children,
 }: React.PropsWithChildren<SheetProps>) {
 	const [visible, setVisible] = useState(false)
@@ -246,7 +250,7 @@ export function Sheet({
 	)
 
 	return (
-		<DialogContext value={{ visible, setVisible }}>
+		<DialogContext value={{ visible, setVisible, lightDismiss }}>
 			{Children.map(children, c => {
 				if (isElement(c, SheetTrigger)) {
 					return c
@@ -257,8 +261,8 @@ export function Sheet({
 				visible={visible}
 				blur={blur}
 				onClickOverlay={() => {
-					onClickOverlay()
-					if (overlayExit === true) {
+					onClickOutside()
+					if (lightDismiss === true) {
 						setVisible(false)
 					}
 				}}

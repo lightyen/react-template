@@ -94,13 +94,13 @@ export function Overlay({
 						style={s}
 						onPointerDown={event => {
 							onPointerDown(event)
-							if (event.pointerId) {
+							if (event.pointerId >= 0) {
 								pointerId.current = event.pointerId
 							}
 						}}
 						onPointerUp={event => {
 							onPointerUp(event)
-							if (event.pointerId) {
+							if (event.pointerId === pointerId.current) {
 								pointerId.current = 0
 								onClickOverlay(event)
 							}

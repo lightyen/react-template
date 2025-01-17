@@ -2,6 +2,7 @@ import { createContext } from "react"
 
 export interface DialogState {
 	visible: boolean
+	lightDismiss: boolean
 }
 
 export interface DialogContext extends DialogState {

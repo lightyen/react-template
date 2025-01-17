@@ -40,6 +40,7 @@ export function DialogTrigger({ children, ...props }: React.PropsWithChildren<Om
 
 interface DialogContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
 	layout?: boolean | "false"
+	lightDismiss?: boolean
 	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
@@ -51,7 +52,7 @@ export function DialogContent({
 	children,
 	...props
 }: DialogContentProps) {
-	const { visible, setVisible } = useContext(DialogContext)
+	const { visible, setVisible, lightDismiss } = useContext(DialogContext)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -59,11 +60,15 @@ export function DialogContent({
 				setVisible(false)
 			}
 		}
-		window.addEventListener("keydown", handle)
-		return () => {
-			window.removeEventListener("keydown", handle)
+		if (lightDismiss) {
+			window.addEventListener("keydown", handle)
 		}
-	}, [setVisible])
+		return () => {
+			if (lightDismiss) {
+				window.removeEventListener("keydown", handle)
+			}
+		}
+	}, [lightDismiss, setVisible])
 
 	const api = useSpringRef()
 
@@ -205,27 +210,26 @@ export interface DialogProps {
 	/** @default true */
 	blur?: boolean
 	/** @default true */
-	overlayExit?: boolean
-
-	onClickOverlay?(): void
+	lightDismiss?: boolean
+	onClickOutside?(): void
 }
 
 export function Dialog({
 	visible,
 	setVisible = () => void 0,
 	blur,
-	overlayExit = true,
-	onClickOverlay = () => void 0,
+	lightDismiss = true,
+	onClickOutside = () => void 0,
 	children,
 }: React.PropsWithChildren<DialogProps>) {
 	const [innerVisible, innerSetVisible] = useState(false)
 
 	const ctx = useMemo(() => {
 		if (visible == null) {
-			return { visible: innerVisible, setVisible: innerSetVisible }
+			return { visible: innerVisible, setVisible: innerSetVisible, lightDismiss }
 		}
-		return { visible, setVisible }
-	}, [innerVisible, visible, setVisible])
+		return { visible, setVisible, lightDismiss }
+	}, [innerVisible, visible, setVisible, lightDismiss])
 
 	const contentReactElement = Children.toArray(children).find(
 		(e): e is React.ReactElement<React.ComponentProps<typeof DialogContent>> => isElement(e, DialogContent),
@@ -243,8 +247,8 @@ export function Dialog({
 				visible={ctx.visible}
 				blur={blur}
 				onClickOverlay={() => {
-					onClickOverlay()
-					if (overlayExit === true) {
+					onClickOutside()
+					if (lightDismiss) {
 						ctx.setVisible(false)
 					}
 				}}
