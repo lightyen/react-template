@@ -4,7 +4,7 @@ import { tw } from "twobj"
 import { Button, buttonVariants } from "~/components/button"
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./sheet"
 
-const navlink = tw`justify-start text-muted-foreground hover:bg-muted [&.active]:(bg-accent text-foreground font-medium)`
+const navlink = tw`h-12 text-lg justify-start text-muted-foreground hover:bg-muted [&.active]:(bg-accent text-foreground font-medium)`
 
 const StyledNavLink = tw(NavLink)(buttonVariants({ variant: "link" }), navlink)
 
