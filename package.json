@@ -4,7 +4,7 @@
     "latest": "pnpm up --latest",
     "dev": "vite dev",
     "check": "eslint",
-    "test": "vitest",
+    "test": "playwright test",
     "build": "vite build --mode production",
     "shadcn": "pnpm dlx shadcn-ui@latest add"
   },
@@ -40,7 +40,6 @@
     "eslint-plugin-react-hooks": "5.1.0",
     "ip-address": "10.0.1",
     "mark.js": "8.11.1",
-    "playwright": "1.49.1",
     "prettier": "3.4.2",
     "qs": "6.14.0",
     "react": "19.0.0",
@@ -62,12 +61,17 @@
     "vite": "6.0.7",
     "vite-plugin-svgr": "4.3.0",
     "vite-plugin-tsconfig-paths": "1.4.1",
-    "vitest": "2.1.8",
     "zustand": "5.0.3"
   },
   "pnpm": {
     "patchedDependencies": {
       "@react-spring/web@9.7.5": "patches/@react-spring__web@9.7.5.patch"
     }
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1",
+    "jsdom": "26.0.0",
+    "playwright": "1.49.1",
+    "vitest": "3.0.2"
   }
 }
