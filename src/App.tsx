@@ -15,7 +15,7 @@ const bodyScrollbar = tw`
 	)
 `
 
-const appStyle = css`
+export const appStyle = css`
 	${bodyScrollbar}
 	body {
 		${tw`
