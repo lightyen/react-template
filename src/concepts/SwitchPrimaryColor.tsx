@@ -84,10 +84,15 @@ export function SwitchPrimaryColor() {
 	const ref = useRef<HTMLButtonElement>(null)
 	useEffect(() => {
 		const el = ref.current
-		if (el && color) {
-			const v = primaryColors[color]
-			el.style.setProperty("--switch-control-light", v.light)
-			el.style.setProperty("--switch-control-dark", v.dark)
+		if (el) {
+			if (color) {
+				const v = primaryColors[color]
+				el.style.setProperty("--switch-control-light", v.light)
+				el.style.setProperty("--switch-control-dark", v.dark)
+			} else {
+				el.style.setProperty("--switch-control-light", "240 5.9% 10%")
+				el.style.setProperty("--switch-control-dark", "240 5.2% 33.9%")
+			}
 		}
 	}, [color])
 	return (
