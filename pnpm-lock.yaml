@@ -197,6 +197,9 @@ importers:
       '@storybook/blocks':
         specifier: 8.5.0
         version: 8.5.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.0(prettier@3.4.2))
+      '@storybook/builder-vite':
+        specifier: ^8.5.0
+        version: 8.5.0(storybook@8.5.0(prettier@3.4.2))(vite@6.0.10(@types/node@22.10.7))
       '@storybook/react':
         specifier: 8.5.0
         version: 8.5.0(@storybook/test@8.5.0(storybook@8.5.0(prettier@3.4.2)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.0(prettier@3.4.2))(typescript@5.7.3)

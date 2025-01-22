@@ -2,23 +2,24 @@ import { type Meta, type StoryObj } from "@storybook/react"
 import { SwitchPrimaryColor as Color } from "~/concepts/SwitchPrimaryColor"
 import { SwitchTheme } from "~/concepts/SwitchTheme"
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta = {
+export default {
+	tags: ["!autodocs"],
 	title: "Theme",
+	parameters: {
+		layout: "centered",
+	},
 } as Meta
-
-export default meta
 
 export const LightDark = {
 	name: "light & dark",
 	render() {
 		return <SwitchTheme />
 	},
-} satisfies StoryObj<typeof meta>
+} satisfies StoryObj
 
 export const SwitchPrimaryColor = {
 	name: "switch primary color",
 	render() {
 		return <Color />
 	},
-}
+} satisfies StoryObj

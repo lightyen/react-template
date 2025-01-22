@@ -9,11 +9,22 @@ export default {
 		"@storybook/addon-interactions",
 		"@storybook/addon-themes",
 	],
+	core: {
+		builder: "@storybook/builder-vite",
+	},
 	framework: {
 		name: "@storybook/react-vite",
 		options: {},
 	},
 	typescript: {
 		reactDocgen: "react-docgen-typescript",
+	},
+	async viteFinal(config) {
+		const { mergeConfig } = await import("vite")
+		return mergeConfig(config, {
+			optimizeDeps: {
+				include: [],
+			},
+		})
 	},
 } satisfies StorybookConfig
