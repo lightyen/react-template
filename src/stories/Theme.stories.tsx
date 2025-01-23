@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react"
+import { SwitchLanguage } from "~/concepts/SwitchLanguage"
 import { SwitchPrimaryColor as Color } from "~/concepts/SwitchPrimaryColor"
 import { SwitchTheme } from "~/concepts/SwitchTheme"
 
@@ -21,5 +22,12 @@ export const SwitchPrimaryColor = {
 	name: "switch primary color",
 	render() {
 		return <Color />
+	},
+} satisfies StoryObj
+
+export const SwitchLang = {
+	name: "switch language",
+	render() {
+		return <SwitchLanguage />
 	},
 } satisfies StoryObj

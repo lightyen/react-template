@@ -1,15 +1,12 @@
 import { Global } from "@emotion/react"
-import { withThemeFromJSXProvider } from "@storybook/addon-themes"
 import type { Preview } from "@storybook/react"
 import { globalStyles } from "twobj"
 import { appStyle } from "~/App"
+import { LocaleProvider, StoreProvider } from "~/context/Provider"
 import "~/global.css"
 
-/* TODO: replace with your own global styles, or remove */
-const GlobalStyles = () => <Global styles={[globalStyles, appStyle]} />
-
 const preview: Preview = {
-	tags: ["autodocs"],
+	// tags: ["autodocs"],
 	parameters: {
 		controls: {
 			matchers: {
@@ -19,9 +16,14 @@ const preview: Preview = {
 		},
 	},
 	decorators: [
-		withThemeFromJSXProvider({
-			GlobalStyles,
-		}),
+		Story => (
+			<StoreProvider>
+				<Global styles={[globalStyles, appStyle]} />
+				<LocaleProvider>
+					<Story />
+				</LocaleProvider>
+			</StoreProvider>
+		),
 	],
 }
 

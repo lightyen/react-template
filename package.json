@@ -4,7 +4,7 @@
     "latest": "pnpm up --latest",
     "dev": "vite dev",
     "check": "eslint",
-    "test": "playwright test",
+    "test": "playwright test --ui",
     "build": "vite build --mode production",
     "shadcn": "pnpm dlx shadcn-ui@latest add",
     "storybook": "storybook dev -p 6006",
@@ -71,23 +71,19 @@
     }
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "3.2.4",
     "@playwright/test": "1.49.1",
-    "@storybook/addon-actions": "8.5.0",
-    "@storybook/addon-essentials": "8.5.0",
-    "@storybook/addon-interactions": "8.5.0",
-    "@storybook/addon-onboarding": "8.5.0",
-    "@storybook/addon-themes": "8.5.0",
-    "@storybook/blocks": "8.5.0",
-    "@storybook/builder-vite": "^8.5.0",
-    "@storybook/react": "8.5.0",
-    "@storybook/react-vite": "8.5.0",
-    "@storybook/test": "8.5.0",
+    "@storybook/addon-actions": "8.5.1",
+    "@storybook/addon-essentials": "8.5.1",
+    "@storybook/blocks": "8.5.1",
+    "@storybook/builder-vite": "8.5.1",
+    "@storybook/react": "8.5.1",
+    "@storybook/react-vite": "8.5.1",
+    "@storybook/test": "8.5.1",
     "eslint-plugin-storybook": "0.11.2",
     "jsdom": "26.0.0",
     "playwright": "1.49.1",
-    "storybook": "8.5.0",
-    "vitest": "3.0.2"
+    "storybook": "8.5.1",
+    "vitest": "3.0.3"
   },
   "eslintConfig": {
     "extends": [
