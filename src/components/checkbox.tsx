@@ -171,7 +171,12 @@ function CheckboxTreeHeader<T extends FieldValues>({
 		if (values.length === 0) {
 			return false
 		}
-		return values.reduce((prev, cur) => prev && cur)
+		for (const v of values) {
+			if (!v) {
+				return false
+			}
+		}
+		return true
 	}, [values])
 	const intermediate = useMemo(() => {
 		let cur: boolean | null = null
