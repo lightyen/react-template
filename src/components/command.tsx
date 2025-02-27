@@ -15,7 +15,7 @@ Command.displayName = CommandPrimitive.displayName
 export function CommandDialog({ children, ...props }: React.PropsWithChildren<DialogProps>) {
 	return (
 		<Dialog {...props}>
-			<DialogContent tw="overflow-hidden p-0">
+			<DialogContent tw="p-0">
 				<Command
 					tw="
 					[& [cmdk-group-heading]]:(px-2 font-medium text-muted-foreground)

@@ -179,16 +179,18 @@ function DialogDemo({ depth = 2 }: { depth?: number }) {
 						Make changes to your profile here. Click save when you&apos;re done.
 					</DialogDescription>
 				</DialogHeader>
-				{depth > 0 && <Input autoFocus type="text" placeholder="username" />}
-				<DialogFooter>
-					{depth > 0 ? (
-						<DialogDemo depth={depth - 1} />
-					) : (
-						<DialogClose>
-							<Button type="submit">Done</Button>
-						</DialogClose>
-					)}
-				</DialogFooter>
+				<div tw="grid gap-4 [grid-template-rows: minmax(0, 1fr) min-content]">
+					{depth > 0 && <Input autoFocus type="text" placeholder="username" />}
+					<DialogFooter>
+						{depth > 0 ? (
+							<DialogDemo depth={depth - 1} />
+						) : (
+							<DialogClose>
+								<Button type="submit">Done</Button>
+							</DialogClose>
+						)}
+					</DialogFooter>
+				</div>
 			</DialogContent>
 		</Dialog>
 	)

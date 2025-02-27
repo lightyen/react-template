@@ -74,9 +74,9 @@ export function DialogContent({
 
 	const [transitions] = useTransition(visible, () => ({
 		ref: api,
-		from: { opacity: 0.5, transform: "scale(0.98) translateX(-50%) translateY(-50%)" },
-		enter: { opacity: 1, transform: "scale(1) translateX(-50%) translateY(-50%)" },
-		leave: { opacity: 0, transform: "scale(0.98) translateX(-50%) translateY(-50%)" },
+		from: { opacity: 0.5, transform: "scale(0.98)" },
+		enter: { opacity: 1, transform: "scale(1)" },
+		leave: { opacity: 0, transform: "scale(0.98)" },
 		config: { duration: 120, easing: easings.easeOutCubic },
 	}))
 
@@ -96,13 +96,8 @@ export function DialogContent({
 			item && (
 				<animated.div
 					role="dialog"
-					{...props}
 					style={s}
-					tw="absolute left-[50%] top-[50%] shadow-lg origin-center sm:(rounded-lg w-full)"
-					css={
-						layout === true &&
-						tw`grid gap-4 border bg-background p-6 w-full max-w-lg sm:max-w-[var(--dialog-width)]`
-					}
+					tw="origin-center grid place-content-center place-items-center"
 					onPointerDown={event => {
 						event.stopPropagation()
 						onPointerDown(event)
@@ -116,10 +111,20 @@ export function DialogContent({
 						onClick(event)
 					}}
 				>
-					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
-					<DialogClose>
-						<CloseButton tw="absolute right-4 top-4" />
-					</DialogClose>
+					<div
+						tw="relative shadow-lg w-[calc(100vw - 0.75rem)] sm:rounded-lg overflow-hidden
+							h-[min(100%, calc(100dvh - 2.5rem))]
+							[@media (min-height: 800px)]:h-[min(100%, calc(100dvh - 10rem))]
+							bg-background
+						"
+						css={layout === true && tw`p-6 max-w-lg sm:max-w-[var(--dialog-width)]`}
+						{...props}
+					>
+						{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
+						<DialogClose>
+							<CloseButton tw="absolute right-4 top-4" />
+						</DialogClose>
+					</div>
 				</animated.div>
 			)
 		)
@@ -166,7 +171,7 @@ DialogClose["$id"] = Symbol.for("com.DialogClose")
 
 export function DialogHeader({ children, ...props }: React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>) {
 	return (
-		<div tw="flex flex-col space-y-1.5 text-center sm:text-left" {...props}>
+		<div tw="mb-3 flex flex-col space-y-1.5 text-center sm:text-left" {...props}>
 			{children}
 		</div>
 	)

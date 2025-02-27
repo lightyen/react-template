@@ -88,7 +88,7 @@ export function Overlay({
 					<animated.div
 						data-type="overlay"
 						tw="pointer-events-auto [& > :nth-last-of-type(-n+2)]:pointer-events-auto select-none [> *]:select-text
-							fixed inset-0 z-50 bg-foreground/15
+							fixed inset-0 z-50 [&:has([role=dialog])]:(grid place-content-center place-items-center) bg-foreground/15
 						"
 						css={blur && tw`backdrop-blur-[1px]`}
 						style={s}

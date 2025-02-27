@@ -29,6 +29,7 @@ export function DateTimePickerForm({ value = new Date(), onSubmit, onCancel, cla
 	const methods = useForm<FormData>({ defaultValues: { date: value } })
 	return (
 		<form
+			tw="grid [grid-template-rows: minmax(0, 1fr) min-content min-content]"
 			className={className}
 			onSubmit={methods.handleSubmit(({ date }) => {
 				onSubmit?.(date)
@@ -52,6 +53,11 @@ export function DateTimePickerForm({ value = new Date(), onSubmit, onCancel, cla
 								onSelect={next => {
 									onChange(set(next, { hours: getHours(value), minutes: getMinutes(value) }))
 								}}
+								tw="overflow-auto overscroll-contain
+									[& .rdp-nav]:(absolute top-0 z-20 select-none)
+									[& .rdp-month_caption]:(relative top-0 z-10)
+									[& .rdp-weekdays]:(sticky top-0 z-10 bg-background)
+								"
 								css={css`
 									--rdp-selected-border: 0;
 									--rdp-outside-opacity: 0.5;
