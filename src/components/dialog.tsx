@@ -91,25 +91,13 @@ export function DialogContent({
 		}
 	}, [visible, api])
 
-	return transitions((s, item) => {
+	return transitions((style, item) => {
 		return (
 			item && (
 				<animated.div
 					role="dialog"
-					style={s}
 					tw="origin-center grid place-content-center place-items-center"
-					onPointerDown={event => {
-						event.stopPropagation()
-						onPointerDown(event)
-					}}
-					onPointerUp={event => {
-						event.stopPropagation()
-						onPointerUp(event)
-					}}
-					onClick={event => {
-						event.stopPropagation()
-						onClick(event)
-					}}
+					style={style}
 				>
 					<div
 						tw="relative shadow-lg w-[calc(100vw - 0.75rem)] sm:rounded-lg overflow-hidden
@@ -118,6 +106,18 @@ export function DialogContent({
 							bg-background
 						"
 						css={layout === true && tw`p-6 max-w-lg sm:max-w-[var(--dialog-width)]`}
+						onPointerDown={event => {
+							event.stopPropagation()
+							onPointerDown(event)
+						}}
+						onPointerUp={event => {
+							event.stopPropagation()
+							onPointerUp(event)
+						}}
+						onClick={event => {
+							event.stopPropagation()
+							onClick(event)
+						}}
 						{...props}
 					>
 						{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
