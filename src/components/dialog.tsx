@@ -100,7 +100,7 @@ export function DialogContent({
 					style={style}
 				>
 					<div
-						tw="relative shadow-lg w-[calc(100vw - 0.75rem)] sm:rounded-lg overflow-hidden
+						tw="relative shadow-lg w-[calc(100vw - 0.75rem)] sm:rounded-lg overflow-auto
 							h-[min(100%, calc(100dvh - 2.5rem))]
 							[@media (min-height: 800px)]:h-[min(100%, calc(100dvh - 10rem))]
 							bg-background
