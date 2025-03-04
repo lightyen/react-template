@@ -143,9 +143,7 @@ export function SheetContent({
 				<animated.div
 					ref={ref}
 					role="dialog"
-					// ignore react-strings types declaration issue
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					css={sheetVariants({ side: "left" }) as any}
+					css={sheetVariants({ side: "left" })}
 					style={{ ...style, touchAction: "none" }}
 					onClick={event => {
 						event.stopPropagation()

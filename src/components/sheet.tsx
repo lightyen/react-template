@@ -140,10 +140,7 @@ export function SheetContent({
 			item && (
 				<animated.div
 					role="dialog"
-					{...props}
-					// ignore react-strings types declaration issue
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					css={sheetVariants({ side }) as any}
+					css={sheetVariants({ side })}
 					style={style}
 					onPointerDown={event => {
 						event.stopPropagation()
@@ -157,6 +154,7 @@ export function SheetContent({
 						event.stopPropagation()
 						onClick(event)
 					}}
+					{...props}
 				>
 					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
 					<SheetClose>

@@ -7,6 +7,6 @@ declare global {
 
 declare module "react" {
 	interface Attributes {
-		css?: Interpolation
+		css?: Interpolation<Theme> | Interpolation<Theme>[]
 	}
 }
