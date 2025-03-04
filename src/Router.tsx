@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { Outlet, Route, createBrowserRouter, createRoutesFromElements } from "react-router"
 import { setScroll } from "~/components/internal/scrollbar"
 import { FormRoutes } from "~/pages/Form"
+import { ErrorHandler } from "./ErrorHandler"
 import { Layout } from "./layout"
 import { ColorsRoutes } from "./pages/Colors"
 import { ComponentRoutes } from "./pages/Component"
@@ -12,8 +13,6 @@ import { NotFound } from "./pages/NotFound"
 import { TableRoutes } from "./pages/Table"
 import { TestRoutes } from "./pages/Test"
 
-const root = "/"
-
 function FullPage() {
 	useEffect(() => {
 		setScroll(false)
@@ -23,7 +22,7 @@ function FullPage() {
 
 export const router = createBrowserRouter(
 	createRoutesFromElements(
-		<Route path={root}>
+		<Route path="/" errorElement={<ErrorHandler />}>
 			<Route Component={FullPage}>
 				<Route path="login" Component={Login} />
 				<Route path="memtest" Component={MemoryLeakTest} />
