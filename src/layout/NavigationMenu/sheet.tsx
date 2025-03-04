@@ -77,7 +77,7 @@ export function SheetContent({
 				window.removeEventListener("keydown", handle)
 			}
 		}
-	}, [setVisible])
+	}, [setVisible, lightDismiss])
 
 	const api = useSpringRef()
 	const [transitions] = useTransition(visible, () => {
