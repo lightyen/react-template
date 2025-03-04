@@ -68,7 +68,11 @@
   "pnpm": {
     "patchedDependencies": {
       "@react-spring/web@9.7.5": "patches/@react-spring__web@9.7.5.patch"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "msw"
+    ]
   },
   "devDependencies": {
     "@playwright/test": "1.50.1",
