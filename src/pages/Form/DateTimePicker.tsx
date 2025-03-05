@@ -70,7 +70,7 @@ function DateTimePickerDialog({
 	return (
 		<Dialog {...dialog}>
 			<DialogTrigger>{children}</DialogTrigger>
-			<DialogContent layout={false} tw="w-[350px] pt-8 pb-5 px-5">
+			<DialogContent tw="w-[350px] pt-8 pb-5 px-5">
 				<DateTimePickerForm
 					value={value}
 					onSubmit={value => {

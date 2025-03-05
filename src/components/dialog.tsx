@@ -1,7 +1,6 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
 import { Children, cloneElement, isValidElement, useContext, useEffect, useMemo, useState } from "react"
 import { FormattedMessage } from "react-intl"
-import { tw } from "twobj"
 import { Button, CloseButton, type ButtonProps } from "./button"
 import { DialogContext } from "./internal/dialogContext"
 import { Overlay } from "./internal/overlay"
@@ -39,13 +38,14 @@ export function DialogTrigger({ children, ...props }: React.PropsWithChildren<Om
 }
 
 interface DialogContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
-	layout?: boolean | "false"
+	/** @default 525px */
+	maxWidth?: string | number
 	lightDismiss?: boolean
 	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
 export function DialogContent({
-	layout = true,
+	maxWidth = 525,
 	onPointerDown = () => void 0,
 	onPointerUp = () => void 0,
 	onClick = () => void 0,
@@ -103,9 +103,9 @@ export function DialogContent({
 						tw="relative shadow-lg w-[calc(100vw - 0.75rem)] sm:rounded-lg overflow-auto
 							h-[min(100%, calc(100dvh - 2.5rem))]
 							[@media (min-height: 800px)]:h-[min(100%, calc(100dvh - 10rem))]
-							bg-background
+							bg-background p-6
 						"
-						css={layout === true && tw`p-6 max-w-lg sm:max-w-[var(--dialog-width)]`}
+						css={{ maxWidth }}
 						onPointerDown={event => {
 							event.stopPropagation()
 							onPointerDown(event)
