@@ -1,5 +1,5 @@
 import { useSelect } from "@context"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
@@ -29,7 +29,8 @@ export function Home() {
 					<p tw="mb-4">
 						喜歡的了希望部台灣，也有不好會是困擾這種時也⋯就直接些當我就是是好得很也喜歡，在幹嘛特別知道是那你用下這，他年星期束多人他臨終一次，直接看不是我還沒面就一。
 					</p>
-					<FormattedMessage id="test" values={{ value: "3" }} />
+					<Test1 />
+					<Test2 />
 				</div>
 				<div>
 					<a
@@ -44,4 +45,19 @@ export function Home() {
 			</div>
 		</article>
 	)
+}
+
+function Test1() {
+	return <FormattedMessage id="test" values={{ value: <strong>Eric</strong> }} />
+}
+
+function Test2() {
+	const intl = useIntl()
+	const data = intl.formatMessage(
+		{ id: "test" },
+		{
+			value: <strong>Eric</strong>,
+		},
+	)
+	return <div>{data}</div>
 }
