@@ -67,7 +67,8 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "@react-spring/web@9.7.5": "patches/@react-spring__web@9.7.5.patch"
+      "@react-spring/web@9.7.5": "patches/@react-spring__web@9.7.5.patch",
+      "react-intl@7.1.6": "patches/react-intl@7.1.6.patch"
     },
     "onlyBuiltDependencies": [
       "esbuild",

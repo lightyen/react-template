@@ -8,6 +8,9 @@ patchedDependencies:
   '@react-spring/web@9.7.5':
     hash: be7004822404523e9b5bacbf553b0944ef37f7e1897a6246a728115ffe37189f
     path: patches/@react-spring__web@9.7.5.patch
+  react-intl@7.1.6:
+    hash: 531557f72f8792bbdc20267cb414aad145ac483a917077853d888cb6c82992a9
+    path: patches/react-intl@7.1.6.patch
 
 importers:
 
@@ -129,7 +132,7 @@ importers:
         version: 7.54.2(react@19.0.0)
       react-intl:
         specifier: 7.1.6
-        version: 7.1.6(react@19.0.0)(typescript@5.8.2)
+        version: 7.1.6(patch_hash=531557f72f8792bbdc20267cb414aad145ac483a917077853d888cb6c82992a9)(react@19.0.0)(typescript@5.8.2)
       react-redux:
         specifier: 9.2.0
         version: 9.2.0(@types/react@19.0.10)(react@19.0.0)(redux@5.0.1)
@@ -6342,7 +6345,7 @@ snapshots:
     dependencies:
       react: 19.0.0
 
-  react-intl@7.1.6(react@19.0.0)(typescript@5.8.2):
+  react-intl@7.1.6(patch_hash=531557f72f8792bbdc20267cb414aad145ac483a917077853d888cb6c82992a9)(react@19.0.0)(typescript@5.8.2):
     dependencies:
       '@formatjs/ecma402-abstract': 2.3.3
       '@formatjs/icu-messageformat-parser': 2.11.1
