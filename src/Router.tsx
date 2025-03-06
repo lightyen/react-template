@@ -22,7 +22,7 @@ function FullPage() {
 
 export const router = createBrowserRouter(
 	createRoutesFromElements(
-		<Route path="/" errorElement={<ErrorHandler />}>
+		<Route path="/" errorElement={<ErrorHandler />} HydrateFallback={() => null}>
 			<Route Component={FullPage}>
 				<Route path="login" Component={Login} />
 				<Route path="memtest" Component={MemoryLeakTest} />
