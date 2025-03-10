@@ -1,20 +1,14 @@
 diff --git a/lib/src/components/createIntl.js b/lib/src/components/createIntl.js
-index 70c37066814e30e6de587fdeac45556cfb8c5763..386a0ffb98d2c587cc6b92bf09c96bda171a21a6 100644
+index 70c37066814e30e6de587fdeac45556cfb8c5763..6ae04e48bdbab7c5f7dd3c70ad278661b9eb51aa 100644
 --- a/lib/src/components/createIntl.js
 +++ b/lib/src/components/createIntl.js
-@@ -31,7 +31,18 @@ var formatMessage = function (config, formatters, descriptor, rawValues) {
+@@ -31,7 +31,12 @@ var formatMessage = function (config, formatters, descriptor, rawValues) {
          descriptor,
          values], rest, false));
      if (Array.isArray(chunks)) {
 -        return React.Children.toArray(chunks);
 +        return React.Children.map(chunks, chunk => {
-+            // if (__DEV__) {
-+            //     return chunk
-+            // }
-+            if (!React.isValidElement(chunk)) {
-+                return chunk
-+            }
-+            if (chunk._store) {
++            if (React.isValidElement(chunk) && chunk._store) {
 +                chunk._store.validated = 1
 +            }
 +            return chunk
