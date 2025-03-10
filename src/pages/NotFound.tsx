@@ -1,3 +1,9 @@
+import { FormattedMessage } from "~/context/intl"
+
 export function NotFound() {
-	return <article>404 not found</article>
+	return (
+		<article>
+			<FormattedMessage id="404_not_found" />
+		</article>
+	)
 }

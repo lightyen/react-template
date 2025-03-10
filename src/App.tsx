@@ -1,4 +1,4 @@
-import { LocaleProvider, StoreProvider } from "@context/Provider"
+import { StoreProvider } from "@context/Provider"
 import { Global, css } from "@emotion/react"
 import { RouterProvider } from "react-router"
 import { globalStyles, tw } from "twobj"
@@ -30,9 +30,7 @@ export function App() {
 		// <StrictMode>
 		<StoreProvider>
 			<Global styles={[globalStyles, appStyle]} />
-			<LocaleProvider>
-				<RouterProvider router={router} />
-			</LocaleProvider>
+			<RouterProvider router={router} />
 		</StoreProvider>
 		// </StrictMode>
 	)

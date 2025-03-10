@@ -1,12 +1,12 @@
 import { animated, useSpringRef, useTransition } from "@react-spring/web"
 import { useDrag } from "@use-gesture/react"
 import { Children, cloneElement, isValidElement, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { FormattedMessage } from "react-intl"
 import { tw } from "twobj"
 import { Button } from "~/components/button"
 import { DialogContext } from "~/components/internal/dialogContext"
 import { Overlay } from "~/components/internal/overlay"
 import { getElementWidth, isElement, zs } from "~/components/lib"
+import { FormattedMessage } from "~/context/intl"
 
 export function SheetTrigger({
 	children,

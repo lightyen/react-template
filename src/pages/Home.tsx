@@ -1,5 +1,5 @@
 import { useSelect } from "@context"
-import { FormattedMessage, useIntl } from "react-intl"
+import { FormattedMessage, useIntl } from "~/context/intl"
 
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)

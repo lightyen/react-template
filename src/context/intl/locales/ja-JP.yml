@@ -10,4 +10,5 @@ invalid_message_000: invalid value
 close: 閉じる
 upload_file: ファイルを選択する
 download_file: ダウンロード
+404_not_found: 404 not found
 test: テスト {value}

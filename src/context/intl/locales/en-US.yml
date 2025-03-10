@@ -10,4 +10,5 @@ invalid_message_000: invalid value
 close: Close
 upload_file: Upload File
 download_file: Download
+404_not_found: 404 not found
 test: Test {value}

@@ -21,7 +21,7 @@ import {
 	useRef,
 	useState,
 } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage } from "~/context/intl"
 import { Button, type ButtonProps } from "./button"
 import { composeRefs, isElement } from "./lib"
 

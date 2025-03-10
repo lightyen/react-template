@@ -3,9 +3,9 @@ import { Cross2Icon } from "@radix-ui/react-icons"
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
 import cx from "clsx"
 import { Children, cloneElement, isValidElement, useEffect, useMemo } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
 import { tw } from "twobj"
 import { type InnerToasterToast } from "~/context/app/action"
+import { FormattedMessage, useIntl } from "~/context/intl"
 import { isElement, zs } from "./lib"
 
 const toastVariants = zs(
