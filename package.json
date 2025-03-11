@@ -60,7 +60,7 @@
     "rollup-plugin-visualizer": "5.14.0",
     "twobj": "2.6.1",
     "typescript": "5.8.2",
-    "typescript-eslint": "8.26.0",
+    "typescript-eslint": "8.26.1",
     "vite": "6.2.1",
     "vite-plugin-svgr": "4.3.0",
     "vite-plugin-tsconfig-paths": "1.4.1",
