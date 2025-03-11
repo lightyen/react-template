@@ -1,6 +1,6 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
 import { Children, cloneElement, isValidElement, useContext, useEffect, useMemo, useState } from "react"
-import { FormattedMessage } from "~/context/intl"
+import { FormattedMessage } from "~/react-intl"
 import { Button, CloseButton, type ButtonProps } from "./button"
 import { DialogContext } from "./internal/dialogContext"
 import { Overlay } from "./internal/overlay"

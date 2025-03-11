@@ -1,11 +1,11 @@
-import { useAction, useSelect } from "@context"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
 import cx from "clsx"
 import { Children, cloneElement, isValidElement, useEffect, useMemo } from "react"
 import { tw } from "twobj"
+import { useAction, useIntl, useSelect } from "~/context"
 import { type InnerToasterToast } from "~/context/app/action"
-import { FormattedMessage, useIntl } from "~/context/intl"
+import { FormattedMessage } from "~/react-intl"
 import { isElement, zs } from "./lib"
 
 const toastVariants = zs(

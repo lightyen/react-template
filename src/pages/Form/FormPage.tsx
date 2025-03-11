@@ -12,10 +12,10 @@ import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/compone
 import { SliderRange, SliderRoot, SliderThumb, SliderTrack } from "~/components/slider"
 import { Switch } from "~/components/switch"
 import { InputFile, useDragDrop } from "~/components/upload"
-import { FormattedMessage } from "~/context/intl"
 import { addresses } from "~/data/macaddr"
 import { zonenames } from "~/data/zonename"
 import { Header, Separator } from "~/pages/common"
+import { FormattedMessage } from "~/react-intl"
 import { DemoDatePicker } from "./DateTimePicker"
 import { Candidate, SuggestionInput } from "./SuggestionInput"
 

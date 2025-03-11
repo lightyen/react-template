@@ -1,4 +1,4 @@
-import { FormattedMessage } from "~/context/intl"
+import { FormattedMessage } from "~/react-intl"
 
 export function NotFound() {
 	return (

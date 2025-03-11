@@ -1,6 +1,7 @@
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { tw } from "twobj"
-import { FormattedMessage, useIntl } from "~/context/intl"
+import { useIntl } from "~/context"
+import { FormattedMessage } from "~/react-intl"
 import { zs, type VariantProps } from "./lib"
 
 export const buttonVariants = zs(

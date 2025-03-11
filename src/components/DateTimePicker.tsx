@@ -6,7 +6,7 @@ import { DayPicker } from "react-day-picker"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { theme, tw } from "twobj"
 import { Button, buttonVariants } from "~/components/button"
-import { FormattedMessage, getDateFnsLocale } from "~/context/intl"
+import { FormattedMessage, getDateFnsLocale } from "~/react-intl"
 import { Popover, PopoverContent, PopoverTrigger, usePopover } from "./popover"
 
 import "react-day-picker/style.css"

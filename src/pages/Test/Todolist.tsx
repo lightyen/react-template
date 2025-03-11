@@ -6,7 +6,8 @@ import { Button } from "~/components/button"
 import { FormArrayProvider, useFormArrayContext } from "~/components/form/context"
 import { isNormalIPv4 } from "~/components/form/validate"
 import { Input } from "~/components/input"
-import { FormattedMessage, useIntl } from "~/context/intl"
+import { useIntl } from "~/context"
+import { FormattedMessage } from "~/react-intl"
 
 interface TodolistFormData {
 	list: { value: string }[]

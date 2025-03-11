@@ -32,15 +32,12 @@ import {
 } from "~/components/sheet"
 import { CircleLoading } from "~/components/spin"
 import { RouteTabs } from "~/components/tabs"
-import { format, FormattedMessage } from "~/context/intl"
 import { Header, Separator } from "~/pages/common"
+import { FormattedMessage } from "~/react-intl"
 
 export function Component() {
 	return (
 		<article>
-			<Header>Time</Header>
-			<div tw="whitespace-pre">{format(new Date(), "PPPpp")}</div>
-			<Separator />
 			<Header>Button</Header>
 			<ButtonView />
 			<Separator />

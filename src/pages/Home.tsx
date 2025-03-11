@@ -1,5 +1,5 @@
-import { useSelect } from "@context"
-import { FormattedMessage, useIntl } from "~/context/intl"
+import { useDateFns, useIntl, useSelect } from "~/context"
+import { FormattedMessage } from "~/react-intl"
 
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
@@ -29,6 +29,7 @@ export function Home() {
 					<p tw="mb-4">
 						喜歡的了希望部台灣，也有不好會是困擾這種時也⋯就直接些當我就是是好得很也喜歡，在幹嘛特別知道是那你用下這，他年星期束多人他臨終一次，直接看不是我還沒面就一。
 					</p>
+					<MyTime />
 					<Test1 />
 					<Test2 />
 				</div>
@@ -44,6 +45,17 @@ export function Home() {
 				</div>
 			</div>
 		</article>
+	)
+}
+
+function MyTime() {
+	const { format, formatDuration } = useDateFns()
+	return (
+		<div tw="whitespace-pre">
+			{format(new Date(), "PPPpp")}
+			<br />
+			{formatDuration(32777)}
+		</div>
 	)
 }
 

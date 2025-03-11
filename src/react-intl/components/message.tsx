@@ -1,7 +1,6 @@
 import type { FormatXMLElementFn, Options, PrimitiveType } from "intl-messageformat"
-import { Fragment } from "react"
 import type { MessageDescriptor } from "react-intl"
-import { useSelect } from "../hooks"
+import { useIntl } from "~/context"
 
 export interface FormattedMessageProps<
 	V extends Record<string, unknown> = Record<
@@ -12,7 +11,7 @@ export interface FormattedMessageProps<
 	values?: V
 	tagName?: React.ElementType
 	ignoreTag?: Options["ignoreTag"]
-	children?(nodes: React.ReactNode[]): React.ReactNode | null
+	children?(nodes: React.ReactNode): React.ReactNode | null
 }
 
 export function FormattedMessage({
@@ -21,10 +20,10 @@ export function FormattedMessage({
 	defaultMessage,
 	values,
 	ignoreTag,
-	tagName: Component = Fragment,
+	tagName: Component,
 	children,
 }: FormattedMessageProps) {
-	const intl = useSelect(state => state.intl.useIntl)
+	const intl = useIntl()
 	const nodes = intl.formatMessage({ id, description, defaultMessage }, values, { ignoreTag })
 	if (typeof children === "function") {
 		return children(Array.isArray(nodes) ? nodes : [nodes])
@@ -33,8 +32,4 @@ export function FormattedMessage({
 		return <Component>{nodes}</Component>
 	}
 	return nodes
-}
-
-export function useIntl() {
-	return useSelect(state => state.intl.useIntl)
 }

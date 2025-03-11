@@ -46,3 +46,11 @@ export function useData<Data = object>(key: string, url: string) {
 	}, [mountData, unmountData, key, url])
 	return cacheData ?? {}
 }
+
+export function useIntl() {
+	return useSelect(state => state.intl.intlShape)
+}
+
+export function useDateFns() {
+	return useSelect(state => state.intl.dateFns)
+}
