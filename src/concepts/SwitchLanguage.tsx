@@ -6,6 +6,7 @@ import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/compone
 
 export function SwitchLanguage() {
 	const locale = useSelect(state => state.intl.locale)
+	const locales = useSelect(state => state.intl.locales)
 	const { setLocale } = useAction().intl
 	return (
 		<Popover placement="bottom-end">
@@ -27,30 +28,19 @@ export function SwitchLanguage() {
 					<PopoverClose>
 						<CommandList>
 							<CommandItem value="-" tw="hidden" />
-							<CommandItem
-								data-state={locale === "en-US" ? "selected" : ""}
-								onSelect={() => setLocale("en-US")}
-								tw="flex justify-between [& svg]:invisible [&[data-state=selected] svg]:visible"
-							>
-								<span tw="pointer-events-none capitalize">English</span>
-								<CheckIcon />
-							</CommandItem>
-							<CommandItem
-								data-state={locale === "ja-JP" ? "selected" : ""}
-								onSelect={() => setLocale("ja-JP")}
-								tw="flex justify-between [& svg]:invisible [&[data-state=selected] svg]:visible"
-							>
-								<span tw="pointer-events-none capitalize">日本語</span>
-								<CheckIcon />
-							</CommandItem>
-							<CommandItem
-								data-state={locale === "zh-TW" ? "selected" : ""}
-								onSelect={() => setLocale("zh-TW")}
-								tw="flex justify-between [& svg]:invisible [&[data-state=selected] svg]:visible"
-							>
-								<span tw="pointer-events-none capitalize">正體中文</span>
-								<CheckIcon />
-							</CommandItem>
+							{Object.entries(locales).map(([key, name]) => {
+								return (
+									<CommandItem
+										key={key}
+										data-state={locale === key ? "selected" : ""}
+										onSelect={() => setLocale(key)}
+										tw="flex justify-between [& svg]:invisible [&[data-state=selected] svg]:visible"
+									>
+										<span tw="pointer-events-none capitalize">{name}</span>
+										<CheckIcon />
+									</CommandItem>
+								)
+							})}
 						</CommandList>
 					</PopoverClose>
 				</Command>

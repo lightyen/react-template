@@ -3,10 +3,11 @@ import * as d from "date-fns"
 import { enUS, ja, zhTW } from "date-fns/locale"
 import { createIntl, createIntlCache, IntlCache, type IntlShape } from "react-intl"
 import * as ac from "./action"
-import { getLocale, locales, LocaleType, storeLocale } from "./lib"
+import { defaultLocale, getLocale, locales, LocaleType, storeLocale } from "./lib"
 
 interface IntlStoreType {
 	locale: string
+	locales: Record<string, string>
 	intlShape: IntlShape
 	dateFns: DateFns
 	dateLocale: d.Locale
@@ -19,7 +20,7 @@ const [locale, messages] = getLocale()
 function createIntlShape(config: { locale: LocaleType; messages: Record<string, string> }, cache?: IntlCache) {
 	return createIntl(
 		{
-			defaultLocale: "en-US",
+			defaultLocale,
 			timeZone: undefined,
 			fallbackOnEmptyString: true,
 			formats: {},
@@ -30,7 +31,7 @@ function createIntlShape(config: { locale: LocaleType; messages: Record<string, 
 	)
 }
 
-const dateLocales = {
+const dateLocales: Record<LocaleType, d.Locale> = {
 	"en-US": enUS,
 	"ja-JP": ja,
 	"zh-TW": zhTW,
@@ -140,6 +141,7 @@ const intlCache = createIntlCache()
 
 const init: IntlStore = {
 	locale: locale,
+	locales: locales,
 	intlShape: createIntlShape({ locale, messages }, intlCache),
 	dateLocale: dateLocales[locale],
 	dateFns: buildDateFns(dateLocales[locale]),
