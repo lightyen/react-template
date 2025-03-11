@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit"
 import * as d from "date-fns"
 import { enUS, ja, zhTW } from "date-fns/locale"
-import { createIntl, type IntlShape } from "react-intl"
+import { createIntl, createIntlCache, IntlCache, type IntlShape } from "react-intl"
 import * as ac from "./action"
 import { getLocale, locales, LocaleType, storeLocale } from "./lib"
 
@@ -15,15 +15,18 @@ export type IntlStore = Readonly<IntlStoreType>
 
 const [locale, messages] = getLocale()
 
-function createIntlShape(config: { locale: LocaleType; messages: Record<string, string> }) {
-	return createIntl({
-		defaultLocale: "en-US",
-		timeZone: undefined,
-		fallbackOnEmptyString: true,
-		formats: {},
-		defaultFormats: {},
-		...config,
-	})
+function createIntlShape(config: { locale: LocaleType; messages: Record<string, string> }, cache?: IntlCache) {
+	return createIntl(
+		{
+			defaultLocale: "en-US",
+			timeZone: undefined,
+			fallbackOnEmptyString: true,
+			formats: {},
+			defaultFormats: {},
+			...config,
+		},
+		cache,
+	)
 }
 
 const dateLocales = {
@@ -144,9 +147,11 @@ function convertDuration(duration: number): d.Duration {
 	return r
 }
 
+const intlCache = createIntlCache()
+
 const init: IntlStore = {
 	locale: locale,
-	intlShape: createIntlShape({ locale, messages }),
+	intlShape: createIntlShape({ locale, messages }, intlCache),
 	dateFns: buildDateFns(locale),
 }
 
@@ -156,7 +161,7 @@ export const intl = createReducer(init, builder =>
 			storeLocale(locale)
 			const [loc, messages] = getLocale()
 			state.locale = loc
-			state.intlShape = createIntlShape({ locale: loc, messages })
+			state.intlShape = createIntlShape({ locale: loc, messages }, intlCache)
 			state.dateFns = buildDateFns(locale)
 		} else {
 			throw new Error(`resource "${locale}" is not found.`)
