@@ -37,6 +37,7 @@ export function getLocale(): [LocaleType, Record<string, string>] {
 }
 
 export function storeLocale(locale: string) {
+	console.log("store")
 	localStorage.setItem("locale", locale)
 	const [primary] = locale.toLocaleLowerCase().split(/-/)
 	document.documentElement.lang = primary

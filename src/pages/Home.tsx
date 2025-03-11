@@ -1,7 +1,9 @@
+import { Trans, useTranslation } from "react-i18next"
 import { useDateFns, useIntl, useSelect } from "~/context"
 import { FormattedMessage } from "~/react-intl"
 
 export function Home() {
+	console.log("Home")
 	const isMobile = useSelect(state => state.app.mobile)
 	return (
 		<article tw="flex flex-col gap-5">
@@ -32,6 +34,7 @@ export function Home() {
 					<MyTime />
 					<Test1 />
 					<Test2 />
+					<Test3 />
 				</div>
 				<div>
 					<a
@@ -72,4 +75,18 @@ function Test2() {
 		},
 	)
 	return <div>{data}</div>
+}
+
+function Test3() {
+	const { t } = useTranslation()
+	return (
+		<div>
+			<Trans
+				i18nKey="test" // optional -> fallbacks to defaults if not provided
+				values={{ value: "world" }}
+				defaults="hello <0>{{value}}</0>"
+				components={[<strong />]}
+			/>
+		</div>
+	)
 }

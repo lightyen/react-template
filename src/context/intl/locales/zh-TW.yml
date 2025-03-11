@@ -11,4 +11,4 @@ close: 關閉
 upload_file: 選擇檔案
 download_file: 下載檔案
 404_not_found: 404 找不到
-test: 測試 {value}
+test: 測試 <0>{value}</0>

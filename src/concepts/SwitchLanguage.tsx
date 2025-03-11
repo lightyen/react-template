@@ -1,5 +1,6 @@
 import { useAction, useSelect } from "@context"
 import { CheckIcon } from "@radix-ui/react-icons"
+import { useTranslation } from "react-i18next"
 import { Button } from "~/components/button"
 import { Command, CommandItem, CommandList } from "~/components/command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/components/popover"
@@ -7,6 +8,7 @@ import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/compone
 export function SwitchLanguage() {
 	const locale = useSelect(state => state.intl.locale)
 	const { setLocale } = useAction().intl
+	const { i18n } = useTranslation()
 	return (
 		<Popover placement="bottom-end">
 			<PopoverTrigger>
@@ -29,7 +31,10 @@ export function SwitchLanguage() {
 							<CommandItem value="-" tw="hidden" />
 							<CommandItem
 								data-state={locale === "en-US" ? "selected" : ""}
-								onSelect={() => setLocale("en-US")}
+								onSelect={() => {
+									i18n.changeLanguage("en-US")
+									setLocale("en-US")
+								}}
 								tw="flex justify-between [& svg]:invisible [&[data-state=selected] svg]:visible"
 							>
 								<span tw="pointer-events-none capitalize">English</span>
@@ -37,7 +42,10 @@ export function SwitchLanguage() {
 							</CommandItem>
 							<CommandItem
 								data-state={locale === "ja-JP" ? "selected" : ""}
-								onSelect={() => setLocale("ja-JP")}
+								onSelect={() => {
+									i18n.changeLanguage("ja-JP")
+									setLocale("ja-JP")
+								}}
 								tw="flex justify-between [& svg]:invisible [&[data-state=selected] svg]:visible"
 							>
 								<span tw="pointer-events-none capitalize">日本語</span>
@@ -45,7 +53,10 @@ export function SwitchLanguage() {
 							</CommandItem>
 							<CommandItem
 								data-state={locale === "zh-TW" ? "selected" : ""}
-								onSelect={() => setLocale("zh-TW")}
+								onSelect={() => {
+									i18n.changeLanguage("zh-TW")
+									setLocale("zh-TW")
+								}}
 								tw="flex justify-between [& svg]:invisible [&[data-state=selected] svg]:visible"
 							>
 								<span tw="pointer-events-none capitalize">正體中文</span>
