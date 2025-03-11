@@ -9,6 +9,7 @@ interface IntlStoreType {
 	locale: string
 	intlShape: IntlShape
 	dateFns: DateFns
+	dateLocale: d.Locale
 }
 
 export type IntlStore = Readonly<IntlStoreType>
@@ -88,31 +89,19 @@ interface DateFns {
 	formatDuration(duration: number | d.Duration, options?: OmitLocale<d.FormatDurationOptions>): string
 }
 
-function buildDateFns(locale: string): DateFns {
+function buildDateFns(locale: d.Locale): DateFns {
 	return {
 		format(date, formatStr, options) {
-			return d.format(date, formatStr, {
-				...options,
-				locale: dateLocales[locale],
-			})
+			return d.format(date, formatStr, { ...options, locale })
 		},
 		formatRelative(date, baseDate, options) {
-			return d.formatRelative(date, baseDate, {
-				...options,
-				locale: dateLocales[locale],
-			})
+			return d.formatRelative(date, baseDate, { ...options, locale })
 		},
 		formatDistance(laterDate, earlierDate, options) {
-			return d.formatDistance(laterDate, earlierDate, {
-				...options,
-				locale: dateLocales[locale],
-			})
+			return d.formatDistance(laterDate, earlierDate, { ...options, locale })
 		},
 		formatDistanceStrict(laterDate, earlierDate, options) {
-			return d.formatDistanceStrict(laterDate, earlierDate, {
-				...options,
-				locale: dateLocales[locale],
-			})
+			return d.formatDistanceStrict(laterDate, earlierDate, { ...options, locale })
 		},
 		formatDistanceToNow(date, options) {
 			return this.formatDistance(date, d.constructNow(date), options)
@@ -126,7 +115,7 @@ function buildDateFns(locale: string): DateFns {
 			}
 			return d.formatDuration(duration, {
 				...options,
-				locale: dateLocales[locale],
+				locale,
 				format: ["years", "months", "days", "hours", "minutes", "seconds"],
 			})
 		},
@@ -152,7 +141,8 @@ const intlCache = createIntlCache()
 const init: IntlStore = {
 	locale: locale,
 	intlShape: createIntlShape({ locale, messages }, intlCache),
-	dateFns: buildDateFns(locale),
+	dateLocale: dateLocales[locale],
+	dateFns: buildDateFns(dateLocales[locale]),
 }
 
 export const intl = createReducer(init, builder =>
@@ -162,7 +152,8 @@ export const intl = createReducer(init, builder =>
 			const [loc, messages] = getLocale()
 			state.locale = loc
 			state.intlShape = createIntlShape({ locale: loc, messages }, intlCache)
-			state.dateFns = buildDateFns(locale)
+			state.dateLocale = dateLocales[locale]
+			state.dateFns = buildDateFns(dateLocales[locale])
 		} else {
 			throw new Error(`resource "${locale}" is not found.`)
 		}
