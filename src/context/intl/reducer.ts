@@ -6,8 +6,8 @@ import * as ac from "./action"
 import { defaultLocale, getLocale, locales, LocaleType, storeLocale } from "./lib"
 
 interface IntlStoreType {
-	locale: string
-	locales: Record<string, string>
+	locale: LocaleType
+	locales: Record<LocaleType, string>
 	intlShape: IntlShape
 	dateFns: DateFns
 	dateLocale: d.Locale

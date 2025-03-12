@@ -61,6 +61,7 @@ function Test1() {
 	)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function MonitorMemorySize() {
 	const [result, setResult] = useState<Result | undefined>(undefined)
 	useEffect(() => {

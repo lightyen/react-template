@@ -5,7 +5,7 @@ import tseslint from "typescript-eslint"
 
 export default tseslint.config(
 	{
-		ignores: ["eslint.config.js", "src/typings", "dist", "shadcn"],
+		ignores: ["eslint.config.js", "src/typings", "dist", "shadcn", "playwright"],
 	},
 	eslint.configs.recommended,
 	...tseslint.configs.recommendedTypeChecked,
