@@ -6,7 +6,7 @@ import { Button } from "~/components/button"
 import { DialogContext } from "~/components/internal/dialogContext"
 import { Overlay } from "~/components/internal/overlay"
 import { getElementWidth, isElement, zs } from "~/components/lib"
-import { FormattedMessage } from "~/react-intl"
+import { FormattedMessage } from "~/i18n"
 
 export function SheetTrigger({
 	children,

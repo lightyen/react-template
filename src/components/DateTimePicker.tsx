@@ -6,11 +6,10 @@ import { DayPicker } from "react-day-picker"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { theme, tw } from "twobj"
 import { Button, buttonVariants } from "~/components/button"
-import { FormattedMessage } from "~/react-intl"
+import { FormattedMessage, useIntl } from "~/i18n"
 import { Popover, PopoverContent, PopoverTrigger, usePopover } from "./popover"
 
 import "react-day-picker/style.css"
-import { useSelect } from "~/context"
 
 interface FormData {
 	date: Date
@@ -27,7 +26,7 @@ const fontFamily = theme`fontFamily.sans` as string
 
 export function DateTimePickerForm({ value = new Date(), onSubmit, onCancel, className }: DateTimeFormProps) {
 	const methods = useForm<FormData>({ defaultValues: { date: value } })
-	const locale = useSelect(state => state.intl.dateLocale)
+	const dateLocale = useIntl(s => s.dateLocale)
 	return (
 		<form
 			tw="grid [grid-template-rows: minmax(0, 1fr) min-content min-content]"
@@ -48,7 +47,7 @@ export function DateTimePickerForm({ value = new Date(), onSubmit, onCancel, cla
 								mode="single"
 								showOutsideDays
 								required
-								locale={locale}
+								locale={dateLocale}
 								fixedWeeks
 								weekStartsOn={0}
 								onSelect={next => {

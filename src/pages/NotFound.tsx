@@ -1,4 +1,4 @@
-import { FormattedMessage } from "~/react-intl"
+import { FormattedMessage } from "~/i18n"
 
 export function NotFound() {
 	return (

@@ -1,6 +1,6 @@
 import type { FormatXMLElementFn, Options, PrimitiveType } from "intl-messageformat"
 import type { MessageDescriptor } from "react-intl"
-import { useIntl } from "~/context"
+import { useIntl } from "./hook"
 
 export interface FormattedMessageProps<
 	V extends Record<string, unknown> = Record<
@@ -23,7 +23,7 @@ export function FormattedMessage({
 	tagName: Component,
 	children,
 }: FormattedMessageProps) {
-	const intl = useIntl()
+	const intl = useIntl(s => s.intl)
 	const nodes = intl.formatMessage({ id, description, defaultMessage }, values, { ignoreTag })
 	if (typeof children === "function") {
 		return children(Array.isArray(nodes) ? nodes : [nodes])

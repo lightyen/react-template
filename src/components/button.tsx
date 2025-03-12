@@ -1,7 +1,6 @@
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { tw } from "twobj"
-import { useIntl } from "~/context"
-import { FormattedMessage } from "~/react-intl"
+import { FormattedMessage, useIntl } from "~/i18n"
 import { zs, type VariantProps } from "./lib"
 
 export const buttonVariants = zs(
@@ -41,7 +40,7 @@ export function Button({ type = "button", variant, size, ...props }: ButtonProps
 Button.displayName = "Button"
 
 export function CloseButton(props: ButtonProps) {
-	const intl = useIntl()
+	const intl = useIntl(s => s.intl)
 	return (
 		<button
 			type="button"

@@ -6,8 +6,7 @@ import { Button } from "~/components/button"
 import { FormArrayProvider, useFormArrayContext } from "~/components/form/context"
 import { isNormalIPv4 } from "~/components/form/validate"
 import { Input } from "~/components/input"
-import { useIntl } from "~/context"
-import { FormattedMessage } from "~/react-intl"
+import { FormattedMessage, useIntl } from "~/i18n"
 
 interface TodolistFormData {
 	list: { value: string }[]
@@ -73,7 +72,7 @@ function TodolistAnimated() {
 		register,
 		formState: { errors },
 	} = useFormContext<TodolistFormData>()
-	const intl = useIntl()
+	const intl = useIntl(s => s.intl)
 	const { fields, remove } = useFormArrayContext<TodolistFormData>()
 
 	const heightMap = useRef<Record<string, number>>({})

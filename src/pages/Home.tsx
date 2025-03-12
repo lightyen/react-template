@@ -1,5 +1,5 @@
-import { useDateFns, useIntl, useSelect } from "~/context"
-import { FormattedMessage } from "~/react-intl"
+import { useSelect } from "~/context"
+import { FormattedMessage, useIntl } from "~/i18n"
 
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
@@ -49,7 +49,7 @@ export function Home() {
 }
 
 function MyTime() {
-	const { format, formatDuration } = useDateFns()
+	const { format, formatDuration } = useIntl(s => s.dateFns)
 	return (
 		<div tw="whitespace-pre">
 			{format(new Date(), "PPPpp")}
@@ -64,7 +64,7 @@ function Test1() {
 }
 
 function Test2() {
-	const intl = useIntl()
+	const intl = useIntl(s => s.intl)
 	const data = intl.formatMessage(
 		{ id: "test" },
 		{

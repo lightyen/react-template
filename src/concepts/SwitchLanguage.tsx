@@ -1,13 +1,11 @@
-import { useAction, useSelect } from "@context"
 import { CheckIcon } from "@radix-ui/react-icons"
 import { Button } from "~/components/button"
 import { Command, CommandItem, CommandList } from "~/components/command"
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "~/components/popover"
+import { useIntl } from "~/i18n"
 
 export function SwitchLanguage() {
-	const locale = useSelect(state => state.intl.locale)
-	const locales = useSelect(state => state.intl.locales)
-	const { setLocale } = useAction().intl
+	const { locale, locales, setLocale } = useIntl(s => s)
 	return (
 		<Popover placement="bottom-end">
 			<PopoverTrigger>

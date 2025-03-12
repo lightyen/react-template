@@ -32,8 +32,8 @@ import {
 } from "~/components/sheet"
 import { CircleLoading } from "~/components/spin"
 import { RouteTabs } from "~/components/tabs"
+import { FormattedMessage } from "~/i18n"
 import { Header, Separator } from "~/pages/common"
-import { FormattedMessage } from "~/react-intl"
 
 export function Component() {
 	return (

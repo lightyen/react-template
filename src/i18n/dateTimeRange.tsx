@@ -1,4 +1,4 @@
-import { useIntl } from "~/context"
+import { useIntl } from "./hook"
 
 export interface FormattedDateTimeRangeProps {
 	from: Parameters<Intl.DateTimeFormat["formatRange"]>[0]
@@ -7,7 +7,7 @@ export interface FormattedDateTimeRangeProps {
 }
 
 export function FormattedDateTimeRange({ from, to, children, ...props }: FormattedDateTimeRangeProps) {
-	const intl = useIntl()
+	const intl = useIntl(s => s.intl)
 	const formattedValue = intl.formatDateTimeRange(from, to, props)
 	if (typeof children === "function") {
 		return children(formattedValue)

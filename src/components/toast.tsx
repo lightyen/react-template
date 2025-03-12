@@ -3,9 +3,9 @@ import { animated, easings, useSpringRef, useTransition } from "@react-spring/we
 import cx from "clsx"
 import { Children, cloneElement, isValidElement, useEffect, useMemo } from "react"
 import { tw } from "twobj"
-import { useAction, useIntl, useSelect } from "~/context"
+import { useAction, useSelect } from "~/context"
 import { type InnerToasterToast } from "~/context/app/action"
-import { FormattedMessage } from "~/react-intl"
+import { FormattedMessage, useIntl } from "~/i18n"
 import { isElement, zs } from "./lib"
 
 const toastVariants = zs(
@@ -63,7 +63,7 @@ function ToastDescription({ children, ...props }: React.PropsWithChildren<React.
 }
 
 function CloseButton({ onClick, className }: { onClick?(): void; className?: string }) {
-	const intl = useIntl()
+	const { intl } = useIntl()
 	return (
 		<button
 			type="button"

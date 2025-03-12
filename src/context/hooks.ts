@@ -11,7 +11,6 @@ import { bindActionCreators } from "redux"
 import app from "./app/action"
 import data from "./data/action"
 import { type DataCache } from "./data/reducer"
-import intl from "./intl/action"
 
 export const AppStoreContext = createContext<ReactReduxContextValue<RootStore> | null>(null)
 export const useStore = createStoreHook(AppStoreContext)
@@ -24,7 +23,6 @@ export function useAction() {
 		() => ({
 			app: bindActionCreators(app, dispatch),
 			data: bindActionCreators(data, dispatch),
-			intl: bindActionCreators(intl, dispatch),
 		}),
 		[dispatch],
 	)
@@ -45,12 +43,4 @@ export function useData<Data = object>(key: string, url: string) {
 		}
 	}, [mountData, unmountData, key, url])
 	return cacheData ?? {}
-}
-
-export function useIntl() {
-	return useSelect(state => state.intl.intlShape)
-}
-
-export function useDateFns() {
-	return useSelect(state => state.intl.dateFns)
 }
