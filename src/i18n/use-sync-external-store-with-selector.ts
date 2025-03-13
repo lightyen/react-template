@@ -1,4 +1,4 @@
-import { useDebugValue, useEffect, useMemo, useRef, useSyncExternalStore } from "react"
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react"
 
 // Source: github.com/facebook/react/packages/use-sync-external-store/src/useSyncExternalStoreWithSelector.js
 
@@ -10,7 +10,7 @@ function is(x: unknown, y: any) {
 export function useSyncExternalStoreWithSelector<Snapshot, Selection>(
 	subscribe: (onStoreChange: () => void) => () => void,
 	getSnapshot: () => Snapshot,
-	getServerSnapshot: void | null | (() => Snapshot),
+	getServerSnapshot: void | undefined | (() => Snapshot),
 	selector: (snapshot: Snapshot) => Selection,
 	isEqual?: (a: Selection, b: Selection) => boolean,
 ): Selection {
@@ -111,6 +111,5 @@ export function useSyncExternalStoreWithSelector<Snapshot, Selection>(
 		inst.value = value
 	}, [inst, value])
 
-	useDebugValue(value)
 	return value
 }

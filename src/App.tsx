@@ -27,11 +27,9 @@ export const appStyle = css`
 
 export function App() {
 	return (
-		// <StrictMode>
 		<StoreProvider>
 			<Global styles={[globalStyles, appStyle]} />
 			<RouterProvider router={router} />
 		</StoreProvider>
-		// </StrictMode>
 	)
 }
