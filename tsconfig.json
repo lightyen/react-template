@@ -29,7 +29,6 @@
     ".storybook/**/*",
     "./src/**/*",
     "./tests/**/*",
-    "./tests-examples/**/*",
-    "./shadcn/**/*"
+    "./tests-examples/**/*"
   ]
 }

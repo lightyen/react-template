@@ -5,6 +5,7 @@ import { promisify } from "node:util"
 import license from "rollup-plugin-license"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig, PluginOption } from "vite"
+import checker from "vite-plugin-checker"
 import svg from "vite-plugin-svgr"
 import tsConfigPaths from "vite-plugin-tsconfig-paths"
 import tailwindConfig from "./tailwind.config"
@@ -87,6 +88,7 @@ export default defineConfig({
 		chunkSizeWarningLimit: 4 << 10,
 	},
 	plugins: [
+		checker({ typescript: true }),
 		enableCrossOriginIsolated(),
 		gitcommit(),
 		visualizer(),

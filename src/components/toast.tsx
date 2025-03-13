@@ -63,7 +63,7 @@ function ToastDescription({ children, ...props }: React.PropsWithChildren<React.
 }
 
 function CloseButton({ onClick, className }: { onClick?(): void; className?: string }) {
-	const { intl } = useIntl()
+	const intl = useIntl(s => s.intl)
 	return (
 		<button
 			type="button"
