@@ -1,7 +1,7 @@
 import yaml from "@rollup/plugin-yaml"
 import react from "@vitejs/plugin-react"
-import { exec } from "node:child_process"
-import { promisify } from "node:util"
+import { formatISO } from "date-fns"
+import { exec, ExecException } from "node:child_process"
 import license from "rollup-plugin-license"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig, PluginOption } from "vite"
@@ -12,11 +12,61 @@ import tailwindConfig from "./tailwind.config"
 
 const target = `http://${process.env.API_ENTRY}`
 
+interface Output {
+	error: ExecException | null
+	stdout: string
+	stderr: string
+}
+
+async function shell(command: string) {
+	return new Promise<Output>(res => {
+		exec(command, (error, stdout, stderr) => {
+			res({ error, stdout: stdout.trim(), stderr: stderr.trim() })
+		})
+	})
+}
+
+const ver = await gitVersion()
+console.log("VERSION:", ver)
+
+async function gitVersion(): Promise<string> {
+	if ((await shell("git rev-parse --git-dir")).error) {
+		return "0.0.0"
+	}
+
+	let tag = (await shell("git describe --tags --abbrev=0")).stdout
+	if (!tag) {
+		tag = "0.0.0"
+	}
+
+	const current = (await shell("git rev-parse --verify HEAD")).stdout
+	if (!current) {
+		return `${tag}-untracked`
+	}
+
+	if ((await shell("git status --short")).stdout) {
+		const short = (await shell("git rev-parse --verify HEAD --short")).stdout
+		return `${tag}-untracked+${short}`
+	}
+
+	if (
+		current ===
+		(await shell("git rev-list --max-count=1 " + (await shell("git describe --abbrev=0")).stdout)).stdout
+	) {
+		return tag
+	}
+
+	const branch = (await shell("git rev-parse --abbrev-ref HEAD")).stdout
+	const short = (await shell("git rev-parse --verify HEAD --short")).stdout
+
+	return `${tag}-${branch}+${short}`
+}
+
 function gitcommit(): PluginOption {
 	return {
 		name: "git-commit",
 		enforce: "post",
-		async buildEnd(err) {
+		buildEnd(err) {
 			if (process.env.NODE_ENV !== "production") {
 				return
 			}
@@ -24,45 +74,20 @@ function gitcommit(): PluginOption {
 				return
 			}
 
-			let tracked = false
-			try {
-				await promisify(exec)("git diff-index --quiet HEAD")
-				tracked = true
-			} catch {}
-
-			let matchLatestTag = false
-			if (tracked) {
-				try {
-					const latestCommit = (await promisify(exec)("git rev-parse HEAD")).stdout.trim()
-					const latestTag = (
-						await promisify(exec)("git rev-list --max-count=1 $(git describe --abbrev=0)")
-					).stdout.trim()
-					matchLatestTag = latestCommit === latestTag
-				} catch {}
+			const json = {
+				product_short: process.env.VITE_PRODUCT_SHORT,
+				product_name: process.env.VITE_PRODUCT_NAME,
+				value: "",
+				date: formatISO(new Date()),
 			}
 
-			try {
-				let version = "unknown"
-
-				if (!tracked) {
-					version = "untracked." + (await promisify(exec)("git rev-parse --verify HEAD")).stdout.trim()
-				} else if (matchLatestTag) {
-					version = (await promisify(exec)("git describe --abbrev")).stdout.trim()
-				} else {
-					const branch = (await promisify(exec)("git rev-parse --abbrev-ref HEAD")).stdout.trim()
-					const hash = (await promisify(exec)("git rev-parse --verify HEAD")).stdout.trim()
-					version = `${branch}.${hash}`
-				}
-
-				this.emitFile({
-					type: "asset",
-					name: "version",
-					fileName: "version",
-					source: version + "\n",
-				})
-			} catch (err) {
-				console.error(err)
-			}
+			json.value = ver
+			this.emitFile({
+				type: "asset",
+				name: "version.json",
+				fileName: "version.json",
+				source: JSON.stringify(json) + "\n",
+			})
 		},
 	}
 }
