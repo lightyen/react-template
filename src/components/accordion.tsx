@@ -5,11 +5,10 @@ import {
 	cloneElement,
 	createContext,
 	useContext,
-	useEffect,
 	useLayoutEffect,
 	useMemo,
 	useRef,
-	useState,
+	useSyncExternalStore,
 } from "react"
 import { tw } from "twobj"
 import { getElementHeight, isElement } from "./lib"
@@ -33,22 +32,54 @@ interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
 	type?: "single" | "multiple"
 }
 
+interface Snapshot {
+	nodes: React.ReactNode[]
+	items: AccordionContextItem[]
+	setItems(cb: (items: AccordionContextItem[]) => AccordionContextItem[]): void
+}
+
+function createStore(children: React.ReactNode | React.ReactNode[]) {
+	const listeners: Array<() => void> = []
+
+	const nodes = Children.toArray(children)
+		.filter((e): e is React.ReactElement<React.ComponentProps<typeof AccordionItem>> => isElement(e, AccordionItem))
+		.map((e, index) => cloneElement(e, { index }))
+
+	let state: Snapshot = {
+		nodes: nodes,
+		items: nodes.map(() => ({ open: false })),
+		setItems,
+	}
+
+	return {
+		subscribe(onStoreChange: () => void) {
+			listeners.push(onStoreChange)
+			return () => {
+				listeners.filter(v => v !== onStoreChange)
+			}
+		},
+		getSnapshot(): Snapshot {
+			return state
+		},
+	}
+
+	function setItems(cb: (items: AccordionContextItem[]) => AccordionContextItem[]) {
+		state = {
+			...state,
+			items: cb(state.items),
+		}
+		for (const listener of listeners) {
+			listener()
+		}
+	}
+}
+
 export function Accordion({ type = "single", children, ...props }: React.PropsWithChildren<AccordionProps>) {
-	const result = useMemo(() => {
-		return Children.toArray(children)
-			.filter((e): e is React.ReactElement<React.ComponentProps<typeof AccordionItem>> =>
-				isElement(e, AccordionItem),
-			)
-			.map((e, index) => cloneElement(e, { index }))
-	}, [children])
+	const store = useRef(createStore(children))
 
-	const [items, setItems] = useState<AccordionContextItem[]>(result.map(() => ({ open: false })))
+	const { nodes, items, setItems } = useSyncExternalStore(store.current.subscribe, store.current.getSnapshot)
 
-	useEffect(() => {
-		setItems(result.map(() => ({ open: false })))
-	}, [result])
-
-	if (result.length !== items.length) {
+	if (nodes.length !== items.length) {
 		return null
 	}
 
@@ -80,7 +111,7 @@ export function Accordion({ type = "single", children, ...props }: React.PropsWi
 				items,
 			}}
 		>
-			<div {...props}>{result}</div>
+			<div {...props}>{nodes}</div>
 		</AccordionContext>
 	)
 }

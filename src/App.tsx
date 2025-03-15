@@ -1,8 +1,11 @@
 import { StoreProvider } from "@context/Provider"
 import { Global, css } from "@emotion/react"
+import qs from "qs"
+import { StrictMode } from "react"
 import { RouterProvider } from "react-router"
 import { globalStyles, tw } from "twobj"
 import { router } from "./Router"
+
 import "./global.css"
 
 const bodyScrollbar = tw`
@@ -25,11 +28,22 @@ export const appStyle = css`
 	}
 `
 
+function DebugMode({ children }: React.PropsWithChildren<{}>) {
+	const o = qs.parse(window.location.search.replace(/^\?/, ""))
+	const enable = Object.prototype.hasOwnProperty.call(o, "strict") && Boolean(o["strict"])
+	if (!enable) {
+		return children
+	}
+	return <StrictMode>{children}</StrictMode>
+}
+
 export function App() {
 	return (
-		<StoreProvider>
-			<Global styles={[globalStyles, appStyle]} />
-			<RouterProvider router={router} />
-		</StoreProvider>
+		<DebugMode>
+			<StoreProvider>
+				<Global styles={[globalStyles, appStyle]} />
+				<RouterProvider router={router} />
+			</StoreProvider>
+		</DebugMode>
 	)
 }
