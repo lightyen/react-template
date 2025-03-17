@@ -113,7 +113,7 @@ export default defineConfig({
 		chunkSizeWarningLimit: 4 << 10,
 	},
 	plugins: [
-		checker({ typescript: true }),
+		process.env.NODE_ENV === "production" && checker({ typescript: true }),
 		enableCrossOriginIsolated(),
 		gitcommit(),
 		visualizer(),
