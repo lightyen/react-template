@@ -23,7 +23,7 @@ function qs_get(name: string): string | null {
 	if (!Object.prototype.hasOwnProperty.call(o, name)) {
 		return null
 	}
-	return o[name]
+	return (o[name] as string) || null
 }
 
 function firstExistString(...args: (string | null | undefined)[]): string {
