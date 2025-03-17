@@ -1,6 +1,5 @@
 import { StoreProvider } from "@context/Provider"
 import { Global, css } from "@emotion/react"
-import qs from "qs"
 import { StrictMode } from "react"
 import { RouterProvider } from "react-router"
 import { globalStyles, tw } from "twobj"
@@ -29,10 +28,12 @@ export const appStyle = css`
 `
 
 function DebugMode({ children }: React.PropsWithChildren<{}>) {
-	const o = qs.parse(window.location.search.replace(/^\?/, ""))
-	const enable = Object.prototype.hasOwnProperty.call(o, "strict") && Boolean(o["strict"])
+	const enable = Boolean(localStorage.getItem("strict"))
 	if (!enable) {
 		return children
+	}
+	if (import.meta.env.DEV) {
+		console.log("StrictMode is enabled.")
 	}
 	return <StrictMode>{children}</StrictMode>
 }
