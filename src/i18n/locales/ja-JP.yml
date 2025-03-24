@@ -12,3 +12,4 @@ upload_file: ファイルを選択する
 download_file: ダウンロード
 404_not_found: 404 not found
 test: テスト {value}
+test_rich: "<p>テスト {value}</p>"

@@ -12,3 +12,4 @@ upload_file: Upload File
 download_file: Download
 404_not_found: 404 not found
 test: Test {value}
+test_rich: "<p>Test {value}</p>"

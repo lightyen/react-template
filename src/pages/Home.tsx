@@ -32,6 +32,7 @@ export function Home() {
 					<MyTime />
 					<Test1 />
 					<Test2 />
+					<Test3 />
 				</div>
 				<div>
 					<a
@@ -68,6 +69,18 @@ function Test2() {
 	const data = intl.formatMessage(
 		{ id: "test" },
 		{
+			value: <strong>Eric</strong>,
+		},
+	)
+	return <div>{data}</div>
+}
+
+function Test3() {
+	const intl = useIntl(s => s.intl)
+	const data = intl.formatMessage(
+		{ id: "test_rich" },
+		{
+			p: chunks => <p>{chunks}</p>,
 			value: <strong>Eric</strong>,
 		},
 	)
