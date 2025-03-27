@@ -23,7 +23,7 @@ export function Badge({
 	variant,
 	...props
 }: React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof badgeVariants> & { ref?: React.Ref<HTMLDivElement> }) {
-	return <div css={badgeVariants({ variant })} {...props} />
+	return <span css={badgeVariants({ variant })} {...props} />
 }
 
 Badge.displayName = "Badge"
