@@ -36,10 +36,11 @@ export function buildDateFns(locale: d.Locale): DateFns {
 			return d.formatDistanceStrict(laterDate, earlierDate, { ...options, locale })
 		},
 		formatDistanceToNow(date, options) {
-			return this.formatDistance(date, d.constructNow(date), options)
+			// NOTE: 'this' is undefined.
+			return d.formatDistance(date, d.constructNow(date), { ...options, locale })
 		},
 		formatDistanceToNowStrict(date, options) {
-			return this.formatDistanceStrict(date, d.constructNow(date), options)
+			return d.formatDistanceStrict(date, d.constructNow(date), { ...options, locale })
 		},
 		formatDuration(duration, options) {
 			if (typeof duration === "number") {
