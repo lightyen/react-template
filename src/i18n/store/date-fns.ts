@@ -1,46 +1,41 @@
 import * as d from "date-fns"
 
 type DateValue = Date | number | string
-type OmitLocale<T> = Omit<T, "locale">
 
 export interface DateFns {
-	format(date: DateValue, formatStr: string, options?: OmitLocale<d.FormatOptions>): string
+	format(date: DateValue, formatStr: string, options?: d.FormatOptions): string
 	formatRelative(
 		date: string | number | Date,
 		baseDate: string | number | Date,
-		options?: OmitLocale<d.FormatRelativeOptions>,
+		options?: d.FormatRelativeOptions,
 	): string
-	formatDistance(laterDate: DateValue, earlierDate: DateValue, options?: OmitLocale<d.FormatDistanceOptions>): string
-	formatDistanceStrict(
-		laterDate: DateValue,
-		earlierDate: DateValue,
-		options?: OmitLocale<d.FormatDistanceStrictOptions>,
-	): string
-	formatDistanceToNow(date: DateValue, options?: OmitLocale<d.FormatDistanceToNowOptions>): string
-	formatDistanceToNowStrict(date: DateValue, options?: OmitLocale<d.FormatDistanceToNowStrictOptions>): string
-	formatDuration(duration: number | d.Duration, options?: OmitLocale<d.FormatDurationOptions>): string
+	formatDistance(laterDate: DateValue, earlierDate: DateValue, options?: d.FormatDistanceOptions): string
+	formatDistanceStrict(laterDate: DateValue, earlierDate: DateValue, options?: d.FormatDistanceStrictOptions): string
+	formatDistanceToNow(date: DateValue, options?: d.FormatDistanceToNowOptions): string
+	formatDistanceToNowStrict(date: DateValue, options?: d.FormatDistanceToNowStrictOptions): string
+	formatDuration(duration: number | d.Duration, options?: d.FormatDurationOptions): string
 }
 
 export function buildDateFns(locale: d.Locale): DateFns {
 	return {
 		format(date, formatStr, options) {
-			return d.format(date, formatStr, { ...options, locale })
+			return d.format(date, formatStr, { locale, ...options })
 		},
 		formatRelative(date, baseDate, options) {
-			return d.formatRelative(date, baseDate, { ...options, locale })
+			return d.formatRelative(date, baseDate, { locale, ...options })
 		},
 		formatDistance(laterDate, earlierDate, options) {
-			return d.formatDistance(laterDate, earlierDate, { ...options, locale })
+			return d.formatDistance(laterDate, earlierDate, { locale, ...options })
 		},
 		formatDistanceStrict(laterDate, earlierDate, options) {
-			return d.formatDistanceStrict(laterDate, earlierDate, { ...options, locale })
+			return d.formatDistanceStrict(laterDate, earlierDate, { locale, ...options })
 		},
 		formatDistanceToNow(date, options) {
 			// NOTE: 'this' is undefined.
-			return d.formatDistance(date, d.constructNow(date), { ...options, locale })
+			return d.formatDistance(date, d.constructNow(date), { locale, ...options })
 		},
 		formatDistanceToNowStrict(date, options) {
-			return d.formatDistanceStrict(date, d.constructNow(date), { ...options, locale })
+			return d.formatDistanceStrict(date, d.constructNow(date), { locale, ...options })
 		},
 		formatDuration(duration, options) {
 			if (typeof duration === "number") {
