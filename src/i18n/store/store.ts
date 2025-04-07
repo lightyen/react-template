@@ -1,4 +1,4 @@
-import { type Locale as DateLocale } from "date-fns"
+import { type Locale as DateLocale, type FormatLongFn, type FormatLongWidth } from "date-fns"
 import { enUS, ja, zhTW } from "date-fns/locale"
 import qs from "qs"
 import { createIntl, createIntlCache, IntlCache, type IntlShape } from "react-intl"
@@ -17,6 +17,35 @@ export const locales = {
 }
 
 export type LocaleType = keyof typeof locales
+
+interface BuildFormatLongFnArgs<DefaultMatchWidth extends FormatLongWidth> {
+	formats: Partial<{ [format in FormatLongWidth]: string }> & {
+		[format in DefaultMatchWidth]: string
+	}
+	defaultWidth: DefaultMatchWidth
+}
+
+function buildFormatLongFn<DefaultMatchWidth extends FormatLongWidth>(
+	args: BuildFormatLongFnArgs<DefaultMatchWidth>,
+): FormatLongFn {
+	return (options = {}) => {
+		const width = options.width ? (String(options.width) as FormatLongWidth) : args.defaultWidth
+		const format = args.formats[width] || args.formats[args.defaultWidth]
+		return format
+	}
+}
+
+if (zhTW.formatLong) {
+	zhTW.formatLong.date = buildFormatLongFn({
+		formats: {
+			full: "y'年'M'月'd'日' EEEE",
+			long: "y'年'M'月'd'日'",
+			medium: "yyyy/MM/dd",
+			short: "y/MM/dd",
+		},
+		defaultWidth: "full",
+	})
+}
 
 function qs_get(name: string): string | null {
 	const o = qs.parse(window.location.search.replace(/^\?/, ""))
