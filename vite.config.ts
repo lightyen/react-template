@@ -27,7 +27,6 @@ async function shell(command: string) {
 }
 
 const ver = await gitVersion()
-console.log("VERSION:", ver)
 
 async function gitVersion(): Promise<string> {
 	if ((await shell("git rev-parse --git-dir")).error) {
@@ -95,7 +94,6 @@ function gitcommit(): PluginOption {
 function enableCrossOriginIsolated(): PluginOption {
 	return {
 		name: "configure-server",
-
 		configureServer(server) {
 			server.middlewares.use((_req, res, next) => {
 				res.setHeader("Cross-Origin-Opener-Policy", "same-origin")
@@ -128,15 +126,10 @@ export default defineConfig({
 		}),
 		license({
 			thirdParty: {
-				output: "dist/assets/vendor.LICENSE.txt",
+				output: "dist/LICENSE.txt",
 			},
 		}),
 	],
-	esbuild: {
-		logOverride: { "this-is-undefined-in-esm": "silent" },
-		banner: "/*! licenses: /assets/vendor.LICENSE.txt */",
-		legalComments: "none",
-	},
 	server: {
 		host: "0.0.0.0",
 		proxy: {
