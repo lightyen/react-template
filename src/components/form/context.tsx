@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext, use } from "react"
 import type { FieldArrayPath, FieldValues, UseFieldArrayReturn } from "react-hook-form"
 
 const FormArrayContext = createContext<unknown>(null)
@@ -16,5 +16,5 @@ export function useFormArrayContext<
 	TFieldArrayName extends FieldArrayPath<TFieldValues> = FieldArrayPath<TFieldValues>,
 	TKeyName extends string = "id",
 >() {
-	return useContext(FormArrayContext) as UseFieldArrayReturn<TFieldValues, TFieldArrayName, TKeyName>
+	return use(FormArrayContext) as UseFieldArrayReturn<TFieldValues, TFieldArrayName, TKeyName>
 }

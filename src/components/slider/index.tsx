@@ -4,7 +4,7 @@ import {
 	createContext,
 	isValidElement,
 	memo,
-	useContext,
+	use,
 	useEffect,
 	useMemo,
 	useRef,
@@ -155,7 +155,7 @@ function Provider({ children, store }: React.PropsWithChildren<{ store: ReturnTy
 }
 
 function useSliderStore() {
-	return useContext(SliderContext)
+	return use(SliderContext)
 }
 
 const ThumbCollectionContext = createContext(null as unknown as Map<number, HTMLElement>)
@@ -528,7 +528,7 @@ export function SliderThumb({ index = -1, ref, ...props }: { index?: number; ref
 		}
 	}, [disabled, value])
 
-	const thumbs = useContext(ThumbCollectionContext)
+	const thumbs = use(ThumbCollectionContext)
 	useEffect(() => {
 		const element = innerRef.current
 		if (element) {

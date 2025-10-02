@@ -4,7 +4,7 @@ import {
 	Children,
 	cloneElement,
 	createContext,
-	useContext,
+	use,
 	useLayoutEffect,
 	useMemo,
 	useRef,
@@ -126,7 +126,7 @@ export function AccordionItem({
 	position = "relative",
 }: React.PropsWithChildren<AccordionItemProps>) {
 	const ref = useRef<HTMLElement>(null)
-	const { items } = useContext(AccordionContext)
+	const { items } = use(AccordionContext)
 	useLayoutEffect(() => {
 		if (position === "absolute") {
 			if (ref.current) {
@@ -172,7 +172,7 @@ AccordionItem["$id"] = Symbol.for("com.AccordionItem")
 interface AccordionTriggerProps extends IndexProp {}
 
 export function AccordionTrigger({ index = -1, children }: React.PropsWithChildren<AccordionTriggerProps>) {
-	const { toggle, items } = useContext(AccordionContext)
+	const { toggle, items } = use(AccordionContext)
 	return (
 		<button
 			type="button"

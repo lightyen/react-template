@@ -10,17 +10,7 @@ import {
 	type Placement,
 	type UseFloatingReturn,
 } from "@floating-ui/react"
-import {
-	Children,
-	cloneElement,
-	createContext,
-	isValidElement,
-	useContext,
-	useEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react"
+import { Children, cloneElement, createContext, isValidElement, use, useEffect, useMemo, useRef, useState } from "react"
 import { FormattedMessage } from "~/i18n"
 import { Button, type ButtonProps } from "./button"
 import { composeRefs, isElement } from "./lib"
@@ -48,7 +38,7 @@ interface PopoverTriggerProps extends Omit<ButtonProps, "onClick"> {
 }
 
 export function PopoverTrigger({ children, mode = "click", ...props }: React.PropsWithChildren<PopoverTriggerProps>) {
-	const { setVisible, refs, getReferenceProps } = useContext(PopoverContext)
+	const { setVisible, refs, getReferenceProps } = use(PopoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <PopoverTrigger>{c}</PopoverTrigger>)
@@ -116,7 +106,7 @@ interface PopoverContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
 
 export function PopoverContent({ children, ...props }: PopoverContentProps) {
 	const { isMounted, refs, floatingStyles, getFloatingProps, styles, setVisible, visible, onEnter, onLeave } =
-		useContext(PopoverContext)
+		use(PopoverContext)
 	const onleave = useRef(onLeave)
 	useEffect(() => {
 		const onLeave = onleave.current
@@ -151,7 +141,7 @@ export function PopoverClose({
 	children,
 	...props
 }: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = useContext(PopoverContext)
+	const { setVisible } = use(PopoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <PopoverClose>{c}</PopoverClose>)

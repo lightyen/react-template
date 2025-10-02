@@ -1,5 +1,5 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import { Children, cloneElement, isValidElement, useContext, useEffect, useMemo, useState } from "react"
+import { Children, cloneElement, isValidElement, use, useEffect, useMemo, useState } from "react"
 import { FormattedMessage } from "~/i18n"
 import { Button, CloseButton, type ButtonProps } from "./button"
 import { DialogContext } from "./internal/dialogContext"
@@ -12,7 +12,7 @@ export function useDialog(initialState: boolean | (() => boolean) = false) {
 }
 
 export function DialogTrigger({ children, ...props }: React.PropsWithChildren<Omit<ButtonProps, "onClick">>) {
-	const { setVisible } = useContext(DialogContext)
+	const { setVisible } = use(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <DialogTrigger>{c}</DialogTrigger>)
@@ -52,7 +52,7 @@ export function DialogContent({
 	children,
 	...props
 }: DialogContentProps) {
-	const { visible, setVisible, lightDismiss } = useContext(DialogContext)
+	const { visible, setVisible, lightDismiss } = use(DialogContext)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -136,7 +136,7 @@ export function DialogClose({
 	children,
 	...props
 }: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = useContext(DialogContext)
+	const { setVisible } = use(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <DialogClose>{c}</DialogClose>)

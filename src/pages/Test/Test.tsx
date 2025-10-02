@@ -1,7 +1,7 @@
 import { animated, easings, useSprings } from "@react-spring/web"
 import { useWindowVirtualizer } from "@tanstack/react-virtual"
 import { useDrag } from "@use-gesture/react"
-import { createContext, useContext, useRef, useState } from "react"
+import { createContext, use, useRef, useState } from "react"
 import "react-day-picker/style.css"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
@@ -120,7 +120,7 @@ function Demo() {
 }
 
 function DemoBox() {
-	const useStore = useContext(StoreContext)
+	const useStore = use(StoreContext)
 	const bears = useStore(state => state.bears)
 	const increase = useStore(state => state.increase)
 	return <div onClick={() => increase(1)}>{bears}</div>

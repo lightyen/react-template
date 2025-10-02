@@ -1,5 +1,5 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import { Children, cloneElement, isValidElement, useContext, useEffect, useMemo, useState } from "react"
+import { Children, cloneElement, isValidElement, use, useEffect, useMemo, useState } from "react"
 import { tw } from "twobj"
 import { FormattedMessage } from "~/i18n"
 import { Button, CloseButton, type ButtonProps } from "./button"
@@ -55,7 +55,7 @@ function animationVariants(side: "top" | "right" | "bottom" | "left") {
 export const useSheet = useDialog
 
 export function SheetTrigger({ children, ...props }: React.PropsWithChildren<Omit<ButtonProps, "onClick">>) {
-	const { setVisible } = useContext(DialogContext)
+	const { setVisible } = use(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <SheetTrigger>{c}</SheetTrigger>)
@@ -99,7 +99,7 @@ export function SheetContent({
 	children,
 	...props
 }: React.PropsWithChildren<SheetContentProps> & React.HTMLAttributes<HTMLDivElement>) {
-	const { visible, setVisible, lightDismiss } = useContext(DialogContext)
+	const { visible, setVisible, lightDismiss } = use(DialogContext)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -171,7 +171,7 @@ export function SheetClose({
 	children,
 	...props
 }: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = useContext(DialogContext)
+	const { setVisible } = use(DialogContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <SheetClose>{c}</SheetClose>)
