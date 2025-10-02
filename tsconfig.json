@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "lib": ["esnext", "dom", "dom.iterable", "webworker"],
     "types": ["vite/types/importMeta.d.ts", "babel-plugin-twobj/types/emotion"],
     "jsx": "preserve",
