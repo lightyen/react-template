@@ -1,5 +1,6 @@
 import type { FormatXMLElementFn, Options, PrimitiveType } from "intl-messageformat"
-import type { MessageDescriptor } from "react-intl"
+import React from "react"
+import type * as Intl from "react-intl"
 import { useIntl } from "./hook"
 
 export interface FormattedMessageProps<
@@ -7,7 +8,7 @@ export interface FormattedMessageProps<
 		string,
 		React.ReactNode | PrimitiveType | FormatXMLElementFn<React.ReactNode>
 	>,
-> extends MessageDescriptor {
+> extends Intl.MessageDescriptor {
 	values?: V
 	tagName?: React.ElementType
 	ignoreTag?: Options["ignoreTag"]
@@ -32,4 +33,31 @@ export function FormattedMessage({
 		return <Component>{nodes}</Component>
 	}
 	return nodes
+}
+
+// interface Formatter {
+// 	formatDate: Intl.FormatDateOptions
+// 	formatTime: Intl.FormatDateOptions
+// 	formatNumber: Intl.FormatNumberOptions
+// 	formatList: Intl.FormatListOptions
+// 	formatDisplayName: Intl.FormatDisplayNameOptions
+// }
+
+export interface FormattedListProps extends Intl.FormatListOptions {
+	value: readonly React.ReactNode[]
+	children?(nodes: React.ReactNode): React.ReactNode | null
+}
+
+export function FormattedList({ value, children, ...formatProps }: FormattedListProps) {
+	const intl = useIntl(s => s.intl)
+	const formattedValue = intl.formatList(value, formatProps)
+
+	console.log(formattedValue)
+
+	if (typeof children === "function") {
+		return children(formattedValue)
+	}
+
+	const Text = intl.textComponent || React.Fragment
+	return <Text>{formattedValue}</Text>
 }
