@@ -66,20 +66,21 @@ function DateTimePickerDialog({
 	onCancel,
 	children,
 }: React.PropsWithChildren<DateTimeFormProps>) {
-	const dialog = useDialog()
+	const store = useDialog()
+	const setVisible = store(state => state.setVisible)
 	return (
-		<Dialog {...dialog}>
+		<Dialog store={store}>
 			<DialogTrigger>{children}</DialogTrigger>
 			<DialogContent tw="w-[350px] pt-8 pb-5 px-5">
 				<DateTimePickerForm
 					value={value}
 					onSubmit={value => {
 						onSubmit?.(value)
-						dialog.setVisible(false)
+						setVisible(false)
 					}}
 					onCancel={() => {
 						onCancel?.()
-						dialog.setVisible(false)
+						setVisible(false)
 					}}
 				/>
 			</DialogContent>

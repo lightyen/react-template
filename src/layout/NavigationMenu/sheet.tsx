@@ -1,9 +1,10 @@
 import { animated, useSpringRef, useTransition } from "@react-spring/web"
 import { useDrag } from "@use-gesture/react"
-import { Children, cloneElement, isValidElement, use, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Children, cloneElement, isValidElement, use, useEffect, useLayoutEffect, useRef } from "react"
 import { tw } from "twobj"
 import { Button } from "~/components/button"
-import { DialogContext } from "~/components/internal/dialogContext"
+import { DialogProps, useDialog } from "~/components/dialog"
+import { DialogContext } from "~/components/dialog/context"
 import { Overlay } from "~/components/internal/overlay"
 import { getElementWidth, isElement, zs } from "~/components/lib"
 import { FormattedMessage } from "~/i18n"
@@ -12,7 +13,8 @@ export function SheetTrigger({
 	children,
 	...props
 }: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = use(DialogContext)
+	const store = use(DialogContext)
+	const setVisible = store(state => state.setVisible)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <SheetTrigger>{c}</SheetTrigger>)
@@ -61,7 +63,10 @@ export function SheetContent({
 	children,
 	...props
 }: SheetContentProps & React.HTMLAttributes<HTMLDivElement>) {
-	const { visible, setVisible, lightDismiss } = use(DialogContext)
+	const store = use(DialogContext)
+	const visible = store(state => state.visible)
+	const setVisible = store(state => state.setVisible)
+	const lightDismiss = store(state => state.lightDismiss)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -164,7 +169,8 @@ export function SheetClose({
 	children,
 	...props
 }: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = use(DialogContext)
+	const store = use(DialogContext)
+	const setVisible = store(state => state.setVisible)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <SheetClose>{c}</SheetClose>)
@@ -228,27 +234,41 @@ export function SheetFooter({ children, ...props }: React.PropsWithChildren<Reac
 }
 SheetFooter["$id"] = Symbol.for("nav.SheetFooter")
 
-export interface SheetProps {
-	/** @default true */
-	blur?: boolean
-	/** @default true */
-	lightDismiss?: boolean
-	onClickOutside?(): void
-}
+export interface SheetProps extends DialogProps {}
 
 export function Sheet({
-	blur,
+	visible,
 	lightDismiss = true,
+	store,
+	blur,
 	onClickOutside = () => void 0,
 	children,
 }: React.PropsWithChildren<SheetProps>) {
-	const [visible, setVisible] = useState(false)
+	const s = useDialog({ visible, lightDismiss, store })
+
+	const _visible = s(state => state.visible)
+	const _setVisible = s(state => state.setVisible)
+	const _lightDismiss = s(state => state.lightDismiss)
+	const _setLightDismiss = s(state => state.setLightDismiss)
+
+	useEffect(() => {
+		if (visible != null) {
+			_setVisible(visible)
+		}
+	}, [visible, _setVisible])
+
+	useEffect(() => {
+		if (lightDismiss != null) {
+			_setLightDismiss(lightDismiss)
+		}
+	}, [lightDismiss, _setLightDismiss])
+
 	const contentReactElement = Children.toArray(children).find(
 		(e): e is React.ReactElement<React.ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),
 	)
 
 	return (
-		<DialogContext value={{ visible, setVisible, lightDismiss }}>
+		<DialogContext value={s}>
 			{Children.map(children, c => {
 				if (isElement(c, SheetTrigger)) {
 					return c
@@ -256,12 +276,12 @@ export function Sheet({
 				return null
 			})}
 			<Overlay
-				visible={visible}
+				visible={_visible}
 				blur={blur}
 				onClickOverlay={() => {
 					onClickOutside()
-					if (lightDismiss === true) {
-						setVisible(false)
+					if (_lightDismiss === true) {
+						_setVisible(false)
 					}
 				}}
 			>

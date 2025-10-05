@@ -1,18 +1,14 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import { Children, cloneElement, isValidElement, use, useEffect, useMemo, useState } from "react"
+import { Children, cloneElement, isValidElement, use, useEffect, useRef } from "react"
+import { Button, CloseButton, type ButtonProps } from "~/components/button"
+import { Overlay } from "~/components/internal/overlay"
+import { isElement } from "~/components/lib"
 import { FormattedMessage } from "~/i18n"
-import { Button, CloseButton, type ButtonProps } from "./button"
-import { DialogContext } from "./internal/dialogContext"
-import { Overlay } from "./internal/overlay"
-import { isElement } from "./lib"
-
-export function useDialog(initialState: boolean | (() => boolean) = false) {
-	const [visible, setVisible] = useState(initialState)
-	return { visible, setVisible }
-}
+import { createDialogStore, DialogContext, DialogOptions, DialogStore } from "./context"
 
 export function DialogTrigger({ children, ...props }: React.PropsWithChildren<Omit<ButtonProps, "onClick">>) {
-	const { setVisible } = use(DialogContext)
+	const store = use(DialogContext)
+	const setVisible = store(state => state.setVisible)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <DialogTrigger>{c}</DialogTrigger>)
@@ -52,7 +48,10 @@ export function DialogContent({
 	children,
 	...props
 }: DialogContentProps) {
-	const { visible, setVisible, lightDismiss } = use(DialogContext)
+	const store = use(DialogContext)
+	const visible = store(state => state.visible)
+	const setVisible = store(state => state.setVisible)
+	const lightDismiss = store(state => state.lightDismiss)
 
 	useEffect(() => {
 		function handle(e: KeyboardEvent) {
@@ -136,7 +135,8 @@ export function DialogClose({
 	children,
 	...props
 }: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = use(DialogContext)
+	const store = use(DialogContext)
+	const setVisible = store(state => state.setVisible)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
 		return Children.map(children, c => <DialogClose>{c}</DialogClose>)
@@ -210,7 +210,8 @@ DialogFooter["$id"] = Symbol.for("com.DialogFooter")
 
 export interface DialogProps {
 	visible?: boolean
-	setVisible?(v: boolean | ((prev: boolean) => boolean)): void
+	// setVisible?(v: boolean | ((prev: boolean) => boolean)): void
+	store?: DialogStore
 
 	/** @default true */
 	blur?: boolean
@@ -219,29 +220,47 @@ export interface DialogProps {
 	onClickOutside?(): void
 }
 
+export function useDialog({ visible, lightDismiss, store }: DialogOptions & { store?: DialogStore } = {}) {
+	const ref = useRef<DialogStore>(store)
+	if (!ref.current) {
+		ref.current = createDialogStore({ visible, lightDismiss })
+	}
+	return store ?? ref.current
+}
+
 export function Dialog({
 	visible,
-	setVisible = () => void 0,
-	blur,
 	lightDismiss = true,
+	store,
+	blur,
 	onClickOutside = () => void 0,
 	children,
 }: React.PropsWithChildren<DialogProps>) {
-	const [innerVisible, innerSetVisible] = useState(false)
+	const s = useDialog({ visible, lightDismiss, store })
 
-	const ctx = useMemo(() => {
-		if (visible == null) {
-			return { visible: innerVisible, setVisible: innerSetVisible, lightDismiss }
+	const _visible = s(state => state.visible)
+	const _setVisible = s(state => state.setVisible)
+	const _lightDismiss = s(state => state.lightDismiss)
+	const _setLightDismiss = s(state => state.setLightDismiss)
+
+	useEffect(() => {
+		if (visible != null) {
+			_setVisible(visible)
 		}
-		return { visible, setVisible, lightDismiss }
-	}, [innerVisible, visible, setVisible, lightDismiss])
+	}, [visible, _setVisible])
+
+	useEffect(() => {
+		if (lightDismiss != null) {
+			_setLightDismiss(lightDismiss)
+		}
+	}, [lightDismiss, _setLightDismiss])
 
 	const contentReactElement = Children.toArray(children).find(
 		(e): e is React.ReactElement<React.ComponentProps<typeof DialogContent>> => isElement(e, DialogContent),
 	)
 
 	return (
-		<DialogContext value={ctx}>
+		<DialogContext value={s}>
 			{Children.map(children, child => {
 				if (isElement(child, DialogContent)) {
 					return null
@@ -249,12 +268,12 @@ export function Dialog({
 				return child
 			})}
 			<Overlay
-				visible={ctx.visible}
+				visible={_visible}
 				blur={blur}
 				onClickOverlay={() => {
 					onClickOutside()
-					if (lightDismiss) {
-						ctx.setVisible(false)
+					if (_lightDismiss) {
+						_setVisible(false)
 					}
 				}}
 			>

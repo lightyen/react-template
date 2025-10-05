@@ -6,7 +6,9 @@ import { getDialogCount } from "~/components/internal/scrollbar"
 
 export function CommandMenu() {
 	const navigate = useNavigate()
-	const { visible, setVisible } = useDialog()
+	const store = useDialog()
+	const setVisible = store(state => state.setVisible)
+
 	useEffect(() => {
 		const down = (e: KeyboardEvent) => {
 			if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
@@ -28,7 +30,7 @@ export function CommandMenu() {
 					<span tw="text-sm">⌘</span>K
 				</kbd>
 			</span>
-			<CommandDialog visible={visible} setVisible={setVisible}>
+			<CommandDialog store={store}>
 				<CommandInput placeholder="Type a command or search..." autoFocus />
 				<CommandList>
 					<CommandEmpty>No results found.</CommandEmpty>
