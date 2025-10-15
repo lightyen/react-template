@@ -18,6 +18,7 @@ import { FormattedMessage } from "~/i18n"
 import { Header, Separator } from "~/pages/common"
 import { DemoDatePicker } from "./DateTimePicker"
 import { Candidate, SuggestionInput } from "./SuggestionInput"
+import { TagsInput } from "./TagsInput"
 
 export function Component() {
 	return (
@@ -49,6 +50,9 @@ export function Component() {
 				<Separator />
 				<Header>Suggestion</Header>
 				<SuggestionView />
+				<Separator />
+				<Header>Tags Input</Header>
+				<TagsInput placeholder="Input Tags..." />
 				<Separator />
 				<Header>Form</Header>
 				<FormView />
