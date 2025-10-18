@@ -1,4 +1,3 @@
-import React from "react"
 import { useSelect } from "~/context"
 import { FormattedMessage, useIntl } from "~/i18n"
 
@@ -34,7 +33,6 @@ export function Home() {
 					<Test1 />
 					<Test2 />
 					<Test3 />
-					<Test4 />
 				</div>
 				<div>
 					<a
@@ -87,15 +85,4 @@ function Test3() {
 		},
 	)
 	return <div>{data}</div>
-}
-
-const values = [<span>AAA</span>, <span>BBB</span>]
-
-function Test4() {
-	return React.Children.map(values, c => {
-		if (React.isValidElement(c) && c._store) {
-			c._store.validated = 1
-		}
-		return c
-	})
 }
