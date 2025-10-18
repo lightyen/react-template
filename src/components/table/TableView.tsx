@@ -85,6 +85,7 @@ function Row<T>({ data, columns }: { data: WithIndex<T>; columns: TableColumnIte
 	return (
 		<tr
 			tw="border-b transition-colors duration-100 hover:bg-muted/50 data-[state=selected]:bg-muted"
+			className="group"
 			data-state={checked ? "selected" : undefined}
 		>
 			{columns.map(({ Component, id, selected }, colIndex) => {

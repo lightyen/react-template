@@ -31,7 +31,13 @@ export function Component() {
 				),
 				canSelected: false,
 				Component: ({ checked, onChecked }) => {
-					return <Checkbox checked={checked} onChange={e => onChecked(e.target.checked)} />
+					return (
+						<Checkbox
+							tw="invisible group-hover:visible [:has(:checked)]:visible"
+							checked={checked}
+							onChange={e => onChecked(e.target.checked)}
+						/>
+					)
 				},
 			},
 			{
