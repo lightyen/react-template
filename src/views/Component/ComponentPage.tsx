@@ -33,7 +33,7 @@ import {
 import { CircleLoading } from "~/components/spin"
 import { RouteTabs } from "~/components/tabs"
 import { FormattedMessage } from "~/i18n"
-import { Header, Separator } from "~/pages/common"
+import { Header, Separator } from "~/views/common"
 
 export function Component() {
 	return (
