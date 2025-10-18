@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useRef, useSyncExternalStore } from "react"
+/* eslint-disable react-hooks/immutability */
 
-// Source: github.com/facebook/react/packages/use-sync-external-store/src/useSyncExternalStoreWithSelector.js
+// Source: https://github.com/facebook/react/blob/4049cfeeab33146e02b0721477fd5f2020f76a04/packages/use-sync-external-store/src/useSyncExternalStoreWithSelector.js
+
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function is(x: unknown, y: any) {
