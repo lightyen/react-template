@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react"
+import { HslColorPicker } from "react-colorful"
 import { Route } from "react-router"
 import { Button } from "~/components/button"
 import { Card, CardContent, CardTitle } from "~/components/card"
 import { Input } from "~/components/input"
+import { hsl2Css, parseHslColor } from "~/components/lib"
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
 
 export const ColorsRoutes = <Route path="colors" Component={Component} />
 
 export function Component() {
 	return (
 		<div tw="max-w-2xl grid gap-10">
-			<div tw="h-10" style={{ background: `hsl(0 50% 32%)` }}></div>
 			<div tw="grid gap-2 rounded-lg">
 				<div tw="p-1 rounded-lg bg-background text-foreground">foreground</div>
 				<Card tw="p-3">
@@ -82,15 +84,34 @@ function DataSheet() {
 				<div tw="grid gap-2 whitespace-nowrap">
 					{Object.entries(colors).map(([k, value]) => {
 						return (
-							<div key={k} tw="grid gap-2 items-center [grid-template-columns: 1fr 150px 200px]">
-								<div tw="text-right">{k}</div>
-								<div tw="">{value}</div>
-								<div tw="h-full" style={{ backgroundColor: `hsl(${value})` }} />
-							</div>
+							<ColorPicker key={k} cssVariable={k}>
+								<div tw="p-0.5 grid gap-2 items-center [grid-template-columns: 1fr 150px 200px] hover:(ring-1 ring-accent)">
+									<div tw="text-right">{k}</div>
+									<div tw="">{value}</div>
+									<div tw="h-full" style={{ backgroundColor: `hsl(${value})` }} />
+								</div>
+							</ColorPicker>
 						)
 					})}
 				</div>
 			</CardContent>
 		</Card>
+	)
+}
+
+function ColorPicker({ cssVariable, children }: React.PropsWithChildren<{ cssVariable: string }>) {
+	const color = parseHslColor(getComputedStyle(document.documentElement).getPropertyValue(cssVariable))
+	return (
+		<Popover placement="bottom">
+			<PopoverTrigger>{children}</PopoverTrigger>
+			<PopoverContent>
+				<HslColorPicker
+					color={color}
+					onChange={color => {
+						document.documentElement.style.setProperty(cssVariable, hsl2Css(color))
+					}}
+				/>
+			</PopoverContent>
+		</Popover>
 	)
 }
