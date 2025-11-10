@@ -1,8 +1,12 @@
+import { useEffect, useState } from "react"
+import { tw } from "twobj"
 import { useSelect } from "~/context"
 import { FormattedMessage, useIntl } from "~/i18n"
+import { KeyState, useGlobalKeys, useKeyStore } from "~/utils/global-keys"
 
 export function Home() {
 	const isMobile = useSelect(state => state.app.mobile)
+	useKeyboard()
 	return (
 		<article tw="flex flex-col gap-5">
 			<div tw="max-w-xl">
@@ -45,6 +49,7 @@ export function Home() {
 					</a>
 				</div>
 			</div>
+			<MyKeyboard />
 		</article>
 	)
 }
@@ -58,6 +63,22 @@ function MyTime() {
 			{formatDuration(32777)}
 		</div>
 	)
+}
+
+function useKeyboard() {
+	const [mounted, setMount] = useState(false)
+	useGlobalKeys(mounted)
+	useEffect(() => {
+		setMount(true)
+		return () => {
+			setMount(false)
+		}
+	}, [])
+}
+
+function MyKeyboard() {
+	const state = useKeyStore(state => state.keys["KC_1"])
+	return <div css={state === KeyState.KeyDown && tw`text-orange-500`}>KC_1</div>
 }
 
 function Test1() {
