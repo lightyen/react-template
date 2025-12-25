@@ -6,6 +6,7 @@ import { globalStyles, tw } from "twobj"
 import { router } from "./Router"
 
 import "./global.css"
+import { useIntl } from "./i18n"
 
 const bodyScrollbar = tw`
 	not-mobile:(
@@ -21,11 +22,25 @@ export const appStyle = css`
 	${bodyScrollbar}
 	body {
 		${tw`
-			bg-background text-foreground font-normal leading-normal font-sans [font-display: optional]
+			bg-background text-foreground font-normal leading-normal
 			m-0 min-w-[320px] min-h-screen
 		`}
 	}
 `
+
+function AppFont() {
+	const style = useIntl(s => {
+		switch (s.locale) {
+			case "zh-TW":
+				return tw`[body]:font-tw`
+			case "ja-JP":
+				return tw`[body]:font-jp`
+			default:
+				return tw`[body]:font-en`
+		}
+	})
+	return <Global styles={style} />
+}
 
 function DebugMode({ children }: React.PropsWithChildren<{}>) {
 	const enable = Boolean(localStorage.getItem("strict"))
@@ -43,6 +58,7 @@ export function App() {
 		<DebugMode>
 			<StoreProvider>
 				<Global styles={[globalStyles, appStyle]} />
+				<AppFont />
 				<RouterProvider router={router} />
 			</StoreProvider>
 		</DebugMode>
