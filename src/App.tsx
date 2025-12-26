@@ -22,7 +22,7 @@ export const appStyle = css`
 	${bodyScrollbar}
 	body {
 		${tw`
-			bg-background text-foreground font-normal leading-normal
+			bg-background text-foreground font-normal leading-normal font-sans
 			m-0 min-w-[320px] min-h-screen
 		`}
 	}
@@ -31,12 +31,10 @@ export const appStyle = css`
 function AppFont() {
 	const style = useIntl(s => {
 		switch (s.locale) {
-			case "zh-TW":
-				return tw`[body]:font-tw`
 			case "ja-JP":
-				return tw`[body]:font-jp`
+				return tw`[:root]:[--font-sans: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "メイリオ", "Meiryo", "YuGothic", "Yu Gothic", "ＭＳ Ｐゴシック", "MS PGothic"]`
 			default:
-				return tw`[body]:font-en`
+				return tw`[:root]:[--font-sans: "Inter V", "Inter"]`
 		}
 	})
 	return <Global styles={style} />
