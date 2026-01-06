@@ -3,7 +3,9 @@ export default {
 	theme: {
 		fontFamily: {
 			sans: [
-				"var(--font-sans)",
+				"var(--font-sans,_)",
+				"-apple-system",
+				"BlinkMacSystemFont",
 				"ui-sans-serif",
 				"system-ui",
 				"sans-serif",
@@ -12,8 +14,11 @@ export default {
 				"Segoe UI Symbol",
 				"Noto Color Emoji",
 			],
+			serif: ["var(--font-serif,_)", "ui-serif", "Georgia", "Cambria", "Times New Roman", "Times", "serif"],
 			mono: [
-				"var(--font-mono)",
+				"var(--font-mono,_)",
+				"Cascadia Code PL",
+				"Cascadia Code",
 				"ui-monospace",
 				"SFMono-Regular",
 				"Menlo",

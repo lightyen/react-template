@@ -32,9 +32,9 @@ function AppFont() {
 	const style = useIntl(s => {
 		switch (s.locale) {
 			case "ja-JP":
-				return tw`[:root]:[--font-sans: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "メイリオ", "Meiryo", "YuGothic", "Yu Gothic", "ＭＳ Ｐゴシック", "MS PGothic"]`
+				return tw`[:root]:[--font-sans: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "YuGothic", "Yu Gothic", "ＭＳ Ｐゴシック", "MS PGothic"]`
 			default:
-				return tw`[:root]:[--font-sans: "Inter V", "Inter"]`
+				return tw``
 		}
 	})
 	return <Global styles={style} />
