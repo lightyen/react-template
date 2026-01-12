@@ -1,0 +1,38 @@
+diff --git a/react-intl.iife.js b/react-intl.iife.js
+index 757e0e96bfe8196310d9b61e30cdcbae864592f7..6b12a633c8e5e10db8c43d28222aeb20602e270f 100644
+--- a/react-intl.iife.js
++++ b/react-intl.iife.js
+@@ -9679,10 +9679,9 @@ For more details see https://formatjs.github.io/docs/getting-started/message-dis
+     textComponent: React.Fragment
+   });
+   var toKeyedReactNodeArray = (children) => {
+-    const childrenArray = React.Children.toArray(children);
+-    return childrenArray.map((child, index) => {
+-      if (React.isValidElement(child)) {
+-        return React.createElement(React.Fragment, { key: index }, child);
++    return React.Children.map(children, child => {
++      if (React.isValidElement(child) && child._store) {
++        child._store.validated = 1;
+       }
+       return child;
+     });
+diff --git a/src/utils.js b/src/utils.js
+index dd435f63b83ec6ec512d8df5d2ae487ddfbd3eff..63dbd08abd74d0ef80b23786cde5425c6bfdfb28 100644
+--- a/src/utils.js
++++ b/src/utils.js
+@@ -26,12 +26,9 @@ export const DEFAULT_INTL_CONFIG = {
+ *
+ */
+ export const toKeyedReactNodeArray = (children) => {
+-	const childrenArray = React.Children.toArray(children);
+-	return childrenArray.map((child, index) => {
+-		// For React elements, wrap in a keyed Fragment
+-		// This creates a new element with a key rather than trying to add one after creation
+-		if (React.isValidElement(child)) {
+-			return /* @__PURE__ */ _jsx(React.Fragment, { children: child }, index);
++	return React.Children.map(children, child => {
++		if (React.isValidElement(child) && child._store) {
++			child._store.validated = 1;
+ 		}
+ 		return child;
+ 	});
