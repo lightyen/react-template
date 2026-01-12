@@ -1,13 +1,15 @@
 import eslint from "@eslint/js"
 import react from "eslint-plugin-react"
 import reactHooks from "eslint-plugin-react-hooks"
+import { defineConfig } from "eslint/config"
 import tseslint from "typescript-eslint"
 
-export default tseslint.config(
+export default defineConfig(
 	{
 		ignores: ["eslint.config.js", "src/typings", "dist", "shadcn", "playwright"],
 	},
 	eslint.configs.recommended,
+	tseslint.configs.recommended,
 	...tseslint.configs.recommendedTypeChecked,
 	...tseslint.configs.stylisticTypeChecked,
 	{
@@ -90,6 +92,8 @@ export default tseslint.config(
 		},
 		rules: {
 			...reactHooks.configs.recommended.rules,
+			"react-hooks/set-state-in-effect": "warn",
+			"react-hooks/refs": "off",
 		},
 	},
 )
