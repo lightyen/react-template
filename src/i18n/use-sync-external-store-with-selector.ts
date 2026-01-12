@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/immutability */
-
 // Source: https://github.com/facebook/react/blob/4049cfeeab33146e02b0721477fd5f2020f76a04/packages/use-sync-external-store/src/useSyncExternalStoreWithSelector.js
 
 import { useEffect, useMemo, useRef, useSyncExternalStore } from "react"
@@ -9,6 +7,14 @@ function is(x: unknown, y: any) {
 	return (x === y && (0 !== x || 1 / x === 1 / y)) || (x !== x && y !== y)
 }
 
+interface Instance<Snapshot, Selection> {
+	hasMemo: boolean
+	hasValue: boolean
+	value: Selection
+	memoizedSnapshot: Snapshot
+	memoizedSelection: Selection
+}
+
 export function useSyncExternalStoreWithSelector<Snapshot, Selection>(
 	subscribe: (onStoreChange: () => void) => () => void,
 	getSnapshot: () => Snapshot,
@@ -16,70 +22,55 @@ export function useSyncExternalStoreWithSelector<Snapshot, Selection>(
 	selector: (snapshot: Snapshot) => Selection,
 	isEqual?: (a: Selection, b: Selection) => boolean,
 ): Selection {
-	type Instance<Selection> =
-		| {
-				hasValue: true
-				value: Selection
-		  }
-		| {
-				hasValue: false
-				value: null
-		  }
-
-	const instRef = useRef<Instance<Selection> | null>(null)
-
-	let inst: Instance<Selection>
-	if (instRef.current === null) {
-		inst = {
-			hasValue: false,
-			value: null,
-		}
-		instRef.current = inst
-	} else {
-		inst = instRef.current
-	}
+	const instRef = useRef<Instance<Snapshot, Selection>>({
+		hasMemo: false,
+		hasValue: false,
+		value: null!,
+		memoizedSnapshot: undefined!,
+		memoizedSelection: undefined!,
+	})
 
 	const [getSelection, getServerSelection] = useMemo(() => {
+		const inst = instRef.current
+
 		// Track the memoized state using closure variables that are local to this
 		// memoized instance of a getSnapshot function. Intentionally not using a
 		// useRef hook, because that state would be shared across all concurrent
 		// copies of the hook/component.
-		let hasMemo = false
-		let memoizedSnapshot: Snapshot
-		let memoizedSelection: Selection
 
 		const memoizedSelector = (nextSnapshot: Snapshot) => {
-			if (!hasMemo) {
+			if (!inst.hasMemo) {
 				// The first time the hook is called, there is no memoized result.
-				hasMemo = true
-				memoizedSnapshot = nextSnapshot
+				inst.hasMemo = true
+				inst.memoizedSnapshot = nextSnapshot
 				const nextSelection = selector(nextSnapshot)
-				if (isEqual !== undefined) {
+
+				if (isEqual != null) {
 					// Even if the selector has changed, the currently rendered selection
 					// may be equal to the new selection. We should attempt to reuse the
 					// current value if possible, to preserve downstream memoizations.
 					if (inst.hasValue) {
 						const currentSelection = inst.value
 						if (isEqual(currentSelection, nextSelection)) {
-							memoizedSelection = currentSelection
+							inst.memoizedSelection = currentSelection
 							return currentSelection
 						}
 					}
 				}
-				memoizedSelection = nextSelection
+				inst.memoizedSelection = nextSelection
 				return nextSelection
 			}
 
 			// We may be able to reuse the previous invocation's result.
-			const prevSnapshot = memoizedSnapshot
-			const prevSelection = memoizedSelection
+			const prevSnapshot = inst.memoizedSnapshot
+			const prevSelection = inst.memoizedSelection
 
 			if (is(prevSnapshot, nextSnapshot)) {
 				// The snapshot is the same as last time. Reuse the previous selection.
 				return prevSelection
 			}
 
-			// The snapshot has changed, so we need to compute a new selection.
+			inst.memoizedSnapshot = nextSnapshot
 			const nextSelection = selector(nextSnapshot)
 
 			// If a custom isEqual function is provided, use that to check if the data
@@ -87,14 +78,10 @@ export function useSyncExternalStoreWithSelector<Snapshot, Selection>(
 			// to React that the selections are conceptually equal, and we can bail
 			// out of rendering.
 			if (isEqual?.(prevSelection, nextSelection)) {
-				// The snapshot still has changed, so make sure to update to not keep
-				// old references alive
-				memoizedSnapshot = nextSnapshot
 				return prevSelection
 			}
 
-			memoizedSnapshot = nextSnapshot
-			memoizedSelection = nextSelection
+			inst.memoizedSelection = nextSelection
 			return nextSelection
 		}
 
@@ -104,14 +91,15 @@ export function useSyncExternalStoreWithSelector<Snapshot, Selection>(
 		const getServerSnapshotWithSelector =
 			maybeGetServerSnapshot === null ? undefined : () => memoizedSelector(maybeGetServerSnapshot())
 		return [getSnapshotWithSelector, getServerSnapshotWithSelector]
-	}, [inst, getSnapshot, getServerSnapshot, selector, isEqual])
+	}, [getSnapshot, getServerSnapshot, selector, isEqual])
 
 	const value = useSyncExternalStore(subscribe, getSelection, getServerSelection)
 
 	useEffect(() => {
+		const inst = instRef.current
 		inst.hasValue = true
 		inst.value = value
-	}, [inst, value])
+	}, [value])
 
 	return value
 }
