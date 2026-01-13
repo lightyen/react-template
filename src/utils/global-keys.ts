@@ -88,7 +88,7 @@ export function useGlobalKeys(enable: boolean) {
 			window.removeEventListener("keyup", keyup)
 			clear()
 		}
-	}, [enable, setKey])
+	}, [enable, setKey, clear])
 
 	return store
 }

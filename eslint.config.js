@@ -92,8 +92,11 @@ export default defineConfig(
 		},
 		rules: {
 			...reactHooks.configs.recommended.rules,
-			"react-hooks/set-state-in-effect": "warn",
+			// unstable
+			"react-hooks/set-state-in-effect": "off",
+			"react-hooks/immutability": "off",
 			"react-hooks/refs": "off",
+			"react-hooks/incompatible-library": "off",
 		},
 	},
 )

@@ -20,7 +20,7 @@ export function composeRefs<T extends Element>(...refs: NullableRef<T>[]) {
 }
 
 export function useComposedRefs<T extends Element>(...refs: NullableRef<T>[]) {
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/use-memo
 	return useCallback(composeRefs(...refs), refs)
 }
 
