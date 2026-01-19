@@ -1,8 +1,8 @@
 diff --git a/react-intl.iife.js b/react-intl.iife.js
-index 757e0e96bfe8196310d9b61e30cdcbae864592f7..6b12a633c8e5e10db8c43d28222aeb20602e270f 100644
+index 7efd1f820eb10e32b4d0bad6dfae7d906f1697df..0304a79b7f2175339300db231f69203b3ce0d259 100644
 --- a/react-intl.iife.js
 +++ b/react-intl.iife.js
-@@ -9679,10 +9679,9 @@ For more details see https://formatjs.github.io/docs/getting-started/message-dis
+@@ -9678,10 +9678,9 @@ For more details see https://formatjs.github.io/docs/getting-started/message-dis
      textComponent: React.Fragment
    });
    var toKeyedReactNodeArray = (children) => {
