@@ -1,4 +1,4 @@
-import { animated, easings, useSprings } from "@react-spring/web"
+import { animated, type AnimatedComponent, easings, useSprings } from "@react-spring/web"
 import { useWindowVirtualizer } from "@tanstack/react-virtual"
 import { useDrag } from "@use-gesture/react"
 import { createContext, use, useRef, useState } from "react"
@@ -42,7 +42,7 @@ function DragExample() {
 	))
 }
 
-function AnimatedItem({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+function AnimatedItem({ children, ...props }: React.ComponentProps<AnimatedComponent<"div">> & React.Attributes) {
 	return (
 		<animated.div tw="bg-primary" {...props}>
 			{children}
