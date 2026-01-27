@@ -1,5 +1,5 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import { Children, cloneElement, isValidElement, use, useEffect } from "react"
+import { Children, cloneElement, isValidElement, use, useEffect, useEffectEvent } from "react"
 import { tw } from "twobj"
 import { FormattedMessage } from "~/i18n"
 import { Button, CloseButton, type ButtonProps } from "./button"
@@ -104,22 +104,21 @@ export function SheetContent({
 	const visible = store(state => state.visible)
 	const setVisible = store(state => state.setVisible)
 	const lightDismiss = store(state => state.lightDismiss)
-
-	useEffect(() => {
-		function handle(e: KeyboardEvent) {
-			if (e.key === "Escape") {
-				setVisible(false)
-			}
+	const onkeydown = useEffectEvent((e: KeyboardEvent) => {
+		if (e.key === "Escape") {
+			setVisible(false)
 		}
+	})
+	useEffect(() => {
 		if (lightDismiss) {
-			window.addEventListener("keydown", handle)
+			window.addEventListener("keydown", onkeydown)
 		}
 		return () => {
 			if (lightDismiss) {
-				window.removeEventListener("keydown", handle)
+				window.removeEventListener("keydown", onkeydown)
 			}
 		}
-	}, [lightDismiss, setVisible])
+	}, [lightDismiss])
 
 	const api = useSpringRef()
 	const [transitions] = useTransition(visible, () => ({

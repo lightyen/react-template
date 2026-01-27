@@ -10,7 +10,17 @@ import {
 	type Placement,
 	type UseFloatingReturn,
 } from "@floating-ui/react"
-import { Children, cloneElement, createContext, isValidElement, use, useEffect, useMemo, useRef, useState } from "react"
+import {
+	Children,
+	cloneElement,
+	createContext,
+	isValidElement,
+	use,
+	useEffect,
+	useEffectEvent,
+	useMemo,
+	useState,
+} from "react"
 import { FormattedMessage } from "~/i18n"
 import { Button, type ButtonProps } from "./button"
 import { composeRefs, isElement } from "./lib"
@@ -107,12 +117,11 @@ interface PopoverContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
 export function PopoverContent({ children, ...props }: PopoverContentProps) {
 	const { isMounted, refs, floatingStyles, getFloatingProps, styles, setVisible, visible, onEnter, onLeave } =
 		use(PopoverContext)
-	const onleave = useRef(onLeave)
+	const _onLeave = useEffectEvent(onLeave)
 	useEffect(() => {
-		const onLeave = onleave.current
 		return () => {
 			if (isMounted) {
-				onLeave()
+				_onLeave()
 			}
 		}
 	}, [isMounted])

@@ -1,5 +1,5 @@
 import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import { Children, cloneElement, isValidElement, use, useEffect, useRef } from "react"
+import { Children, cloneElement, isValidElement, use, useEffect, useEffectEvent, useRef } from "react"
 import { Button, CloseButton, type ButtonProps } from "~/components/button"
 import { Overlay } from "~/components/internal/overlay"
 import { isElement } from "~/components/lib"
@@ -52,19 +52,18 @@ export function DialogContent({
 	const visible = store(state => state.visible)
 	const setVisible = store(state => state.setVisible)
 	const lightDismiss = store(state => state.lightDismiss)
-
-	useEffect(() => {
-		function handle(e: KeyboardEvent) {
-			if (e.key === "Escape") {
-				setVisible(false)
-			}
+	const onkeydown = useEffectEvent((e: KeyboardEvent) => {
+		if (e.key === "Escape") {
+			setVisible(false)
 		}
+	})
+	useEffect(() => {
 		if (lightDismiss) {
-			window.addEventListener("keydown", handle)
+			window.addEventListener("keydown", onkeydown)
 		}
 		return () => {
 			if (lightDismiss) {
-				window.removeEventListener("keydown", handle)
+				window.removeEventListener("keydown", onkeydown)
 			}
 		}
 	}, [lightDismiss, setVisible])

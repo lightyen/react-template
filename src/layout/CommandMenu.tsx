@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useEffectEvent } from "react"
 import { useNavigate } from "react-router"
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "~/components/command"
 import { useDialog } from "~/components/dialog"
@@ -8,20 +8,19 @@ export function CommandMenu() {
 	const navigate = useNavigate()
 	const store = useDialog()
 	const setVisible = store(state => state.setVisible)
-
-	useEffect(() => {
-		const down = (e: KeyboardEvent) => {
-			if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault()
-				if (!open && getDialogCount() > 0) {
-					return
-				}
-				setVisible(visible => !visible)
+	const onkeydown = useEffectEvent((e: KeyboardEvent) => {
+		if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault()
+			if (!open && getDialogCount() > 0) {
+				return
 			}
+			setVisible(visible => !visible)
 		}
-		document.addEventListener("keydown", down)
-		return () => document.removeEventListener("keydown", down)
-	}, [setVisible])
+	})
+	useEffect(() => {
+		document.addEventListener("keydown", onkeydown)
+		return () => document.removeEventListener("keydown", onkeydown)
+	}, [])
 	return (
 		<div>
 			<span tw="text-sm text-muted-foreground whitespace-nowrap cursor-pointer" onClick={() => setVisible(true)}>
