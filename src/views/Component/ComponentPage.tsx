@@ -50,8 +50,8 @@ export function Component() {
 			<Header>Dialog</Header>
 			<DialogView />
 			<Separator />
-			<Header>Toolip</Header>
-			<ToolipView />
+			<Header>Tooltip</Header>
+			<TooltipView />
 			<Separator />
 			<Header>Accordion</Header>
 			<AccordionView />
@@ -255,7 +255,7 @@ export function Waiting() {
 	)
 }
 
-function ToolipView() {
+function TooltipView() {
 	return (
 		<Popover placement="bottom-start">
 			<PopoverTrigger>
