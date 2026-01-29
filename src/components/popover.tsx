@@ -1,6 +1,8 @@
 import {
+	arrow,
 	autoUpdate,
 	flip,
+	FloatingArrow,
 	FloatingPortal,
 	offset,
 	shift,
@@ -20,6 +22,7 @@ import {
 	useEffect,
 	useEffectEvent,
 	useMemo,
+	useRef,
 	useState,
 } from "react"
 import { FormattedMessage } from "~/i18n"
@@ -37,6 +40,8 @@ interface PopoverContext extends IPopover {
 	isMounted: boolean
 	refs: UseFloatingReturn["refs"]
 	floatingStyles: UseFloatingReturn["floatingStyles"]
+	context: UseFloatingReturn["context"]
+	arrowRef: React.Ref<SVGSVGElement>
 	getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"]
 	getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"]
 	styles: React.CSSProperties
@@ -116,8 +121,19 @@ interface PopoverContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
 }
 
 export function PopoverContent({ children, ...props }: PopoverContentProps) {
-	const { isMounted, refs, floatingStyles, getFloatingProps, styles, setVisible, visible, onEnter, onLeave } =
-		use(PopoverContext)
+	const {
+		isMounted,
+		refs,
+		floatingStyles,
+		context,
+		arrowRef,
+		getFloatingProps,
+		styles,
+		setVisible,
+		visible,
+		onEnter,
+		onLeave,
+	} = use(PopoverContext)
 	const _onLeave = useEffectEvent(onLeave)
 	useEffect(() => {
 		return () => {
@@ -146,6 +162,15 @@ export function PopoverContent({ children, ...props }: PopoverContentProps) {
 							}
 						}}
 					>
+						<FloatingArrow
+							ref={arrowRef}
+							context={context}
+							tw="fill-background [& > path:first-of-type]:stroke-border"
+							style={{ transform: "translateY(1px)" }}
+							width={19}
+							height={19}
+							d="M0 20C0 20 2.06906 19.9829 5.91817 15.4092C7.49986 13.5236 8.97939 12.3809 10.0002 12.3809C11.0202 12.3809 12.481 13.6451 14.0814 15.5472C17.952 20.1437 20 20 20 20H0Z"
+						/>
 						{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
 					</div>
 				</div>
@@ -212,12 +237,12 @@ export function Popover({
 		return { visible, setVisible, onEnter, onLeave }
 	}, [innerVisible, visible, setVisible, onEnter, onLeave])
 
+	const arrowRef = useRef<SVGSVGElement>(null)
 	const { refs, floatingStyles, context } = useFloating({
 		open: ctx.visible,
 		onOpenChange: ctx.setVisible,
 		placement,
-
-		middleware: [offset(5), shift({ padding: 8 }), flip()],
+		middleware: [offset(6), shift({ padding: 8 }), flip(), arrow({ element: arrowRef })],
 		whileElementsMounted: autoUpdate,
 	})
 
@@ -256,6 +281,8 @@ export function Popover({
 				isMounted,
 				refs,
 				floatingStyles,
+				context,
+				arrowRef,
 				getReferenceProps,
 				getFloatingProps,
 				styles,
