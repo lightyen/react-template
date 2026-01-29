@@ -1,6 +1,7 @@
 import {
 	autoUpdate,
 	flip,
+	FloatingPortal,
 	offset,
 	shift,
 	useDismiss,
@@ -130,18 +131,25 @@ export function PopoverContent({ children, ...props }: PopoverContentProps) {
 	}
 	return (
 		isMounted && (
-			<div ref={refs.setFloating} style={{ ...floatingStyles, zIndex: 20 }} {...getFloatingProps()} {...props}>
+			<FloatingPortal>
 				<div
-					style={styles}
-					onTransitionEnd={() => {
-						if (visible) {
-							onEnter()
-						}
-					}}
+					ref={refs.setFloating}
+					style={{ ...floatingStyles, zIndex: 10 }}
+					{...getFloatingProps()}
+					{...props}
 				>
-					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
+					<div
+						style={styles}
+						onTransitionEnd={() => {
+							if (visible) {
+								onEnter()
+							}
+						}}
+					>
+						{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
+					</div>
 				</div>
-			</div>
+			</FloatingPortal>
 		)
 	)
 }
