@@ -8,7 +8,7 @@ import { NavigationSheetMenu } from "./NavigationMenu"
 export function HeaderMenu() {
 	return (
 		<header
-			tw="sticky top-0 z-50 w-full border-b bg-background/95
+			tw="sticky top-0 w-full border-b bg-background/95
 					backdrop-blur-lg supports-[backdrop-filter]:bg-background/70"
 		>
 			<div tw="px-2 sm:container flex gap-1 h-14 items-center">

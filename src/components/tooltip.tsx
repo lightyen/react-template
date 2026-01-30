@@ -1,6 +1,9 @@
 import {
+	arrow,
 	autoUpdate,
 	flip,
+	FloatingArrow,
+	FloatingPortal,
 	offset,
 	shift,
 	useDismiss,
@@ -10,6 +13,7 @@ import {
 	type Placement,
 	type UseFloatingReturn,
 } from "@floating-ui/react"
+import { InfoCircledIcon } from "@radix-ui/react-icons"
 import {
 	Children,
 	cloneElement,
@@ -19,12 +23,11 @@ import {
 	useEffect,
 	useEffectEvent,
 	useMemo,
+	useRef,
 	useState,
 } from "react"
-import { createPortal } from "react-dom"
 import { FormattedMessage } from "~/i18n"
 import { Button, type ButtonProps } from "./button"
-import { getViewportElement } from "./internal/scrollbar"
 import { composeRefs, isElement } from "./lib"
 
 interface IPopover {
@@ -38,6 +41,8 @@ interface PopoverContext extends IPopover {
 	isMounted: boolean
 	refs: UseFloatingReturn["refs"]
 	floatingStyles: UseFloatingReturn["floatingStyles"]
+	context: UseFloatingReturn["context"]
+	arrowRef: React.Ref<SVGSVGElement>
 	getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"]
 	getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"]
 	styles: React.CSSProperties
@@ -49,7 +54,7 @@ interface PopoverTriggerProps extends Omit<ButtonProps, "onClick"> {
 	mode?: "click" | "none"
 }
 
-export function PopoverTrigger({ children, mode = "click", ...props }: React.PropsWithChildren<PopoverTriggerProps>) {
+function PopoverTrigger({ children, mode = "click", ...props }: React.PropsWithChildren<PopoverTriggerProps>) {
 	const { setVisible, refs, getReferenceProps } = use(PopoverContext)
 
 	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
@@ -116,9 +121,20 @@ interface PopoverContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>,
 	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
-export function PopoverContent({ children, ...props }: PopoverContentProps) {
-	const { isMounted, refs, floatingStyles, getFloatingProps, styles, setVisible, visible, onEnter, onLeave } =
-		use(PopoverContext)
+function PopoverContent({ children, ...props }: PopoverContentProps) {
+	const {
+		isMounted,
+		refs,
+		floatingStyles,
+		context,
+		arrowRef,
+		getFloatingProps,
+		styles,
+		setVisible,
+		visible,
+		onEnter,
+		onLeave,
+	} = use(PopoverContext)
 	const _onLeave = useEffectEvent(onLeave)
 	useEffect(() => {
 		return () => {
@@ -131,12 +147,11 @@ export function PopoverContent({ children, ...props }: PopoverContentProps) {
 		return null
 	}
 	return (
-		isMounted &&
-		createPortal(
-			<div tw="fixed top-0">
+		isMounted && (
+			<FloatingPortal>
 				<div
 					ref={refs.setFloating}
-					style={{ ...floatingStyles, zIndex: 50 }}
+					style={{ ...floatingStyles, zIndex: 10 }}
 					{...getFloatingProps()}
 					{...props}
 				>
@@ -148,46 +163,13 @@ export function PopoverContent({ children, ...props }: PopoverContentProps) {
 							}
 						}}
 					>
+						<FloatingArrow ref={arrowRef} context={context} tw="fill-border" />
 						{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
 					</div>
 				</div>
-			</div>,
-			getViewportElement(),
+			</FloatingPortal>
 		)
 	)
-}
-
-export function PopoverClose({
-	children,
-	...props
-}: React.PropsWithChildren<Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">>) {
-	const { setVisible } = use(PopoverContext)
-
-	if (Children.count(children) > 1 && Children.toArray(children).every(isValidElement)) {
-		return Children.map(children, c => <PopoverClose>{c}</PopoverClose>)
-	}
-
-	if (!isValidElement(children) || isElement(children, FormattedMessage)) {
-		return (
-			<button type="button" {...props} onClick={() => setVisible(false)}>
-				{children}
-			</button>
-		)
-	}
-
-	const child = children as React.DetailedReactHTMLElement<React.HTMLAttributes<HTMLElement>, HTMLElement>
-
-	return cloneElement(child, {
-		onClick: e => {
-			setVisible(false)
-			child.props.onClick?.(e)
-		},
-	})
-}
-
-export function usePopover(initialState: boolean | (() => boolean) = false) {
-	const [visible, setVisible] = useState(initialState)
-	return { visible, setVisible }
 }
 
 interface PopoverProps {
@@ -198,7 +180,7 @@ interface PopoverProps {
 	onLeave?(): void
 }
 
-export function Popover({
+function Popover({
 	children,
 	placement = "bottom",
 	visible,
@@ -215,11 +197,12 @@ export function Popover({
 		return { visible, setVisible, onEnter, onLeave }
 	}, [innerVisible, visible, setVisible, onEnter, onLeave])
 
+	const arrowRef = useRef<SVGSVGElement>(null)
 	const { refs, floatingStyles, context } = useFloating({
 		open: ctx.visible,
 		onOpenChange: ctx.setVisible,
 		placement,
-		middleware: [offset(5), shift({ padding: 8 }), flip()],
+		middleware: [offset(7), shift({ padding: 10 }), flip(), arrow({ element: arrowRef })],
 		whileElementsMounted: autoUpdate,
 	})
 
@@ -232,7 +215,6 @@ export function Popover({
 		duration: { open: 180, close: 200 },
 		common: ({ side }) => ({
 			transitionTimingFunction: "cubic-bezier(0.33, 1, 0.68, 1)",
-			zIndex: 50,
 			transformOrigin: {
 				top: "bottom",
 				left: "right",
@@ -243,10 +225,10 @@ export function Popover({
 		initial: ({ side }) => ({
 			opacity: 0,
 			transform: {
-				top: "translateY(5px) scale(0.9)",
-				right: "translateX(-5px) scale(0.9)",
-				bottom: "translateY(-5px) scale(0.9)",
-				left: "translateX(5px) scale(0.9)",
+				top: "translateY(3px)",
+				right: "translateX(-3px)",
+				bottom: "translateY(-3px)",
+				left: "translateX(3px)",
 			}[side],
 		}),
 		close: () => ({ opacity: 0 }),
@@ -258,6 +240,8 @@ export function Popover({
 				isMounted,
 				refs,
 				floatingStyles,
+				context,
+				arrowRef,
 				getReferenceProps,
 				getFloatingProps,
 				styles,
@@ -265,5 +249,22 @@ export function Popover({
 		>
 			{children}
 		</PopoverContext>
+	)
+}
+
+export function Tooltip({ children }: React.PropsWithChildren<{}>) {
+	return (
+		<Popover placement="bottom-start">
+			<PopoverTrigger>
+				<Button variant="outline" size="icon">
+					<InfoCircledIcon />
+				</Button>
+			</PopoverTrigger>
+			<PopoverContent>
+				<div tw="transition-colors border overflow-hidden rounded-lg bg-card w-[360px] hover:bg-border">
+					<div tw="p-4">{children}</div>
+				</div>
+			</PopoverContent>
+		</Popover>
 	)
 }

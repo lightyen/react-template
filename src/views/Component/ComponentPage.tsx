@@ -1,5 +1,5 @@
 import { useToast } from "@context"
-import { InfoCircledIcon, PlusIcon } from "@radix-ui/react-icons"
+import { PlusIcon } from "@radix-ui/react-icons"
 import { Fragment, useEffect, useState } from "react"
 import { Outlet } from "react-router"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/accordion"
@@ -32,6 +32,7 @@ import {
 } from "~/components/sheet"
 import { CircleLoading } from "~/components/spin"
 import { RouteTabs } from "~/components/tabs"
+import { Tooltip } from "~/components/tooltip"
 import { FormattedMessage } from "~/i18n"
 import { Header, Separator } from "~/views/common"
 
@@ -257,25 +258,14 @@ export function Waiting() {
 
 function TooltipView() {
 	return (
-		<Popover placement="bottom-start">
-			<PopoverTrigger>
-				<Button variant="outline" size="icon">
-					<InfoCircledIcon />
-				</Button>
-			</PopoverTrigger>
-			<PopoverContent>
-				<div tw="border overflow-hidden rounded-lg bg-card w-[360px]">
-					<div tw="p-4">
-						<div tw="mb-4 font-bold">SASA</div>
-						<div>
-							Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-							been the standard dummy text ever since the 1500s, when an unknown printer took a galley of
-							type and scrambled it to make a type specimen book.
-						</div>
-					</div>
-				</div>
-			</PopoverContent>
-		</Popover>
+		<Tooltip>
+			<div tw="mb-4 font-bold">SASA</div>
+			<div>
+				Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+				standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+				to make a type specimen book.
+			</div>
+		</Tooltip>
 	)
 }
 
