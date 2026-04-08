@@ -1,0 +1,26 @@
+diff --git a/index.js b/index.js
+index 9fb3ce32857ce99211ae7c6d0d6c08b38915364f..af6f38479181870fde45c37725a16a604b2a63b8 100644
+--- a/index.js
++++ b/index.js
+@@ -26,7 +26,7 @@ const DEFAULT_INTL_CONFIG$1 = {
+ */
+ const toKeyedReactNodeArray = (children) => {
+ 	return React.Children.toArray(children).map((child, index) => {
+-		if (React.isValidElement(child)) return /* @__PURE__ */ jsx(React.Fragment, { children: child }, index);
++		if (React.isValidElement(child) && child._store) child._store.validated = 1;
+ 		return child;
+ 	});
+ };
+diff --git a/react-intl.iife.js b/react-intl.iife.js
+index 7e0e0c575f6f4a328a41a1513e75ad3656725aed..506e52c3b8244af699469aacad2fbb6b6e7e8cf6 100644
+--- a/react-intl.iife.js
++++ b/react-intl.iife.js
+@@ -3310,7 +3310,7 @@ const DEFAULT_INTL_CONFIG = {
+ */
+ const toKeyedReactNodeArray = (children) => {
+ 	return React.Children.toArray(children).map((child, index) => {
+-		if (React.isValidElement(child)) return /* @__PURE__ */ jsx(React.Fragment, { children: child }, index);
++		if (React.isValidElement(child) && child._store) child._store.validated = 1;
+ 		return child;
+ 	});
+ };

@@ -2,6 +2,7 @@ import { useToast } from "@context"
 import { PlusIcon } from "@radix-ui/react-icons"
 import { Fragment, useEffect, useState } from "react"
 import { Outlet } from "react-router"
+import SendIcon from "~/assets/send.svg"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/accordion"
 import { Badge } from "~/components/badage"
 import { Button } from "~/components/button"
@@ -64,7 +65,10 @@ export function Component() {
 function ButtonView() {
 	return (
 		<div tw="flex items-center flex-wrap gap-4">
-			<Button variant="secondary">Apply</Button>
+			<Button variant="secondary">
+				<SendIcon />
+				Send
+			</Button>
 			<Button>Apply</Button>
 			<Button size="sm">Apply</Button>
 			<Button size="lg">Apply</Button>

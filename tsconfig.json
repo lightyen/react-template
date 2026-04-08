@@ -24,6 +24,7 @@
   "include": [
     "tailwind.config.ts",
     "vite.config.ts",
+    "./plugins/**/*",
     "vitest.config.ts",
     "playwright.config.ts",
     "./src/**/*",
