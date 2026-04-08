@@ -21,9 +21,9 @@
     "**/node_modules": true,
     "pnpm-lock.yaml": true
   },
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "npm.autoDetect": "off",
-  "typescript.tsc.autoDetect": "off",
+  "js/ts.tsc.autoDetect": "off",
   "editor.quickSuggestions": {
     "strings": true
   },
@@ -34,7 +34,7 @@
     "**/dist": true,
     "**/build": true
   },
-  "javascript.suggestionActions.enabled": false,
+  "js/ts.suggestionActions.enabled": false,
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
