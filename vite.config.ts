@@ -24,7 +24,7 @@ export default defineConfig({
 		react({ jsxImportSource: "@emotion/react" }),
 		babel({ plugins: [["twobj", { tailwindConfig, throwError: true }], "@emotion"] }),
 		license({ thirdParty: { output: "dist/LICENSE.txt" } }),
-		process.env.TYPE_CHECKER === "true" && checker({ typescript: true }),
+		process.env.TYPE_CHECK === "true" && checker({ typescript: true }),
 	],
 	server: {
 		host: "0.0.0.0",
