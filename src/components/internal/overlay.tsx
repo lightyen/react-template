@@ -1,7 +1,7 @@
 import { animated, useSpringRef, useTransition } from "@react-spring/web"
 import { useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
-import { tw } from "twobj"
+import { tw, tx } from "twobj"
 import { addDialogCount, getDialogCount, getViewportElement, setScroll, subtractDialogCount } from "./scrollbar"
 
 interface OverlayProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -43,9 +43,9 @@ export function Overlay({
 
 	const [transitions] = useTransition(visible, () => ({
 		ref: api,
-		from: { opacity: 0.8 },
-		enter: { opacity: 1 },
-		leave: { opacity: 0 },
+		from: tx`bg-foreground/10` as {},
+		enter: tx`bg-foreground/15`,
+		leave: tx`bg-foreground/10`,
 		config: { duration },
 		onDestroyed(end) {
 			if (!end) {
@@ -88,7 +88,7 @@ export function Overlay({
 					<animated.div
 						data-type="overlay"
 						tw="pointer-events-auto [& > :nth-last-of-type(-n+2)]:pointer-events-auto select-none [> *]:select-text
-							fixed inset-0 z-50 [&:has([role=dialog])]:(grid place-content-center place-items-center) bg-foreground/15
+							fixed inset-0 z-50 [&:has([role=dialog])]:(grid place-content-center place-items-center)
 						"
 						css={blur && tw`backdrop-blur-[1px]`}
 						style={s}

@@ -194,7 +194,7 @@ function TimePicker(props: TimePickerProps) {
 					<ClockIcon width={16} height={16} />
 				</div>
 			</PopoverTrigger>
-			<PopoverContent>
+			<PopoverContent portal>
 				<div
 					aria-label="timepicker"
 					tw="relative inline-block

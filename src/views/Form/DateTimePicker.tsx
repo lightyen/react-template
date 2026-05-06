@@ -98,7 +98,7 @@ function DateTimePickerPopover({
 	return (
 		<Popover placement="bottom-start" {...popover}>
 			<PopoverTrigger>{children}</PopoverTrigger>
-			<PopoverContent tw="">
+			<PopoverContent>
 				<DateTimePickerForm
 					tw="border rounded-lg bg-background px-5 py-4"
 					value={value}

@@ -113,10 +113,11 @@ export function PopoverTrigger({ children, mode = "click", ...props }: React.Pro
 }
 
 interface PopoverContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
+	portal?: boolean
 	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
-export function PopoverContent({ children, ...props }: PopoverContentProps) {
+export function PopoverContent({ portal, children, ...props }: PopoverContentProps) {
 	const { isMounted, refs, floatingStyles, getFloatingProps, styles, setVisible, visible, onEnter, onLeave } =
 		use(PopoverContext)
 	const _onLeave = useEffectEvent(onLeave)
@@ -132,28 +133,50 @@ export function PopoverContent({ children, ...props }: PopoverContentProps) {
 	}
 	return (
 		isMounted &&
-		createPortal(
-			<div tw="fixed top-0">
-				<div
-					ref={refs.setFloating}
-					style={{ ...floatingStyles, zIndex: 50 }}
-					{...getFloatingProps()}
-					{...props}
-				>
+		(portal ? (
+			createPortal(
+				<div tw="fixed top-0 z-50">
 					<div
-						style={styles}
-						onTransitionEnd={() => {
-							if (visible) {
-								onEnter()
-							}
-						}}
+						ref={refs.setFloating}
+						tw="pointer-events-auto"
+						style={floatingStyles}
+						{...getFloatingProps()}
+						{...props}
 					>
-						{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
+						<div
+							style={styles}
+							onTransitionEnd={() => {
+								if (visible) {
+									onEnter()
+								}
+							}}
+						>
+							{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
+						</div>
 					</div>
+				</div>,
+				getViewportElement(),
+			)
+		) : (
+			<div
+				ref={refs.setFloating}
+				tw="pointer-events-auto z-10"
+				style={floatingStyles}
+				{...getFloatingProps()}
+				{...props}
+			>
+				<div
+					style={styles}
+					onTransitionEnd={() => {
+						if (visible) {
+							onEnter()
+						}
+					}}
+				>
+					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
 				</div>
-			</div>,
-			getViewportElement(),
-		)
+			</div>
+		))
 	)
 }
 
@@ -229,10 +252,9 @@ export function Popover({
 	})
 	const { getReferenceProps, getFloatingProps } = useInteractions([dismiss])
 	const { isMounted, styles } = useTransitionStyles(context, {
-		duration: { open: 180, close: 200 },
+		// duration: { open: 180, close: 200 },
 		common: ({ side }) => ({
 			transitionTimingFunction: "cubic-bezier(0.33, 1, 0.68, 1)",
-			zIndex: 50,
 			transformOrigin: {
 				top: "bottom",
 				left: "right",

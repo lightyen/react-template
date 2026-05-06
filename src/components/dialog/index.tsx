@@ -72,10 +72,10 @@ export function DialogContent({
 
 	const [transitions] = useTransition(visible, () => ({
 		ref: api,
-		from: { opacity: 0.5, transform: "scale(0.98)" },
-		enter: { opacity: 1, transform: "scale(1)" },
-		leave: { opacity: 0, transform: "scale(0.98)" },
-		config: { duration: 120, easing: easings.easeOutCubic },
+		from: { opacity: 0.5, transform: "translateY(6px)" },
+		enter: { opacity: 1, transform: "translateY(0)" },
+		leave: { opacity: 0, transform: "translateY(0)" },
+		config: { duration: 120, easing: easings.easeOutQuart },
 	}))
 
 	useEffect(() => {
