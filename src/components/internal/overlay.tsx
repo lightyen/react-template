@@ -1,7 +1,8 @@
 import { animated, useSpringRef, useTransition } from "@react-spring/web"
+import BezierEasing from "bezier-easing"
 import { useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
-import { tw, tx } from "twobj"
+import { tx } from "twobj"
 import { addDialogCount, getDialogCount, getViewportElement, setScroll, subtractDialogCount } from "./scrollbar"
 
 interface OverlayProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,7 +15,7 @@ interface OverlayProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Overlay({
 	visible,
 	blur = true,
-	duration = 100,
+	duration = 150,
 	onClickOverlay = () => void 0,
 	onPointerDown = () => void 0,
 	onPointerUp = () => void 0,
@@ -43,10 +44,10 @@ export function Overlay({
 
 	const [transitions] = useTransition(visible, () => ({
 		ref: api,
-		from: tx`bg-foreground/10` as {},
-		enter: tx`bg-foreground/15`,
-		leave: tx`bg-foreground/10`,
-		config: { duration },
+		from: blur ? (tx`bg-foreground/0 [backdrop-filter: blur(0px)]` as {}) : tx`bg-foreground/0`,
+		enter: blur ? tx`bg-foreground/15 [backdrop-filter: blur(2px)]` : tx`bg-foreground/15`,
+		leave: blur ? tx`bg-foreground/0 [backdrop-filter: blur(0px)]` : tx`bg-foreground/0`,
+		config: { duration, easing: BezierEasing(0.4, 0, 0.33, 1) },
 		onDestroyed(end) {
 			if (!end) {
 				destroyedRef.current = false
@@ -90,7 +91,6 @@ export function Overlay({
 						tw="pointer-events-auto [& > :nth-last-of-type(-n+2)]:pointer-events-auto select-none [> *]:select-text
 							fixed inset-0 z-50 [&:has([role=dialog])]:(grid place-content-center place-items-center)
 						"
-						css={blur && tw`backdrop-blur-[1px]`}
 						style={s}
 						onPointerDown={event => {
 							onPointerDown(event)

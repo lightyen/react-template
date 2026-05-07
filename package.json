@@ -25,6 +25,7 @@
     "@use-gesture/react": "10.3.1",
     "axios": "1.15.2",
     "babel-plugin-twobj": "2.4.4",
+    "bezier-easing": "3.0.0",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
     "date-fns": "4.1.0",

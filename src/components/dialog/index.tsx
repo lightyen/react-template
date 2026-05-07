@@ -1,4 +1,5 @@
-import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
+import { animated, useSpringRef, useTransition } from "@react-spring/web"
+import BezierEasing from "bezier-easing"
 import { Children, cloneElement, isValidElement, use, useEffect, useEffectEvent, useRef } from "react"
 import { Button, CloseButton, type ButtonProps } from "~/components/button"
 import { Overlay } from "~/components/internal/overlay"
@@ -75,7 +76,7 @@ export function DialogContent({
 		from: { opacity: 0.5, transform: "translateY(6px)" },
 		enter: { opacity: 1, transform: "translateY(0)" },
 		leave: { opacity: 0, transform: "translateY(0)" },
-		config: { duration: 120, easing: easings.easeOutQuart },
+		config: { duration: 150, easing: BezierEasing(0.4, 0, 0.33, 1) },
 	}))
 
 	useEffect(() => {
