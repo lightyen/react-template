@@ -1,6 +1,7 @@
-import babel from "@rolldown/plugin-babel"
+import emotion from "@rolldown/plugin-emotion"
 import yaml from "@rollup/plugin-yaml"
 import react from "@vitejs/plugin-react"
+import twobj from "rolldown-plugin-twobj"
 import license from "rollup-plugin-license"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
@@ -12,18 +13,21 @@ import { version } from "./vite-plugins/version"
 
 const target = `http://${process.env.API_ENTRY}`
 
+const isProd = process.env.NODE_ENV === "production"
+
 export default defineConfig({
 	resolve: { tsconfigPaths: true },
 	build: { sourcemap: true, chunkSizeWarningLimit: 4 << 10 },
 	plugins: [
 		crossOriginIsolated(),
 		version(),
-		visualizer(),
 		yaml(),
 		svgr({ include: "**/*.svg", oxcOptions: { jsx: { runtime: "automatic" } } }),
+		twobj({ tailwindConfig, throwError: true }),
+		emotion(),
 		react({ jsxImportSource: "@emotion/react" }),
-		babel({ plugins: [["twobj", { tailwindConfig, throwError: true }], "@emotion"] }),
-		license({ thirdParty: { output: "dist/LICENSE.txt" } }),
+		isProd && visualizer(),
+		isProd && license({ thirdParty: { output: "dist/LICENSE.txt" } }),
 		process.env.TYPE_CHECK === "true" && checker({ typescript: true }),
 	],
 	server: {
