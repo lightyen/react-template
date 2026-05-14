@@ -1,7 +1,7 @@
+import "@daypicker/react/style.css"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { set } from "date-fns"
 import { useState } from "react"
-import "react-day-picker/style.css"
 import { Button } from "~/components/button"
 import { DateTimeFormProps, DateTimePickerForm } from "~/components/DateTimePicker"
 import { Dialog, DialogContent, DialogTrigger, useDialog } from "~/components/dialog"

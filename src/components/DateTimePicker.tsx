@@ -1,15 +1,15 @@
+import { DayPicker } from "@daypicker/react"
 import { css } from "@emotion/react"
 import { ClockIcon } from "@radix-ui/react-icons"
 import { getHours, getMinutes, set } from "date-fns"
 import { useEffect, useRef, useState } from "react"
-import { DayPicker } from "react-day-picker"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { theme, tw } from "twobj"
 import { Button, buttonVariants } from "~/components/button"
 import { FormattedMessage, useIntl } from "~/i18n"
 import { Popover, PopoverContent, PopoverTrigger, usePopover } from "./popover"
 
-import "react-day-picker/style.css"
+import "@daypicker/react/style.css"
 
 interface FormData {
 	date: Date
