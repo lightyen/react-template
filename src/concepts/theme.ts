@@ -3,7 +3,13 @@ interface ThemeOptions {
 	color?: string | null
 }
 
-export function isDark() {
+export function isDark(): boolean {
+	const className = document.documentElement.className
+	if (className.includes("dark")) {
+		return true
+	} else if (className.includes("light")) {
+		return false
+	}
 	return window.matchMedia(`(prefers-color-scheme: dark)`).matches
 }
 
