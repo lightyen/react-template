@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react"
 import { HslColorPicker } from "react-colorful"
-import { Route } from "react-router"
 import { Button } from "~/components/button"
 import { Card, CardContent, CardTitle } from "~/components/card"
 import { Input } from "~/components/input"
 import { hsl2Css, parseHslColor } from "~/components/lib"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
-
-export const ColorsRoutes = <Route path="colors" Component={Component} />
 
 export function Component() {
 	return (

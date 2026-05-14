@@ -4,14 +4,9 @@ import { setScroll } from "~/components/internal/scrollbar"
 import { FormRoutes } from "~/views/Form"
 import { ErrorHandler } from "./ErrorHandler"
 import { Layout } from "./layout"
-import { ColorsRoutes } from "./views/Colors"
 import { ComponentRoutes } from "./views/Component"
-import { Home } from "./views/Home"
 import { Login } from "./views/Login"
-import { MemoryLeakTest } from "./views/Memtest"
-import { NotFound } from "./views/NotFound"
 import { TableRoutes } from "./views/Table"
-import { TestRoutes } from "./views/Test"
 
 function FullPage() {
 	useEffect(() => {
@@ -25,16 +20,16 @@ export const router = createBrowserRouter(
 		<Route path="/" errorElement={<ErrorHandler />} HydrateFallback={() => null}>
 			<Route Component={FullPage}>
 				<Route path="login" Component={Login} />
-				<Route path="memtest" Component={MemoryLeakTest} />
+				<Route path="memtest" lazy={() => import("./views/Memtest")} />
 			</Route>
 			<Route Component={Layout}>
-				<Route index Component={Home} />
-				<Route path="*" Component={NotFound} />
+				<Route index lazy={() => import("./views/Home")} />
+				<Route path="*" lazy={() => import("./views/NotFound")} />
 				{ComponentRoutes}
 				{FormRoutes}
 				{TableRoutes}
-				{ColorsRoutes}
-				{TestRoutes}
+				<Route path="colors" lazy={() => import("./views/Colors")} />
+				<Route path="test" lazy={() => import("./views/Test")} />
 			</Route>
 		</Route>,
 	),

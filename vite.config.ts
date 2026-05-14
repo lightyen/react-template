@@ -2,7 +2,6 @@ import emotion from "@rolldown/plugin-emotion"
 import yaml from "@rollup/plugin-yaml"
 import react from "@vitejs/plugin-react"
 import twobj from "rolldown-plugin-twobj"
-import license from "rollup-plugin-license"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 import checker from "vite-plugin-checker"
@@ -13,11 +12,13 @@ import { version } from "./vite-plugins/version"
 
 const target = `http://${process.env.API_ENTRY}`
 
-const isProd = process.env.NODE_ENV === "production"
-
 export default defineConfig({
 	resolve: { tsconfigPaths: true },
-	build: { sourcemap: true, chunkSizeWarningLimit: 4 << 10 },
+	build: {
+		sourcemap: "hidden",
+		chunkSizeWarningLimit: 4 << 10,
+		license: process.env.NODE_ENV === "production" ? { fileName: "license.md" } : false,
+	},
 	plugins: [
 		crossOriginIsolated(),
 		version(),
@@ -26,9 +27,8 @@ export default defineConfig({
 		twobj({ tailwindConfig, throwError: true }),
 		emotion(),
 		react({ jsxImportSource: "@emotion/react" }),
-		isProd && visualizer(),
-		isProd && license({ thirdParty: { output: "dist/LICENSE.txt" } }),
-		process.env.TYPE_CHECK === "true" && checker({ typescript: true }),
+		process.env.CHECK === "true" && visualizer(),
+		process.env.CHECK === "true" && checker({ typescript: true }),
 	],
 	server: {
 		host: "0.0.0.0",

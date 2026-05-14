@@ -1,7 +1,7 @@
 import { useSelect } from "~/context"
 import { FormattedMessage, useIntl } from "~/i18n"
 
-export function Home() {
+export function Component() {
 	const isMobile = useSelect(state => state.app.mobile)
 	return (
 		<article tw="flex flex-col gap-5">

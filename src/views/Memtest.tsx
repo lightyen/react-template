@@ -28,7 +28,7 @@ interface Result {
 	breakdown: Breakdown[]
 }
 
-export function MemoryLeakTest() {
+export function Component() {
 	return (
 		<div tw="p-5">
 			<Test1 />
