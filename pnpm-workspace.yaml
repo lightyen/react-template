@@ -1,2 +1,5 @@
 patchedDependencies:
   react-intl@10.1.6: patches/react-intl@10.1.6.patch
+updateConfig:
+  ignoreDependencies:
+    - react-intl
