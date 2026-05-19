@@ -44,7 +44,7 @@ export function Overlay({
 
 	const [transitions] = useTransition(visible, () => ({
 		ref: api,
-		from: blur ? (tx`bg-foreground/0 [backdrop-filter: blur(0px)]` as {}) : tx`bg-foreground/0`,
+		from: blur ? tx`bg-foreground/0 [backdrop-filter: blur(0px)]` : tx`bg-foreground/0`,
 		enter: blur ? tx`bg-foreground/15 [backdrop-filter: blur(2px)]` : tx`bg-foreground/15`,
 		leave: blur ? tx`bg-foreground/0 [backdrop-filter: blur(0px)]` : tx`bg-foreground/0`,
 		config: { duration, easing: BezierEasing(0.4, 0, 0.33, 1) },

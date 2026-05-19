@@ -21,14 +21,5 @@
       "shadcn/*": ["./shadcn/*"]
     }
   },
-  "include": [
-    "tailwind.config.ts",
-    "vite.config.ts",
-    "./vite-plugins/**/*",
-    "vitest.config.ts",
-    "playwright.config.ts",
-    "./src/**/*",
-    "./tests/**/*",
-    "./tests-examples/**/*"
-  ]
+  "include": ["*.ts", "./vite-plugins/**/*", "./src/**/*", "./tests/**/*", "./tests-examples/**/*"]
 }

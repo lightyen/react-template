@@ -1,5 +1,4 @@
 import eslint from "@eslint/js"
-import react from "eslint-plugin-react"
 import reactHooks from "eslint-plugin-react-hooks"
 import { defineConfig } from "eslint/config"
 import tseslint from "typescript-eslint"
@@ -71,18 +70,6 @@ export default defineConfig(
 			"@typescript-eslint/prefer-function-type": "off",
 			"@typescript-eslint/prefer-nullish-coalescing": "off",
 			"@typescript-eslint/unbound-method": "off",
-		},
-	},
-	{
-		files: ["src/**/*.{js,ts,jsx,tsx}"],
-		...react.configs.flat.recommended,
-		settings: {
-			react: {
-				version: "detect",
-			},
-		},
-		rules: {
-			"react/no-unknown-property": ["error", { ignore: ["css", "tw"] }],
 		},
 	},
 	{

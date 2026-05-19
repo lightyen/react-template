@@ -12,7 +12,7 @@ const colon = 0x3a,
 // Returns number, characters consumed.
 function xtoi(s: string): [number, number] | null {
 	let n = 0
-	let i = 0
+	let i: number
 	for (i = 0; i < s.length; i++) {
 		const si = s.charCodeAt(i)
 		if (_0 <= si && si <= _9) {
