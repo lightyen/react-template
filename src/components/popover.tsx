@@ -131,9 +131,9 @@ export function PopoverContent({ portal, children, ...props }: PopoverContentPro
 	if (children == null) {
 		return null
 	}
-	return (
-		isMounted &&
-		(portal ? (
+	if (portal) {
+		return (
+			isMounted &&
 			createPortal(
 				<div tw="fixed top-0 z-50">
 					<div
@@ -157,7 +157,10 @@ export function PopoverContent({ portal, children, ...props }: PopoverContentPro
 				</div>,
 				getViewportElement(),
 			)
-		) : (
+		)
+	}
+	return (
+		isMounted && (
 			<div
 				ref={refs.setFloating}
 				tw="pointer-events-auto z-10"
@@ -176,7 +179,7 @@ export function PopoverContent({ portal, children, ...props }: PopoverContentPro
 					{typeof children === "function" ? children({ close: () => setVisible(false) }) : children}
 				</div>
 			</div>
-		))
+		)
 	)
 }
 
