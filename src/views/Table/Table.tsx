@@ -90,12 +90,14 @@ export function Component() {
 	}, [reset, source])
 
 	return (
-		<div tw="grid gap-4">
-			<Provider store={store}>
-				<TableToolbar />
-				<TableView />
-				<TablePagination />
-			</Provider>
+		<div tw="h-full grid gap-4 items-center">
+			<div tw="grid gap-4">
+				<Provider store={store}>
+					<TableToolbar />
+					<TableView />
+					<TablePagination />
+				</Provider>
+			</div>
 		</div>
 	)
 }

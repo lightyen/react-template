@@ -4,6 +4,7 @@ import { Fragment, useEffect, useState } from "react"
 import { Outlet } from "react-router"
 import SendIcon from "~/assets/send.svg"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/accordion"
+import { Article } from "~/components/article"
 import { Badge } from "~/components/badage"
 import { Button } from "~/components/button"
 import { Command, CommandItem, CommandList } from "~/components/command"
@@ -39,7 +40,7 @@ import { Header, Separator } from "~/views/common"
 
 export function Component() {
 	return (
-		<article>
+		<Article>
 			<Header>Button</Header>
 			<ButtonView />
 			<Separator />
@@ -58,7 +59,7 @@ export function Component() {
 			<Header>Accordion</Header>
 			<AccordionView />
 			<div tw="h-80"></div>
-		</article>
+		</Article>
 	)
 }
 
@@ -275,7 +276,7 @@ function TooltipView() {
 
 function AccordionView() {
 	return (
-		<Accordion tw="max-w-xl">
+		<Accordion tw="max-w-xl bg-background">
 			<AccordionItem>
 				<AccordionTrigger>Is it accessible?</AccordionTrigger>
 				<AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>

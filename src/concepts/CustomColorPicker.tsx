@@ -29,28 +29,40 @@ function getThemeColors(style: CSSStyleDeclaration) {
 	}
 }
 
-function ensureContrast(bg: HslColor): string {
+function ensureContrast(bg: HslColor, ratio: number): string {
 	const fg: HslColor = { h: bg.h, s: 5, l: isDark() ? 100 : 0 }
-	const ans = ensureContrastRatio(hsl2rgb(fg), hsl2rgb(bg), 6)
+	const ans = ensureContrastRatio(hsl2rgb(fg), hsl2rgb(bg), ratio)
 	if (ans) {
 		return hsl2Css(rgb2hsl(ans))
 	}
 	return hsl2Css(fg)
 }
 
+function card(source: HslColor): string {
+	const base: HslColor = { h: source.h, s: 50, l: isDark() ? source.l * 0.1 : source.l * 0.9 }
+	const card = { ...base }
+	const ans = ensureContrastRatio(hsl2rgb(card), hsl2rgb(base), 1.1)
+	console.log(card, ans && rgb2hsl(ans))
+	if (ans) {
+		return hsl2Css(rgb2hsl(ans))
+	}
+	return hsl2Css(base)
+}
+
 export function CustomColorPicker() {
 	function handle(primary: HslColor) {
-		const background: HslColor = { h: primary.h, s: 50, l: isDark() ? 5 : 95 }
+		const background: HslColor = { h: primary.h, s: 50, l: isDark() ? 2 : 95 }
 		const secondary: HslColor = { h: primary.h, s: 30, l: isDark() ? 20 : 90 }
 
 		const style = document.documentElement.style
 
 		style.setProperty("--background", hsl2Css(background))
-		style.setProperty("--foreground", ensureContrast(background))
+		style.setProperty("--foreground", ensureContrast(background, 5))
 		style.setProperty("--primary", hsl2Css(primary))
-		style.setProperty("--primary-foreground", ensureContrast(primary))
+		style.setProperty("--primary-foreground", ensureContrast(primary, 5))
 		style.setProperty("--secondary", hsl2Css(secondary))
-		style.setProperty("--secondary-foreground", ensureContrast(secondary))
+		style.setProperty("--secondary-foreground", ensureContrast(secondary, 5))
+		style.setProperty("--card", card(primary))
 	}
 
 	const [selectedColor, setSelectedColor] = useState<HslColor | undefined>(() => {
@@ -58,8 +70,6 @@ export function CustomColorPicker() {
 		const background = style.getPropertyValue("--primary")
 		return parseHslColor(background)
 	})
-
-	console.log(selectedColor)
 
 	useEffect(() => {
 		const ob = new MutationObserver(mutations => {

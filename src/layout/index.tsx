@@ -14,9 +14,9 @@ function Root() {
 	return (
 		<div id="app-view" tw="animate-enter min-h-screen">
 			<HeaderMenu />
-			<main tw="md:(grid grid-cols-[256px minmax(0, 1fr)]) lg:gap-10">
+			<main tw="grid md:(grid-cols-[256px minmax(0, 1fr)]) gap-10">
 				<LeftNavigationMenu />
-				<section tw="px-4 sm:container pt-7">
+				<section tw="sm:container">
 					<Outlet />
 				</section>
 			</main>

@@ -2,6 +2,7 @@ import { useVirtualizer } from "@tanstack/react-virtual"
 import { startTransition, useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import { tw } from "twobj"
+import { Article } from "~/components/article"
 import { Button } from "~/components/button"
 import { Checkbox, CheckboxTree, type CheckboxTreeNode } from "~/components/checkbox"
 import { commandScore } from "~/components/command-score"
@@ -22,42 +23,40 @@ import { TagsInput } from "./TagsInput"
 
 export function Component() {
 	return (
-		<article>
-			<div tw="max-w-xl bg-card mb-10">
-				<Header>Input</Header>
-				<InputView />
-				<Separator />
-				<Header>Switch</Header>
-				<SwitchView />
-				<Separator />
-				<Header>Checkbox</Header>
-				<CheckboxView />
-				<Separator />
-				<Header>Checkbox Tree</Header>
-				<DemoCheckboxTree />
-				<Separator />
-				<Header>Slider</Header>
-				<SliderView />
-				<Separator />
-				<Header>Select</Header>
-				<SelectView />
-				<Separator />
-				<Header>Datetime</Header>
-				<DemoDatePicker />
-				<Separator />
-				<Header>Upload</Header>
-				<DemoUpload />
-				<Separator />
-				<Header>Suggestion</Header>
-				<SuggestionView />
-				<Separator />
-				<Header>Tags Input</Header>
-				<TagsInput placeholder="Input Tags..." />
-				<Separator />
-				<Header>Form</Header>
-				<FormView />
-			</div>
-		</article>
+		<Article>
+			<Header>Input</Header>
+			<InputView />
+			<Separator />
+			<Header>Switch</Header>
+			<SwitchView />
+			<Separator />
+			<Header>Checkbox</Header>
+			<CheckboxView />
+			<Separator />
+			<Header>Checkbox Tree</Header>
+			<DemoCheckboxTree />
+			<Separator />
+			<Header>Slider</Header>
+			<SliderView />
+			<Separator />
+			<Header>Select</Header>
+			<SelectView />
+			<Separator />
+			<Header>Datetime</Header>
+			<DemoDatePicker />
+			<Separator />
+			<Header>Upload</Header>
+			<DemoUpload />
+			<Separator />
+			<Header>Suggestion</Header>
+			<SuggestionView />
+			<Separator />
+			<Header>Tags Input</Header>
+			<TagsInput placeholder="Input Tags..." />
+			<Separator />
+			<Header>Form</Header>
+			<FormView />
+		</Article>
 	)
 }
 

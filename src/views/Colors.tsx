@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { HslColorPicker } from "react-colorful"
 import { Button } from "~/components/button"
-import { Card, CardContent, CardTitle } from "~/components/card"
+import { Card, CardContent } from "~/components/card"
 import { Input } from "~/components/input"
 import { hsl2Css, parseHslColor } from "~/components/lib"
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/popover"
 
 export function Component() {
 	return (
-		<div tw="max-w-2xl grid gap-10">
+		<div tw="mt-8 grid gap-10 [grid-template-columns: minmax(230px, 1fr) 1fr]">
 			<div tw="grid gap-2 rounded-lg">
 				<div tw="p-1 rounded-lg bg-background text-foreground">foreground</div>
 				<Card tw="p-3">
@@ -75,17 +75,16 @@ function DataSheet() {
 		}
 	}, [])
 	return (
-		<Card tw="p-2">
-			<CardTitle>HSL</CardTitle>
+		<Card tw="py-6 text-black bg-white dark:(text-white bg-black)">
 			<CardContent>
 				<div tw="grid gap-2 whitespace-nowrap">
 					{Object.entries(colors).map(([k, value]) => {
 						return (
 							<ColorPicker key={k} cssVariable={k}>
-								<div tw="p-0.5 grid gap-2 items-center [grid-template-columns: 1fr 150px 200px] hover:(ring-1 ring-accent)">
+								<div tw="p-0.5 grid gap-2 items-center [grid-template-columns: auto 150px 200px] hover:(ring-1 ring-accent)">
 									<div tw="text-right">{k}</div>
 									<div tw="">{value}</div>
-									<div tw="h-full" style={{ backgroundColor: `hsl(${value})` }} />
+									<div tw="h-8" style={{ backgroundColor: `hsl(${value})` }} />
 								</div>
 							</ColorPicker>
 						)
