@@ -1,6 +1,6 @@
 import { animated, useSpringRef, useTransition } from "@react-spring/web"
 import BezierEasing from "bezier-easing"
-import { Children, cloneElement, isValidElement, use, useEffect, useEffectEvent, useRef } from "react"
+import { Children, cloneElement, isValidElement, use, useCallback, useEffect, useRef } from "react"
 import { Button, CloseButton, type ButtonProps } from "~/components/button"
 import { Overlay } from "~/components/internal/overlay"
 import { isElement } from "~/components/lib"
@@ -37,7 +37,6 @@ export function DialogTrigger({ children, ...props }: React.PropsWithChildren<Om
 interface DialogContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
 	/** @default 525px */
 	maxWidth?: string | number
-	lightDismiss?: boolean
 	children?: React.ReactNode | ((args: { close(): void }) => React.ReactNode)
 }
 
@@ -52,22 +51,6 @@ export function DialogContent({
 	const store = use(DialogContext)
 	const visible = store(state => state.visible)
 	const setVisible = store(state => state.setVisible)
-	const lightDismiss = store(state => state.lightDismiss)
-	const onkeydown = useEffectEvent((e: KeyboardEvent) => {
-		if (e.key === "Escape") {
-			setVisible(false)
-		}
-	})
-	useEffect(() => {
-		if (lightDismiss) {
-			window.addEventListener("keydown", onkeydown)
-		}
-		return () => {
-			if (lightDismiss) {
-				window.removeEventListener("keydown", onkeydown)
-			}
-		}
-	}, [lightDismiss, setVisible])
 
 	const api = useSpringRef()
 
@@ -217,50 +200,66 @@ export interface DialogProps {
 	blur?: boolean
 	/** @default true */
 	lightDismiss?: boolean
-	onClickOutside?(): void
+	onLightDismiss?(): void
+	onDestroyed?(end: boolean): void
 }
 
-export function useDialog({ visible, lightDismiss, store }: DialogOptions & { store?: DialogStore } = {}) {
+export function useDialog({ visible, store }: DialogOptions & { store?: DialogStore } = {}) {
 	const ref = useRef<DialogStore>(store)
 	if (!ref.current) {
-		ref.current = createDialogStore({ visible, lightDismiss })
+		ref.current = createDialogStore({ visible })
 	}
 	return store ?? ref.current
 }
 
 export function Dialog({
-	visible,
-	lightDismiss = true,
 	store,
 	blur,
-	onClickOutside = () => void 0,
+	lightDismiss = true,
+	onLightDismiss = () => void 0,
+	onDestroyed,
 	children,
+	...props
 }: React.PropsWithChildren<DialogProps>) {
-	const s = useDialog({ visible, lightDismiss, store })
-
-	const _visible = s(state => state.visible)
-	const _setVisible = s(state => state.setVisible)
-	const _lightDismiss = s(state => state.lightDismiss)
-	const _setLightDismiss = s(state => state.setLightDismiss)
-
-	useEffect(() => {
-		if (visible != null) {
-			_setVisible(visible)
-		}
-	}, [visible, _setVisible])
+	const ref = useRef<ReturnType<typeof createDialogStore>>(store)
+	if (!ref.current) {
+		ref.current = createDialogStore({ visible: props.visible })
+	}
+	const select = ref.current
+	const visible = select(state => state.visible)
+	const setVisible = select(state => state.setVisible)
 
 	useEffect(() => {
-		if (lightDismiss != null) {
-			_setLightDismiss(lightDismiss)
+		if (typeof props.visible === "boolean") {
+			setVisible(props.visible)
 		}
-	}, [lightDismiss, _setLightDismiss])
+	}, [setVisible, props.visible])
+
+	const handleEscape = useCallback(() => {
+		if (props.visible != null && visible && lightDismiss) {
+			setVisible(false)
+			onLightDismiss()
+		}
+	}, [setVisible, onLightDismiss, lightDismiss, visible, props.visible])
+
+	useEffect(() => {
+		function handle(e: KeyboardEvent) {
+			if (e.key === "Escape") {
+				handleEscape()
+			}
+		}
+		window.addEventListener("keydown", handle)
+		return () => {
+			window.removeEventListener("keydown", handle)
+		}
+	}, [handleEscape])
 
 	const contentReactElement = Children.toArray(children).find(
 		(e): e is React.ReactElement<React.ComponentProps<typeof DialogContent>> => isElement(e, DialogContent),
 	)
 
 	return (
-		<DialogContext value={s}>
+		<DialogContext value={select}>
 			{Children.map(children, child => {
 				if (isElement(child, DialogContent)) {
 					return null
@@ -268,12 +267,15 @@ export function Dialog({
 				return child
 			})}
 			<Overlay
-				visible={_visible}
+				visible={props.visible ?? visible}
 				blur={blur}
+				onDestroyed={onDestroyed}
 				onClickOverlay={() => {
-					onClickOutside()
-					if (_lightDismiss) {
-						_setVisible(false)
+					if (props.visible == null) {
+						if (lightDismiss && visible) {
+							setVisible(false)
+							onLightDismiss()
+						}
 					}
 				}}
 			>

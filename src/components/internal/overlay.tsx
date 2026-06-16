@@ -10,6 +10,7 @@ interface OverlayProps extends React.HTMLAttributes<HTMLDivElement> {
 	blur?: boolean
 	duration?: number
 	onClickOverlay?(e: React.PointerEvent<HTMLDivElement>): void
+	onDestroyed?(end: boolean): void
 }
 
 export function Overlay({
@@ -19,6 +20,7 @@ export function Overlay({
 	onClickOverlay = () => void 0,
 	onPointerDown = () => void 0,
 	onPointerUp = () => void 0,
+	onDestroyed,
 	onClick,
 	...props
 }: React.PropsWithChildren<OverlayProps>) {
@@ -49,6 +51,7 @@ export function Overlay({
 		leave: blur ? tx`bg-foreground/0 [backdrop-filter: blur(0px)]` : tx`bg-foreground/0`,
 		config: { duration, easing: BezierEasing(0.4, 0, 0.33, 1) },
 		onDestroyed(end) {
+			onDestroyed?.(end)
 			if (!end) {
 				destroyedRef.current = false
 				return
