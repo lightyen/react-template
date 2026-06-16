@@ -1,13 +1,13 @@
-import { animated, useSpringRef, useTransition } from "@react-spring/web";
-import { useDrag } from "@use-gesture/react";
-import { Children, cloneElement, isValidElement, use, useCallback, useEffect, useLayoutEffect, useRef } from "react";
-import { tw } from "twobj";
-import { Button } from "~/components/button";
-import { DialogProps } from "~/components/dialog";
-import { createDialogStore, DialogContext } from "~/components/dialog/context";
-import { Overlay } from "~/components/internal/overlay";
-import { getElementWidth, isElement, zs } from "~/components/lib";
-import { FormattedMessage } from "~/i18n";
+import { animated, useSpringRef, useTransition } from "@react-spring/web"
+import { useDrag } from "@use-gesture/react"
+import { Children, cloneElement, isValidElement, use, useCallback, useEffect, useLayoutEffect, useRef } from "react"
+import { tw } from "twobj"
+import { Button } from "~/components/button"
+import { DialogProps } from "~/components/dialog"
+import { createDialogStore, DialogContext } from "~/components/dialog/context"
+import { Overlay } from "~/components/internal/overlay"
+import { getElementWidth, isElement, zs } from "~/components/lib"
+import { FormattedMessage } from "~/i18n"
 
 export function SheetTrigger({
 	children,
@@ -228,7 +228,7 @@ export function Sheet({
 	children,
 	...props
 }: React.PropsWithChildren<SheetProps>) {
-const ref = useRef<ReturnType<typeof createDialogStore>>(store)
+	const ref = useRef<ReturnType<typeof createDialogStore>>(store)
 	if (!ref.current) {
 		ref.current = createDialogStore({ visible: props.visible })
 	}
@@ -243,7 +243,7 @@ const ref = useRef<ReturnType<typeof createDialogStore>>(store)
 	}, [setVisible, props.visible])
 
 	const handleEscape = useCallback(() => {
-		if (props.visible != null && visible && lightDismiss) {
+		if (props.visible == null && lightDismiss && visible) {
 			setVisible(false)
 			onLightDismiss()
 		}
@@ -278,11 +278,9 @@ const ref = useRef<ReturnType<typeof createDialogStore>>(store)
 				blur={blur}
 				onDestroyed={onDestroyed}
 				onClickOverlay={() => {
-					if (props.visible == null) {
-						if (lightDismiss && visible) {
-							setVisible(false)
-							onLightDismiss()
-						}
+					if (props.visible == null && lightDismiss && visible) {
+						setVisible(false)
+						onLightDismiss()
 					}
 				}}
 			>

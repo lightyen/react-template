@@ -236,7 +236,7 @@ export function Dialog({
 	}, [setVisible, props.visible])
 
 	const handleEscape = useCallback(() => {
-		if (props.visible != null && visible && lightDismiss) {
+		if (props.visible == null && visible && lightDismiss) {
 			setVisible(false)
 			onLightDismiss()
 		}
@@ -271,11 +271,9 @@ export function Dialog({
 				blur={blur}
 				onDestroyed={onDestroyed}
 				onClickOverlay={() => {
-					if (props.visible == null) {
-						if (lightDismiss && visible) {
-							setVisible(false)
-							onLightDismiss()
-						}
+					if (props.visible == null && lightDismiss && visible) {
+						setVisible(false)
+						onLightDismiss()
 					}
 				}}
 			>

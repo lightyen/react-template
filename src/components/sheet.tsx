@@ -1,12 +1,12 @@
-import { animated, easings, useSpringRef, useTransition } from "@react-spring/web";
-import { Children, cloneElement, isValidElement, use, useCallback, useEffect, useRef } from "react";
-import { tw } from "twobj";
-import { FormattedMessage } from "~/i18n";
-import { Button, CloseButton, type ButtonProps } from "./button";
-import { useDialog, type DialogProps } from "./dialog";
-import { createDialogStore, DialogContext } from "./dialog/context";
-import { Overlay } from "./internal/overlay";
-import { isElement, zs } from "./lib";
+import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
+import { Children, cloneElement, isValidElement, use, useCallback, useEffect, useRef } from "react"
+import { tw } from "twobj"
+import { FormattedMessage } from "~/i18n"
+import { Button, CloseButton, type ButtonProps } from "./button"
+import { useDialog, type DialogProps } from "./dialog"
+import { createDialogStore, DialogContext } from "./dialog/context"
+import { Overlay } from "./internal/overlay"
+import { isElement, zs } from "./lib"
 
 export const sheetVariants = zs(tw`fixed gap-4 bg-background p-6 shadow-lg`, {
 	variants: {
@@ -232,7 +232,7 @@ export function Sheet({
 	children,
 	...props
 }: React.PropsWithChildren<DialogProps>) {
-const ref = useRef<ReturnType<typeof createDialogStore>>(store)
+	const ref = useRef<ReturnType<typeof createDialogStore>>(store)
 	if (!ref.current) {
 		ref.current = createDialogStore({ visible: props.visible })
 	}
@@ -247,7 +247,7 @@ const ref = useRef<ReturnType<typeof createDialogStore>>(store)
 	}, [setVisible, props.visible])
 
 	const handleEscape = useCallback(() => {
-		if (props.visible != null && visible && lightDismiss) {
+		if (props.visible == null && lightDismiss && visible) {
 			setVisible(false)
 			onLightDismiss()
 		}
@@ -282,11 +282,9 @@ const ref = useRef<ReturnType<typeof createDialogStore>>(store)
 				blur={blur}
 				onDestroyed={onDestroyed}
 				onClickOverlay={() => {
-					if (props.visible == null) {
-						if (lightDismiss && visible) {
-							setVisible(false)
-							onLightDismiss()
-						}
+					if (props.visible == null && lightDismiss && visible) {
+						setVisible(false)
+						onLightDismiss()
 					}
 				}}
 			>
