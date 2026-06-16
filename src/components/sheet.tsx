@@ -1,12 +1,12 @@
-import { animated, easings, useSpringRef, useTransition } from "@react-spring/web"
-import { Children, cloneElement, isValidElement, use, useEffect, useEffectEvent } from "react"
-import { tw } from "twobj"
-import { FormattedMessage } from "~/i18n"
-import { Button, CloseButton, type ButtonProps } from "./button"
-import { useDialog, type DialogProps } from "./dialog"
-import { DialogContext } from "./dialog/context"
-import { Overlay } from "./internal/overlay"
-import { isElement, zs } from "./lib"
+import { animated, easings, useSpringRef, useTransition } from "@react-spring/web";
+import { Children, cloneElement, isValidElement, use, useCallback, useEffect, useRef } from "react";
+import { tw } from "twobj";
+import { FormattedMessage } from "~/i18n";
+import { Button, CloseButton, type ButtonProps } from "./button";
+import { useDialog, type DialogProps } from "./dialog";
+import { createDialogStore, DialogContext } from "./dialog/context";
+import { Overlay } from "./internal/overlay";
+import { isElement, zs } from "./lib";
 
 export const sheetVariants = zs(tw`fixed gap-4 bg-background p-6 shadow-lg`, {
 	variants: {
@@ -103,22 +103,6 @@ export function SheetContent({
 	const store = use(DialogContext)
 	const visible = store(state => state.visible)
 	const setVisible = store(state => state.setVisible)
-	const lightDismiss = store(state => state.lightDismiss)
-	const onkeydown = useEffectEvent((e: KeyboardEvent) => {
-		if (e.key === "Escape") {
-			setVisible(false)
-		}
-	})
-	useEffect(() => {
-		if (lightDismiss) {
-			window.addEventListener("keydown", onkeydown)
-		}
-		return () => {
-			if (lightDismiss) {
-				window.removeEventListener("keydown", onkeydown)
-			}
-		}
-	}, [lightDismiss])
 
 	const api = useSpringRef()
 	const [transitions] = useTransition(visible, () => ({
@@ -240,37 +224,53 @@ export function SheetFooter({ children, ...props }: React.PropsWithChildren<Reac
 SheetFooter["$id"] = Symbol.for("com.SheetFooter")
 
 export function Sheet({
-	visible,
-	lightDismiss = true,
 	store,
 	blur,
-	onClickOutside = () => void 0,
+	lightDismiss = true,
+	onLightDismiss = () => void 0,
+	onDestroyed,
 	children,
+	...props
 }: React.PropsWithChildren<DialogProps>) {
-	const s = useDialog({ visible, lightDismiss, store })
-
-	const _visible = s(state => state.visible)
-	const _setVisible = s(state => state.setVisible)
-	const _lightDismiss = s(state => state.lightDismiss)
-	const _setLightDismiss = s(state => state.setLightDismiss)
-
-	useEffect(() => {
-		if (visible != null) {
-			_setVisible(visible)
-		}
-	}, [visible, _setVisible])
+const ref = useRef<ReturnType<typeof createDialogStore>>(store)
+	if (!ref.current) {
+		ref.current = createDialogStore({ visible: props.visible })
+	}
+	const select = ref.current
+	const visible = select(state => state.visible)
+	const setVisible = select(state => state.setVisible)
 
 	useEffect(() => {
-		if (lightDismiss != null) {
-			_setLightDismiss(lightDismiss)
+		if (typeof props.visible === "boolean") {
+			setVisible(props.visible)
 		}
-	}, [lightDismiss, _setLightDismiss])
+	}, [setVisible, props.visible])
+
+	const handleEscape = useCallback(() => {
+		if (props.visible != null && visible && lightDismiss) {
+			setVisible(false)
+			onLightDismiss()
+		}
+	}, [setVisible, onLightDismiss, lightDismiss, visible, props.visible])
+
+	useEffect(() => {
+		function handle(e: KeyboardEvent) {
+			if (e.key === "Escape") {
+				handleEscape()
+			}
+		}
+		window.addEventListener("keydown", handle)
+		return () => {
+			window.removeEventListener("keydown", handle)
+		}
+	}, [handleEscape])
 
 	const contentReactElement = Children.toArray(children).find(
 		(e): e is React.ReactElement<React.ComponentProps<typeof SheetContent>> => isElement(e, SheetContent),
 	)
+
 	return (
-		<DialogContext value={s}>
+		<DialogContext value={select}>
 			{Children.map(children, child => {
 				if (isElement(child, SheetContent)) {
 					return null
@@ -278,12 +278,15 @@ export function Sheet({
 				return child
 			})}
 			<Overlay
-				visible={_visible}
+				visible={props.visible ?? visible}
 				blur={blur}
+				onDestroyed={onDestroyed}
 				onClickOverlay={() => {
-					onClickOutside()
-					if (_lightDismiss) {
-						_setVisible(false)
+					if (props.visible == null) {
+						if (lightDismiss && visible) {
+							setVisible(false)
+							onLightDismiss()
+						}
 					}
 				}}
 			>
