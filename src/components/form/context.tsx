@@ -3,11 +3,7 @@ import type { FieldArrayPath, FieldValues, UseFieldArrayReturn } from "react-hoo
 
 const FormArrayContext = createContext<unknown>(null)
 
-export function FormArrayProvider<
-	TFieldValues extends FieldValues = FieldValues,
-	TFieldArrayName extends FieldArrayPath<TFieldValues> = FieldArrayPath<TFieldValues>,
-	TKeyName extends string = "id",
->({ children, ...methods }: React.PropsWithChildren<UseFieldArrayReturn<TFieldValues, TFieldArrayName, TKeyName>>) {
+export function FormArrayProvider({ children, ...methods }: React.PropsWithChildren<{}>) {
 	return <FormArrayContext value={methods}>{children}</FormArrayContext>
 }
 
