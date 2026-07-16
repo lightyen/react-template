@@ -29,6 +29,7 @@ export const router = createBrowserRouter(
 				{FormRoutes}
 				{TableRoutes}
 				<Route path="colors" lazy={() => import("./views/Colors")} />
+				<Route path="palette" lazy={() => import("./views/Palette")} />
 				<Route path="test" lazy={() => import("./views/Test")} />
 			</Route>
 		</Route>,
