@@ -8,6 +8,7 @@ export function Component() {
 	// 一次算出主色與灰階
 	const palette = useMemo(() => {
 		try {
+			console.log(accentColor, grayColor)
 			const light = generateRadixColors({
 				appearance: "light",
 				accent: accentColor,
@@ -34,6 +35,14 @@ export function Component() {
 	return (
 		<div style={{ padding: "24px", fontFamily: "system-ui", maxWidth: "1000px", margin: "0 auto" }}>
 			<h2>Radix 官方完整自訂調色盤 (Accent + Gray)</h2>
+			<a
+				href="https://www.radix-ui.com/colors/custom"
+				tw="hover:underline accent-accent"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				https://www.radix-ui.com/colors/custom
+			</a>
 
 			{/* 雙色彩選擇器 */}
 			<div
@@ -42,7 +51,6 @@ export function Component() {
 					gap: "24px",
 					marginBottom: "32px",
 					padding: "16px",
-					backgroundColor: "#f5f5f5",
 					borderRadius: "8px",
 				}}
 			>
@@ -95,7 +103,7 @@ export function Component() {
 			</section>
 
 			{/* 2. 深色模式區 (Dark Mode) */}
-			<section style={{ padding: "24px", backgroundColor: "#09090b", color: "#fff", borderRadius: "12px" }}>
+			<section style={{ borderRadius: "12px" }}>
 				<h3 style={{ borderBottom: "2px solid #222", paddingBottom: "8px" }}>Dark Mode</h3>
 
 				{/* 主色色階 */}
@@ -110,7 +118,7 @@ export function Component() {
 
 				{/* 灰階色階 */}
 				<div>
-					<h4 style={{ margin: "8px 0" }}>Gray Scale</h4>
+					<h4 tw="py-2">Gray Scale</h4>
 					<ColorRow scale={palette.dark.grayScale} isDark={true} />
 				</div>
 			</section>
@@ -150,7 +158,6 @@ function ColorRow({ scale, contrastColor, isDark }: ColorRowProps) {
 							height: "72px",
 							padding: "6px",
 							borderRadius: "6px",
-							fontSize: "11px",
 							display: "flex",
 							flexDirection: "column",
 							justifyContent: "space-between",
@@ -158,17 +165,8 @@ function ColorRow({ scale, contrastColor, isDark }: ColorRowProps) {
 							boxSizing: "border-box",
 						}}
 					>
-						<strong style={{ fontSize: "12px" }}>{step}</strong>
-						<span
-							style={{
-								fontSize: "9px",
-								fontFamily: "monospace",
-								overflow: "hidden",
-								textOverflow: "ellipsis",
-							}}
-						>
-							{hexColor}
-						</span>
+						<strong>{step}</strong>
+						<span tw="text-xs font-mono text-ellipsis overflow-hidden">{hexColor}</span>
 					</div>
 				)
 			})}

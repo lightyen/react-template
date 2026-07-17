@@ -1,6 +1,12 @@
 import * as RadixColors from "@radix-ui/colors"
 import BezierEasing from "bezier-easing"
-import Color from "colorjs.io"
+import JColor from "colorjs.io"
+
+console.log(new JColor("#000105").to("srgb"))
+
+class Color extends JColor {
+	declare coords: [number, number, number]
+}
 
 type ArrayOf12<T> = [T, T, T, T, T, T, T, T, T, T, T, T]
 const arrayOf12 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const
@@ -52,12 +58,12 @@ export const generateRadixColors = ({
 }) => {
 	const allScales = appearance === "light" ? lightColors : darkColors
 	const grayScales = appearance === "light" ? lightGrayColors : darkGrayColors
-	const backgroundColor = new Color(args.background).to("oklch")
+	const backgroundColor = new Color(args.background).to("oklch") as Color
 
-	const grayBaseColor = new Color(args.gray).to("oklch")
+	const grayBaseColor = new Color(args.gray).to("oklch") as Color
 	const grayScaleColors = getScaleFromColor(grayBaseColor, grayScales, backgroundColor)
 
-	const accentBaseColor = new Color(args.accent).to("oklch")
+	const accentBaseColor = new Color(args.accent).to("oklch") as Color
 
 	let accentScaleColors = getScaleFromColor(accentBaseColor, allScales, backgroundColor)
 
@@ -473,8 +479,8 @@ function blendAlpha(foreground: number, alpha: number, background: number, round
 
 function getAlphaColorSrgb(targetColor: string, backgroundColor: string, targetAlpha?: number) {
 	const [r, g, b, a] = getAlphaColor(
-		new Color(targetColor).to("srgb").coords,
-		new Color(backgroundColor).to("srgb").coords,
+		(new Color(targetColor).to("srgb") as Color).coords,
+		(new Color(backgroundColor).to("srgb") as Color).coords,
 		255,
 		255,
 		targetAlpha,
@@ -485,8 +491,8 @@ function getAlphaColorSrgb(targetColor: string, backgroundColor: string, targetA
 
 function getAlphaColorP3(targetColor: string, backgroundColor: string, targetAlpha?: number) {
 	const [r, g, b, a] = getAlphaColor(
-		new Color(targetColor).to("p3").coords,
-		new Color(backgroundColor).to("p3").coords,
+		(new Color(targetColor).to("p3") as Color).coords,
+		(new Color(backgroundColor).to("p3") as Color).coords,
 		// Not sure why, but the resulting P3 alpha colors are blended in the browser most precisely when
 		// rounded to 255 integers too. Is the browser using 0-255 rather than 0-1 under the hood for P3 too?
 		255,
