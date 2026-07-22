@@ -50,12 +50,17 @@ const navs: NavItemType[] = [
 	{
 		kind: NavItemKind.Link,
 		pathname: "palette",
-		label: "Colors",
+		label: "Palette",
 	},
 	{
 		kind: NavItemKind.Link,
 		pathname: "test",
 		label: "Test",
+	},
+	{
+		kind: NavItemKind.Link,
+		pathname: "demo",
+		label: "Demo",
 	},
 	{
 		kind: NavItemKind.Link,

@@ -4,25 +4,23 @@ import { generateRadixColors } from "../generate-radix-colors"
 export function Component() {
 	const [accentColor, setAccentColor] = useState("#3D63DD") // 使用者自定義的主色 (例如藍色)
 	const [grayColor, setGrayColor] = useState("#8B8D98") // 使用者自定義的灰色
+	// const [backgroundColor, setBackgroundColor] = useState("#111111")
 
 	// 一次算出主色與灰階
 	const palette = useMemo(() => {
 		try {
-			console.log(accentColor, grayColor)
-			const light = generateRadixColors({
-				appearance: "light",
-				accent: accentColor,
-				gray: grayColor,
-				background: "#ffffff", // Light mode 底色
-			})
-
 			const dark = generateRadixColors({
 				appearance: "dark",
 				accent: accentColor,
 				gray: grayColor,
 				background: "#111111", // Dark mode 底色
 			})
-
+			const light = generateRadixColors({
+				appearance: "light",
+				accent: accentColor,
+				gray: grayColor,
+				background: "#ffffff", // Light mode 底色
+			})
 			return { light, dark }
 		} catch (error) {
 			console.error("色彩生成失敗:", error)
@@ -43,8 +41,6 @@ export function Component() {
 			>
 				https://www.radix-ui.com/colors/custom
 			</a>
-
-			{/* 雙色彩選擇器 */}
 			<div
 				style={{
 					display: "flex",
@@ -80,33 +76,9 @@ export function Component() {
 					</div>
 				</label>
 			</div>
-
-			{/* 1. 淺色模式區 (Light Mode) */}
-			<section style={{ marginBottom: "40px" }}>
-				<h3 style={{ borderBottom: "2px solid #eee", paddingBottom: "8px" }}>Light Mode</h3>
-
-				{/* 主色色階 */}
-				<div style={{ marginBottom: "16px" }}>
-					<h4 style={{ margin: "8px 0" }}>Accent Scale</h4>
-					<ColorRow
-						scale={palette.light.accentScale}
-						contrastColor={palette.light.accentContrast}
-						isDark={false}
-					/>
-				</div>
-
-				{/* 灰階色階 */}
-				<div>
-					<h4 style={{ margin: "8px 0" }}>Gray Scale (對應你的灰色)</h4>
-					<ColorRow scale={palette.light.grayScale} isDark={false} />
-				</div>
-			</section>
-
-			{/* 2. 深色模式區 (Dark Mode) */}
-			<section style={{ borderRadius: "12px" }}>
-				<h3 style={{ borderBottom: "2px solid #222", paddingBottom: "8px" }}>Dark Mode</h3>
-
-				{/* 主色色階 */}
+			<section tw="my-10">
+				<h3 tw="text-xl font-bold">Dark Mode</h3>
+				<hr tw="my-2" />
 				<div style={{ marginBottom: "16px" }}>
 					<h4 style={{ margin: "8px 0" }}>Accent Scale</h4>
 					<ColorRow
@@ -115,11 +87,25 @@ export function Component() {
 						isDark={true}
 					/>
 				</div>
-
-				{/* 灰階色階 */}
 				<div>
 					<h4 tw="py-2">Gray Scale</h4>
 					<ColorRow scale={palette.dark.grayScale} isDark={true} />
+				</div>
+			</section>
+			<section tw="my-10">
+				<h3 tw="text-xl font-bold">Light Mode</h3>
+				<hr tw="my-2" />
+				<div style={{ marginBottom: "16px" }}>
+					<h4 style={{ margin: "8px 0" }}>Accent Scale</h4>
+					<ColorRow
+						scale={palette.light.accentScale}
+						contrastColor={palette.light.accentContrast}
+						isDark={false}
+					/>
+				</div>
+				<div>
+					<h4 style={{ margin: "8px 0" }}>Gray Scale</h4>
+					<ColorRow scale={palette.light.grayScale} isDark={false} />
 				</div>
 			</section>
 		</div>
@@ -166,7 +152,7 @@ function ColorRow({ scale, contrastColor, isDark }: ColorRowProps) {
 						}}
 					>
 						<strong>{step}</strong>
-						<span tw="text-xs font-mono text-ellipsis overflow-hidden">{hexColor}</span>
+						<span tw="text-xs font-mono text-ellipsis overflow-hidden uppercase">{hexColor}</span>
 					</div>
 				)
 			})}

@@ -30,6 +30,7 @@ export const router = createBrowserRouter(
 				{TableRoutes}
 				<Route path="colors" lazy={() => import("./views/Colors")} />
 				<Route path="palette" lazy={() => import("./views/Palette")} />
+				<Route path="demo" lazy={() => import("./views/Demo")} />
 				<Route path="test" lazy={() => import("./views/Test")} />
 			</Route>
 		</Route>,
