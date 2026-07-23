@@ -203,7 +203,7 @@ export function AccordionContent({ children, ...props }: React.PropsWithChildren
 		}
 	}, [])
 	return (
-		<div ref={ref} tw="px-1 transition-[height] overflow-hidden h-0 text-sm [& > div]:(bg-background pb-4)">
+		<div ref={ref} tw="px-1 transition-[height] overflow-hidden h-0 text-sm [& > div]:(bg-custom-1 pb-4)">
 			<div {...props}>{children}</div>
 		</div>
 	)

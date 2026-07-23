@@ -5,7 +5,7 @@ import { Dialog, DialogContent, type DialogProps } from "./dialog"
 export function Command(props: React.ComponentProps<typeof CommandPrimitive>) {
 	return (
 		<CommandPrimitive
-			tw="flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground border shadow-md"
+			tw="flex h-full w-full flex-col overflow-hidden rounded-md bg-custom-3 border shadow-md"
 			{...props}
 		/>
 	)

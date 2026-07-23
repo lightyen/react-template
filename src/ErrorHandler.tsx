@@ -10,7 +10,7 @@ export function ErrorHandler() {
 		}
 	}, [err])
 	return createPortal(
-		<div tw="bg-background text-foreground h-screen p-5 grid [grid-template-rows: min-content min-content minmax(0, 1fr)]">
+		<div tw="bg-custom-1 text-custom-12 h-screen p-5 grid [grid-template-rows: min-content min-content minmax(0, 1fr)]">
 			<h1 tw="text-2xl font-bold text-primary">Something went wrong.</h1>
 			<hr tw="my-5" />
 			{err && (

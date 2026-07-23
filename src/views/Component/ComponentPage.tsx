@@ -276,7 +276,7 @@ function TooltipView() {
 
 function AccordionView() {
 	return (
-		<Accordion tw="max-w-xl bg-background">
+		<Accordion tw="max-w-xl">
 			<AccordionItem>
 				<AccordionTrigger>Is it accessible?</AccordionTrigger>
 				<AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>

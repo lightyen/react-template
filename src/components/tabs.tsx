@@ -104,18 +104,18 @@ function Tab({ className, style, children, ref, onClick, ...props }: TabProps) {
 			<input
 				type="checkbox"
 				tw="absolute left-0 top-0 w-0 h-0
-					checked:[& ~ .tab]:text-foreground
-					checked:[& ~ .tab::after]:(bg-primary translate-y-px scale-100 opacity-100)
-					focus-visible:[& ~ .tab]:(bg-foreground/10)
+					checked:[& ~ .tab]:text-custom-12
+					checked:[& ~ .tab::after]:(bg-custom-9 translate-y-px scale-100 opacity-100)
+					focus-visible:[& ~ .tab]:(bg-custom-a6)
 					"
 				{...props}
 			/>
 			<span
 				className="tab"
-				tw="select-none text-muted-foreground inline-block relative whitespace-nowrap capitalize transition cursor-pointer
+				tw="select-none text-custom-a9 inline-block relative whitespace-nowrap capitalize transition cursor-pointer
 					px-4 pt-2.5 pb-3 border-b
 					after:(translate-y-px h-[2px] absolute left-0 bottom-0 w-full transition-all duration-200 scale-0 opacity-0)
-					hover:text-foreground
+					hover:text-custom-12
 					"
 			>
 				{children}

@@ -7,6 +7,30 @@ import { isDark } from "./theme"
 
 function getThemeColors(style: CSSStyleDeclaration) {
 	return {
+		"--custom-1": style.getPropertyValue("--custom-1"),
+		"--custom-2": style.getPropertyValue("--custom-2"),
+		"--custom-3": style.getPropertyValue("--custom-3"),
+		"--custom-4": style.getPropertyValue("--custom-4"),
+		"--custom-5": style.getPropertyValue("--custom-5"),
+		"--custom-6": style.getPropertyValue("--custom-6"),
+		"--custom-7": style.getPropertyValue("--custom-7"),
+		"--custom-8": style.getPropertyValue("--custom-8"),
+		"--custom-9": style.getPropertyValue("--custom-9"),
+		"--custom-10": style.getPropertyValue("--custom-10"),
+		"--custom-11": style.getPropertyValue("--custom-11"),
+		"--custom-12": style.getPropertyValue("--custom-12"),
+		"--custom-a1": style.getPropertyValue("--custom-a1"),
+		"--custom-a2": style.getPropertyValue("--custom-a2"),
+		"--custom-a3": style.getPropertyValue("--custom-a3"),
+		"--custom-a4": style.getPropertyValue("--custom-a4"),
+		"--custom-a5": style.getPropertyValue("--custom-a5"),
+		"--custom-a6": style.getPropertyValue("--custom-a6"),
+		"--custom-a7": style.getPropertyValue("--custom-a7"),
+		"--custom-a8": style.getPropertyValue("--custom-a8"),
+		"--custom-a9": style.getPropertyValue("--custom-a9"),
+		"--custom-a10": style.getPropertyValue("--custom-a10"),
+		"--custom-a11": style.getPropertyValue("--custom-a11"),
+		"--custom-a12": style.getPropertyValue("--custom-a12"),
 		"--background": style.getPropertyValue("--background"),
 		"--foreground": style.getPropertyValue("--foreground"),
 		"--card": style.getPropertyValue("--card"),
@@ -67,6 +91,7 @@ export function CustomColorPicker() {
 
 	const [selectedColor, setSelectedColor] = useState<HslColor | undefined>(() => {
 		const style = getComputedStyle(document.documentElement)
+		console.log(getThemeColors(style))
 		const background = style.getPropertyValue("--primary")
 		return parseHslColor(background)
 	})

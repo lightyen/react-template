@@ -9,7 +9,7 @@ import "./global.css"
 function ColorIcon() {
 	return (
 		<div tw="w-4 h-4 p-[3px]">
-			<div tw="rounded-full w-2.5 h-2.5 ring-1 ring-offset-1 ring-offset-background ring-primary bg-primary" />
+			<div tw="rounded-full w-2.5 h-2.5 ring-1 ring-offset-1 ring-offset-custom-1 ring-custom-9 bg-custom-9" />
 		</div>
 	)
 }

@@ -9,12 +9,12 @@ export const buttonVariants = zs(
 	{
 		variants: {
 			variant: {
-				default: tw`bg-primary text-primary-foreground hover:bg-primary/90`,
+				default: tw`bg-custom-9 hover:bg-custom-a9 active:bg-custom-8`,
 				destructive: tw`bg-destructive text-destructive-foreground hover:bg-destructive/90 focus-visible:ring-destructive`,
-				outline: tw`border border-input bg-background hover:(bg-accent text-accent-foreground)`,
-				secondary: tw`bg-secondary text-secondary-foreground hover:bg-secondary/80`,
-				ghost: tw`hover:(bg-accent text-accent-foreground)`,
-				link: tw`text-primary underline-offset-4 hover:underline`,
+				outline: tw`border border-custom-6 bg-transparent hover:(bg-custom-a3 border-custom-a6) active:bg-custom-a2`,
+				secondary: tw`bg-custom-7 hover:bg-custom-a7 active:bg-custom-6`,
+				ghost: tw`hover:bg-custom-a3 active:bg-custom-a2`,
+				link: tw`underline-offset-4 hover:underline`,
 			},
 			size: {
 				default: tw`h-9 px-4 [font-size: 15px] [svg]:(w-4 h-4)`,

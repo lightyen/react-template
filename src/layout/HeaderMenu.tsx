@@ -8,8 +8,8 @@ import { NavigationSheetMenu } from "./NavigationMenu"
 export function HeaderMenu() {
 	return (
 		<header
-			tw="sticky top-0 w-full border-b bg-card [z-index: 15]
-					backdrop-blur-lg supports-[backdrop-filter]:bg-card/90"
+			tw="sticky top-0 w-full border-b bg-custom-a2 [z-index: 15]
+					backdrop-blur-lg supports-[backdrop-filter]:bg-custom-a2/90"
 		>
 			<div tw="px-2 sm:container flex gap-1 h-14 items-center">
 				<NavigationSheetMenu />

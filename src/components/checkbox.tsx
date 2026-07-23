@@ -41,7 +41,7 @@ export function Checkbox({
 		<label
 			role="checkbox"
 			tw="inline-flex items-center relative select-none cursor-pointer text-current focus-within:outline-none
-				hover:[input:not(:checked):not(:disabled):not(:indeterminate) ~ .check > .checkmark]:bg-primary/20
+				hover:[input:not(:checked):not(:disabled):not(:indeterminate) ~ .check > .checkmark]:bg-custom-a3
 			"
 			css={disabled && tw`pointer-events-none opacity-50`}
 			className={className}
@@ -50,13 +50,13 @@ export function Checkbox({
 				type="checkbox"
 				ref={composeRefs(ref, inputRef)}
 				tw="absolute w-0 h-0
-					checked:[& ~ .check > .checkmark]:(bg-primary text-primary-foreground)
+					checked:[& ~ .check > .checkmark]:(bg-custom-a7 text-custom-12)
 					[&:not(:checked) ~ .check > .checkmark .checked_icon]:hidden
-					indeterminate:[& ~ .check > .checkmark]:(bg-primary text-primary-foreground)
+					indeterminate:[& ~ .check > .checkmark]:(bg-custom-a7 text-custom-12)
 					indeterminate:[& ~ .check > .checkmark .checked_icon]:hidden
 					indeterminate:[& ~ .check > .checkmark .indeterminated_icon]:visible
 					[&:not(:indeterminate) ~ .check > .checkmark .indeterminated_icon]:hidden
-					focus-visible:[& ~ .check > .checkmark]:(shadow-primary/30 shadow-[0 0 0 3px var(--tw-shadow-color)])
+					focus-visible:[& ~ .check > .checkmark]:(shadow-custom-a5 shadow-[0 0 0 3px var(--tw-shadow-color)])
 				"
 				disabled={disabled}
 				{...props}
@@ -64,7 +64,7 @@ export function Checkbox({
 			<div className="check" tw="w-[25px] h-[25px] flex justify-center items-center">
 				<span
 					className="checkmark"
-					tw="w-[19px] h-[19px] flex leading-none items-center justify-center border-2 border-primary transition-[box-shadow] duration-150"
+					tw="w-[19px] h-[19px] flex leading-none items-center justify-center border-2 border-custom-a8 transition-[box-shadow] duration-150"
 					css={rounded && tw`rounded-full`}
 				>
 					<CheckIcon tw="h-full aspect-square" className="checked_icon" />

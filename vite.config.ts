@@ -5,6 +5,7 @@ import twobj from "rolldown-plugin-twobj"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vite"
 import checker from "vite-plugin-checker"
+import inspect from "vite-plugin-inspect"
 import svgr from "vite-plugin-svgr"
 import tailwindConfig from "./tailwind.config"
 import { crossOriginIsolated } from "./vite-plugins/cross-origin-isolated"
@@ -29,6 +30,7 @@ export default defineConfig({
 		react({ jsxImportSource: "@emotion/react" }),
 		process.env.CHECK === "true" && visualizer(),
 		process.env.CHECK === "true" && checker({ typescript: true }),
+		inspect(),
 	],
 	server: {
 		host: "0.0.0.0",

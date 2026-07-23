@@ -157,9 +157,9 @@ function DemoCheckboxTree() {
 
 const sliderStyle = {
 	root: tw`relative flex items-center flex-wrap select-none touch-none w-[300px] h-5 data-[orientation=vertical]:(flex-col w-5 h-[300px])`,
-	track: tw`bg-input flex relative grow rounded-full w-full h-[3px] data-[orientation=vertical]:(w-[3px])`,
-	range: tw`absolute bg-primary rounded-full h-full data-[orientation=vertical]:(w-full h-auto)`,
-	thumb: tw`block w-5 h-5 bg-primary rounded-[10px] transition duration-150 (hover: focus-within:):(shadow-primary/30 shadow-[0 0 0 5px var(--tw-shadow-color)] outline-none)`,
+	track: tw`bg-custom-4 flex relative grow rounded-full w-full h-[3px] data-[orientation=vertical]:(w-[3px])`,
+	range: tw`absolute bg-custom-9 rounded-full h-full data-[orientation=vertical]:(w-full h-auto)`,
+	thumb: tw`block w-5 h-5 bg-custom-9 rounded-[10px] transition duration-150 (hover: focus-within:):(shadow-custom-9/30 shadow-[0 0 0 5px var(--tw-shadow-color)] outline-none)`,
 }
 
 function SliderView() {

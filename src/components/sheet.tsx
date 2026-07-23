@@ -8,7 +8,7 @@ import { createDialogStore, DialogContext } from "./dialog/context"
 import { Overlay } from "./internal/overlay"
 import { isElement, zs } from "./lib"
 
-export const sheetVariants = zs(tw`fixed gap-4 bg-background p-6 shadow-lg`, {
+export const sheetVariants = zs(tw`fixed gap-4 bg-custom-2 p-6 shadow-lg`, {
 	variants: {
 		side: {
 			top: tw`inset-x-0 top-0 border-b`,

@@ -261,7 +261,7 @@ export function Tooltip({ children }: React.PropsWithChildren<{}>) {
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent>
-				<div tw="transition-colors border overflow-hidden rounded-lg bg-card w-[360px] hover:bg-border">
+				<div tw="transition-colors border overflow-hidden rounded-lg bg-custom-4 w-[360px] hover:bg-custom-6">
 					<div tw="p-4">{children}</div>
 				</div>
 			</PopoverContent>

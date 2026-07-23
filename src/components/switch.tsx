@@ -9,7 +9,7 @@ export function Switch({ type: _, disabled, className, style, children, ...props
 		<label
 			role="switch"
 			tw="inline-flex items-center relative select-none cursor-pointer text-current focus-within:outline-none
-				hover:[input:not(:disabled):not(:checked) ~ .lever]:bg-foreground/20
+				hover:[input:not(:disabled):not(:checked) ~ .lever]:bg-custom-a6
 			"
 			css={disabled && tw`pointer-events-none opacity-50`}
 			className={className}
@@ -19,7 +19,7 @@ export function Switch({ type: _, disabled, className, style, children, ...props
 				type="checkbox"
 				tw="absolute w-0 h-0
 					[&:disabled ~ .lever]:pointer-events-none
-					[&:checked ~ .lever]:bg-primary
+					[&:checked ~ .lever]:bg-custom-9
 					[&:checked ~ .lever::after]:translate-x-5
 					focus-visible:[& ~ .lever]:(ring-2 ring-ring ring-offset-2 ring-offset-background)
 				"
@@ -28,7 +28,7 @@ export function Switch({ type: _, disabled, className, style, children, ...props
 			/>
 			<span
 				className="lever"
-				tw="flex shrink-0 cursor-pointer items-center rounded-full bg-input
+				tw="flex shrink-0 cursor-pointer items-center rounded-full bg-custom-6
 					shadow-sm transition-colors
 					after:(h-full aspect-square pointer-events-none block rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform duration-150)
 				"
