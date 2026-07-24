@@ -5,7 +5,7 @@ import { Dialog, DialogContent, type DialogProps } from "./dialog"
 export function Command(props: React.ComponentProps<typeof CommandPrimitive>) {
 	return (
 		<CommandPrimitive
-			tw="flex h-full w-full flex-col overflow-hidden rounded-md bg-custom-3 border shadow-md"
+			tw="flex h-full w-full flex-col overflow-hidden rounded-md bg-gray-2 border shadow-md"
 			{...props}
 		/>
 	)
@@ -18,7 +18,7 @@ export function CommandDialog({ children, ...props }: React.PropsWithChildren<Di
 			<DialogContent tw="p-0">
 				<Command
 					tw="
-					[& [cmdk-group-heading]]:(px-2 font-medium text-muted-foreground)
+					[& [cmdk-group-heading]]:(px-2 font-medium text-gray-12)
 					[& [cmdk-group]]:px-1
 					[& [cmdk-group]:not([hidden]) ~[cmdk-group]]:pt-0
 					[& [cmdk-input-wrapper] svg]:(h-5 w-5)

@@ -82,10 +82,10 @@ export function DialogContent({
 					style={style}
 				>
 					<div
-						tw="relative shadow-lg shadow-custom-4 w-[calc(100vw - 0.75rem)] sm:rounded-lg overflow-auto
+						tw="relative shadow-lg shadow-gray-4 w-[calc(100vw - 0.75rem)] sm:rounded-lg overflow-auto
 							h-[min(100%, calc(100dvh - 2.5rem))]
 							[@media (min-height: 800px)]:h-[min(100%, calc(100dvh - 10rem))]
-							bg-custom-2 p-6
+							bg-gray-2 p-6
 						"
 						css={{ maxWidth }}
 						onPointerDown={event => {

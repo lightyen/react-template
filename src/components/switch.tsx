@@ -21,7 +21,7 @@ export function Switch({ type: _, disabled, className, style, children, ...props
 					[&:disabled ~ .lever]:pointer-events-none
 					[&:checked ~ .lever]:bg-custom-9
 					[&:checked ~ .lever::after]:translate-x-5
-					focus-visible:[& ~ .lever]:(ring-2 ring-ring ring-offset-2 ring-offset-background)
+					focus-visible:[& ~ .lever]:(ring-2 ring-ring ring-offset-2 ring-offset-custom-1)
 				"
 				disabled={disabled}
 				{...props}
@@ -30,7 +30,7 @@ export function Switch({ type: _, disabled, className, style, children, ...props
 				className="lever"
 				tw="flex shrink-0 cursor-pointer items-center rounded-full bg-custom-6
 					shadow-sm transition-colors
-					after:(h-full aspect-square pointer-events-none block rounded-full bg-background shadow-lg ring-0 ring-offset-0 transition-transform duration-150)
+					after:(h-full aspect-square pointer-events-none block rounded-full bg-custom-3 shadow-lg ring-0 ring-offset-0 transition-transform duration-150)
 				"
 				css={tw`h-6 w-11 p-[3px]`}
 			/>

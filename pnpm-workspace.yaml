@@ -20,7 +20,7 @@ minimumReleaseAgeExclude:
   - "@oxlint/binding-win32-x64-msvc@1.66.0"
   - oxlint@1.66.0
 overrides:
-  twobj: link:../projects/twobj/packages/twobj
+  twobj: link:../twobj/packages/twobj
 patchedDependencies:
   react-intl@10.1.9: patches/react-intl@10.1.9.patch
 updateConfig:

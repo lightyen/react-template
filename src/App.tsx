@@ -12,8 +12,8 @@ const bodyScrollbar = tw`
 	not-mobile:(
 		[@supports selector(::-webkit-scrollbar)]:(
 			[::-webkit-scrollbar]:(w-[7px] h-[7px])
-			hover:[::-webkit-scrollbar-thumb]:bg-custom-a3
-			[::-webkit-scrollbar-thumb]:(bg-muted bg-clip-content hover:bg-custom-a5)
+			hover:[::-webkit-scrollbar-thumb]:bg-gray-a3
+			[::-webkit-scrollbar-thumb]:(bg-gray-3 bg-clip-content hover:bg-gray-a5)
 		)
 	)
 `
@@ -22,7 +22,7 @@ const appStyle = css`
 	${bodyScrollbar}
 	body {
 		${tw`
-			bg-custom-1 text-custom-12 font-normal leading-normal font-sans
+			bg-[#111111] text-gray-12 font-normal leading-normal font-sans
 			m-0 min-w-[320px] min-h-screen
 		`}
 	}

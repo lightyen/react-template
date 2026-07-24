@@ -1,5 +1,5 @@
 function Card(props: React.HTMLAttributes<HTMLDivElement> & { ref?: React.Ref<HTMLDivElement> }) {
-	return <div tw="rounded-xl border bg-custom-a2 text-card-foreground shadow" {...props} />
+	return <div tw="rounded-xl border bg-gray-a2 shadow" {...props} />
 }
 Card.displayName = "Card"
 

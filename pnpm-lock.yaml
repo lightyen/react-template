@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  twobj: link:../projects/twobj/packages/twobj
+  twobj: link:../twobj/packages/twobj
 
 patchedDependencies:
   react-intl@10.1.9: 9a44c1bb8e5a3b9426a0860a88e63f04b0423cd4a9f41b585fcf34c6a23ec94e
@@ -111,8 +111,8 @@ importers:
         specifier: 1.5.0
         version: 1.5.0
       twobj:
-        specifier: link:../projects/twobj/packages/twobj
-        version: link:../projects/twobj/packages/twobj
+        specifier: link:../twobj/packages/twobj
+        version: link:../twobj/packages/twobj
       zustand:
         specifier: 5.0.14
         version: 5.0.14(@types/react@19.2.17)(immer@11.1.8)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
@@ -173,7 +173,7 @@ importers:
         version: 19.2.7(react@19.2.7)
       rolldown-plugin-twobj:
         specifier: 0.0.2
-        version: 0.0.2(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(rolldown@1.0.3)(twobj@projects+twobj+packages+twobj)
+        version: 0.0.2(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(rolldown@1.0.3)(twobj@twobj+packages+twobj)
       rollup-plugin-visualizer:
         specifier: 7.0.1
         version: 7.0.1(rolldown@1.0.3)
@@ -4902,12 +4902,12 @@ snapshots:
 
   retry@0.12.0: {}
 
-  rolldown-plugin-twobj@0.0.2(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(rolldown@1.0.3)(twobj@projects+twobj+packages+twobj):
+  rolldown-plugin-twobj@0.0.2(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(rolldown@1.0.3)(twobj@twobj+packages+twobj):
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.7)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
       rolldown-string: 0.3.0(rolldown@1.0.3)
-      twobj: link:../projects/twobj/packages/twobj
+      twobj: link:../twobj/packages/twobj
     transitivePeerDependencies:
       - rolldown
 

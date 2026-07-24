@@ -40,7 +40,7 @@ export function SheetTrigger({
 }
 SheetTrigger["$id"] = Symbol.for("nav.SheetTrigger")
 
-export const sheetVariants = zs(tw`fixed gap-4 bg-custom-2 p-6 shadow-lg`, {
+export const sheetVariants = zs(tw`fixed gap-4 bg-gray-1 p-6 shadow-lg`, {
 	variants: {
 		side: {
 			top: tw`inset-x-0 top-0 border-b`,

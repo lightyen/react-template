@@ -89,7 +89,7 @@ export function LeftNavigationMenu() {
 	return (
 		<aside
 			tw="hidden md:flex flex-col fixed top-[calc(3.5rem + 1px)] md:sticky
-				h-[calc(100vh - 3.5rem - 1px)] bg-custom-a2"
+				h-[calc(100vh - 3.5rem - 1px)] bg-gray-2"
 		>
 			<nav tw="relative p-4 overflow-auto grow transition flex flex-col gap-1">
 				{navs.map((item, i) => !item.hidden && <NavItem key={i} {...item} />)}
